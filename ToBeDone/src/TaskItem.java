@@ -2,6 +2,7 @@
 public class TaskItem {
 	private int taskID;
 	private String taskDescription;
+	private boolean valid;
 	
 	void setTaskDescription(String taskDescription) {
 		this.taskDescription = taskDescription;
