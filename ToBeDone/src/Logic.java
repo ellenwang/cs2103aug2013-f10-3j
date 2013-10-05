@@ -78,7 +78,7 @@ public class Logic {
 		return UPDATE_SUCCESS_MESSAGE;
 	}
 	
-	static TaskItem getItemByIndex(int index){
+	static int indexToTaskID(int index){
 		TaskItem temp=TobeDoneUI.getItem(index);		
 		return temp.getID();
 	}
