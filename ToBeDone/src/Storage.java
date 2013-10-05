@@ -8,4 +8,6 @@ public class Storage {
 		
 		Logic.createDone(CREATED_MESSAGE);
 	}
+	
+	static TaskItem parseTaskItem();
 }
