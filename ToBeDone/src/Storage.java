@@ -55,7 +55,7 @@ public class Storage {
 		writeTasksToFile(tasks);
 	}
 
-	public TaskItem retrieve(int taskIndex) {
+	public static TaskItem retrieve(int taskIndex) {
 		TaskItem targetTask = tasks.get(taskIndex);
 		return targetTask;
 	}
