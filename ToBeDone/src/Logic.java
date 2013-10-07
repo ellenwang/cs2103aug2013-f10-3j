@@ -112,4 +112,9 @@ public class Logic {
 		}
 		return result;
 	}
+	static String viewTask (int index){
+		int taskID = indexToTaskID(index);
+		String result = Storage.retrieve(taskID).toString();
+		return result;
+	}
 }
