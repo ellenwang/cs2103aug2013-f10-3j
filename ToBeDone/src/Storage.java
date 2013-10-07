@@ -4,7 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.Vector;
-
+ 
 public class Storage {
 	private File file;
 	private Vector<TaskItem> tasks;
