@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Vector;
 
 public class Logic {
@@ -14,7 +15,7 @@ public class Logic {
 	
 	static String createTask(String description, String startTime, String endTime, String priority){
 		try{
-			TaskItem createNewOne=new TaskItem(description, startTime, endTime, priority);
+			TaskItem createNewOne= new TaskItem(description, startTime, endTime, priority);
 			Storage.save(createNewOne);
 		}catch(Exception e){
 			return CREATED_FAIL_MESSAGE;
@@ -38,7 +39,7 @@ public class Logic {
 		TaskItem toUnMark;
 		int TaskID=indexToTaskID(index);
 		try{
-			toUnMark=Storage.retrive(TaskID);
+			toUnMark=Storage.retrieve(TaskID);
 		}catch(Exception e){
 			return INVALID_ITEM;
 		}
@@ -50,7 +51,7 @@ public class Logic {
 		TaskItem toDelete;
 		int TaskID=indexToTaskID(index);
 		try{
-			toDelete=Storage.retrive(TaskID);
+			toDelete=Storage.retrieve(TaskID);
 		}catch(Exception e){
 			return INVALID_ITEM;
 		}
@@ -62,12 +63,12 @@ public class Logic {
 		TaskItem toUpdate;
 		int TaskID=indexToTaskID(index);
 		try{
-			toUpdate=Storage.retrive(TaskID);
+			toUpdate=Storage.retrieve(TaskID);
 		}catch(Exception e){
 			return INVALID_ITEM;
 		}
 		if(description!=null){
-			toUpdate.setTaskDescription(description);
+			toUpdate.setDescription(description);
 		}
 		if(startTime!=null){
 			toUpdate.setStartTime(startTime);
@@ -101,5 +102,14 @@ public class Logic {
 	static int indexToTaskID(int index){
 		TaskItem temp=TobeDoneUI.getItem(index);		
 		return temp.getID();
+	}
+	
+	static String viewAll(){
+		String result = "";
+		Vector<TaskItem> list = Storage.retrieveAll();
+		for (int i=0; i<list.size(); i++){
+			result += list.get(i).toString();
+		}
+		return result;
 	}
 }

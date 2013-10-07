@@ -7,7 +7,7 @@ import java.util.Vector;
  
 public class Storage {
 	private File file;
-	private Vector<TaskItem> tasks;
+	private static Vector<TaskItem> tasks;
 
 	public Storage(String fileName) {
 		file = new File(fileName);
@@ -60,7 +60,7 @@ public class Storage {
 		return targetTask;
 	}
 
-	public Vector<TaskItem> retrieveAll() {
+	public static Vector<TaskItem> retrieveAll() {
 		return tasks;
 	}
 
