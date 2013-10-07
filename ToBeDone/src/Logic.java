@@ -1,4 +1,4 @@
-package skeleton;
+import java.util.Vector;
 
 public class Logic {
 	private static final String CREATED_FAIL_MESSAGE = "Creating new task failed.";
@@ -8,6 +8,9 @@ public class Logic {
 	private static final String DELETE_SUCCESS_MESSAGE="The task is deleted successfully.";
 	private static final String UPDATE_SUCCESS_MESSAGE="The task is updated successfully.";
 	private static final String INVALID_ITEM="Item not found.";
+	private static final String NO_SEARCH_RESULT="No such task item.";
+	private static Vector<TaskItem> aimTasks;
+
 	
 	static String createTask(String description, String startTime, String endTime, String priority){
 		try{
@@ -76,6 +79,23 @@ public class Logic {
 			toUpdate.setPriority(priority);
 		}
 		return UPDATE_SUCCESS_MESSAGE;
+	}
+
+	static String searchTask(String keyword){
+		String searchResult = "Search results are as follow:\n";
+		String taskItemString;
+
+		aimTasks = Storage.search(keyword);
+		
+		if(aimTasks.capacity() == 0){
+			return NO_SEARCH_RESULT;
+		}
+		
+		for(int i = 0; i<aimTasks.capacity(); i++){
+			taskItemString = (i+1)+"."+aimTasks.get(i).toString() + "\\n";
+			searchResult.concat(taskItemString);
+		}
+		return searchResult;
 	}
 	
 	static int indexToTaskID(int index){
