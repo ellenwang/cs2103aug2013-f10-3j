@@ -5,8 +5,8 @@ public class TaskItem {
 	private int taskID;
 	private String description;
 	private boolean valid;
-	private Date startTime;
-	private Date endTime;
+	private Date startTime=null;
+	private Date endTime=null;
 	private int priority;
 	
 	TaskItem() {
@@ -67,7 +67,16 @@ public class TaskItem {
 	public void setPriority(int priority) {
 		this.priority = priority;
 	}
-	
-	
+	public String toString(){
+		String result = "";
+		if (getStartTime()!=null) {
+			result = "The task: "+getDescription()+"\t starts from: "+getStartTime()+"\t ends at: "+getEndTime()
+				+"\t priority: "+getPriority();
+		} else {
+			result = "The task: "+getDescription()+"\t deadline: "+getEndTime()
+					+"\t priority: "+getPriority();
+		}
+		return result;
+	}
 }
 
