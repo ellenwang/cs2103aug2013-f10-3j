@@ -102,4 +102,21 @@ public class Logic {
 		TaskItem temp=TobeDoneUI.getItem(index);		
 		return temp.getID();
 	}
+	
+	static String redo(){
+		try{
+			Storage.redo();
+		}catch(Exception e){
+			return ;
+		}
+		return ;
+	}
+	static  String undo(){
+		try{
+			Strorage.undo();
+		}catch(Exception e){
+			return ;
+		}
+		return ;
+	}
 }
