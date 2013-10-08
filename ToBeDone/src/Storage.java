@@ -2,6 +2,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.Scanner;
 import java.util.Vector;
  
@@ -62,6 +64,17 @@ public class Storage {
 
 	public static Vector<TaskItem> retrieveAll() {
 		return tasks;
+	}
+	
+	public static Vector<TaskItem> retrieveFinished(){
+		Vector<TaskItem> finishedTask = new Vector<TaskItem>();
+		Date currentDate = (Date) Calendar.getInstance().getTime();
+		for (int i=0; i<tasks.size(); i++){
+			if(tasks.get(i).getEndTime().before(currentDate)){
+				finishedTask.add(tasks.get(i));
+			}
+		}
+		return finishedTask;
 	}
 
 	public TaskItem delete(int taskIndex) {

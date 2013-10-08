@@ -117,4 +117,13 @@ public class Logic {
 		String result = Storage.retrieve(taskID).toString();
 		return result;
 	}
+	static String viewFinished(){
+		String result="";
+		return result;
+	}
+	static String viewUnfinished(){
+		String result="";
+		return result;
+	}
+	
 }
