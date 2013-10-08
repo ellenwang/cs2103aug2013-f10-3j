@@ -67,8 +67,8 @@ public class Storage {
 		Vector<TaskItem> matchingTasks = new Vector<TaskItem>();
 		
 		for (TaskItem task : tasks) {
-			String taskDescription = task.getTaskDescription();
-			if (taskDescription.contains(keyword)) {
+			String taskInfo = task.toString();
+			if (taskInfo.contains(keyword)) {
 				matchingTasks.add(task);
 			}
 		}

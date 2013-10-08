@@ -18,7 +18,7 @@ public class Logic {
 	private static final String REDO_FAILED="Redo failed";
 	private static Vector<TaskItem> aimTasks;
 	
-	private static Storage dataBase=new Storage("database.txt");
+	private static Storage dataBase= new Storage("database.txt");
 	
 	static String createTask(String description, Date startTime, Date endTime, int priority){
 		try{
