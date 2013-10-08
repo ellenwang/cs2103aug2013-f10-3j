@@ -1,3 +1,4 @@
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -12,12 +13,13 @@ public class Logic {
 	private static final String NO_SEARCH_RESULT="No such task item.";
 	private static final String DELETED_Fail_MESSAGE = "Fail to delete.";
 	private static Vector<TaskItem> aimTasks;
-
 	
-	static String createTask(String description, String startTime, String endTime, String priority){
+	private static Storage dataBase=new Storage("database.txt");
+	
+	static String createTask(String description, Date startTime, Date endTime, int priority){
 		try{
 			TaskItem createNewOne= new TaskItem(description, startTime, endTime, priority);
-			Storage.save(createNewOne);
+			dataBase.store(createNewOne);
 		}catch(Exception e){
 			return CREATED_FAIL_MESSAGE;
 		}
@@ -60,7 +62,7 @@ public class Logic {
 		return DELETE_SUCCESS_MESSAGE;
 	}**/
 	
-	static String updateTask(int index, String description, String startTime, String endTime, String priority ){
+	static String updateTask(int index, String description, Date startTime, Date endTime, int priority ){
 		TaskItem toUpdate;
 		int TaskID=indexToTaskID(index);
 		try{
