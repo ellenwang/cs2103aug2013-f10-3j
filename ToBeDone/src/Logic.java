@@ -18,17 +18,21 @@ public class Logic {
 	private static final String REDO_FAILED="Redo failed";
 	private static Vector<TaskItem> aimTasks;
 	
-	private static Storage dataBase= new Storage("database.txt");
+
+	static enum STATUS {
+		finished, unfinished, expired
+	};
 	
 	static String createTask(String description, Date startTime, Date endTime, int priority){
 		try{
 			TaskItem createNewOne= new TaskItem(description, startTime, endTime, priority);
-			dataBase.store(createNewOne);
+			Storage.store(createNewOne);
 		}catch(Exception e){
 			return CREATED_FAIL_MESSAGE;
 		}
 		return CREATED_SUCCESS_MESSAGE;
 	}
+	
 	
 	static String markTask(int index){
 		TaskItem toMark;
@@ -38,7 +42,7 @@ public class Logic {
 		}catch(Exception e){
 			return INVALID_ITEM;
 		}
-		toMark.setStatus(true);
+		toMark.setStatus(2);
 		return MARKED_AS_DONE; 
 	}
 	
@@ -50,21 +54,10 @@ public class Logic {
 		}catch(Exception e){
 			return INVALID_ITEM;
 		}
-		toUnMark.setStatus(false);
+		toUnMark.setStatus(1);
 		return MARKED_AS_UNDONE;
 	}
 	
-	/**static String deleteTask(int index){
-		TaskItem toDelete;
-		int TaskID=indexToTaskID(index);
-		try{
-			toDelete=Storage.retrieve(TaskID);
-		}catch(Exception e){
-			return INVALID_ITEM;
-		}
-		Storage.remove(toDelete);
-		return DELETE_SUCCESS_MESSAGE;
-	}**/
 	
 	static String updateTask(int index, String description, Date startTime, Date endTime, int priority ){
 		TaskItem toUpdate;
@@ -107,9 +100,11 @@ public class Logic {
 	}
 	
 	static int indexToTaskID(int index){
-		TaskItem temp=aimTasks[index];		
-		return temp.getID();
+		TaskItem temp=aimTasks.get(index-1);
+		return temp.getTaskID();
 	}
+	
+
 	
 	static String undo(){
 		try{
@@ -165,6 +160,18 @@ public class Logic {
 		}else{
 			return DELETED_Fail_MESSAGE;
 		}
+	}
+
+
+	public static String undo(String lastComType) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	public static String redo(String lastCommandString) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }
