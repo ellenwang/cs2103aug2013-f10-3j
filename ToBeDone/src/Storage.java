@@ -8,7 +8,7 @@ import java.util.Scanner;
 import java.util.Vector;
  
 public class Storage {
-	private File file;
+	private static File file;
 	private static Vector<TaskItem> tasks;
 
 	public Storage(String fileName) {
@@ -32,7 +32,7 @@ public class Storage {
 		return fileTasks;
 	}
 
-	private void writeTasksToFile(Vector<TaskItem> tasks) {
+	private static void writeTasksToFile(Vector<TaskItem> tasks) {
 		try {
 			FileWriter fstream = new FileWriter(file);
 			BufferedWriter out = new BufferedWriter(fstream);
@@ -87,13 +87,13 @@ public class Storage {
 		}
 		return finishedTask;
 	}
-	public TaskItem delete(int taskIndex) {
+	public static TaskItem delete(int taskIndex) {
 		TaskItem deletedTask = tasks.remove(taskIndex);
 		writeTasksToFile(tasks);
 		return deletedTask;
 	}
 
-	private String taskItemToStorageFormat(TaskItem task) {
+	private static String taskItemToStorageFormat(TaskItem task) {
 		String storageFormat = "\"" + task.getDescription() + "\"";
 		return storageFormat;
 	}
