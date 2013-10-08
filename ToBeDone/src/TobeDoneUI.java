@@ -3,7 +3,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
-
 public class TobeDoneUI {
 
 	private static final String WELCOME_MESSAGE = "Now is ToBeDone moment";
@@ -22,11 +21,12 @@ public class TobeDoneUI {
 	private static final int TASK_PRIORITY_HIGH = 3;
 	private static final int TASK_PRIORITY_MEDIUM = 2;
 	private static final int TASK_PRIORITY_LOW = 1;
-	
+
 	private static String lastCommandString = null;
 
 	static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
 			"MM-dd'at'HH:mm");
+
 	public static void main(String[] args) {
 		showToUser(WELCOME_MESSAGE);
 		readCommand();
@@ -107,9 +107,7 @@ public class TobeDoneUI {
 		return comType;
 	}
 
-	
-	
-	static String getComPara(String comString){
+	static String getComPara(String comString) {
 		String comPara;
 
 		int index = 0;
@@ -124,10 +122,8 @@ public class TobeDoneUI {
 		return comPara;
 	}
 
-	
-	
 	static void analyseCreate(String comPara) {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd'at'HH:mm");
+
 		String userMessage;
 
 		try {
@@ -157,15 +153,9 @@ public class TobeDoneUI {
 			String[] taskParasExceptDes = taskStringExceptDes.split(" ");
 
 			// since there are 3 kind of task. each has different number of
-			int numOfPara = taskParasExceptDes.length;
-			
+			// parameters
+			int taskType = taskParasExceptDes.length;
 
-			// a create command has 3 parameters at most
-			if(numOfPara > 3){
-				showToUser(WRONG_COMMAND_FORMAT);
-				return;
-			}
-			
 			// a floating task, just has description and priority
 			if (taskType == FLOATING_TASK) {
 				priority = Integer.parseInt(taskParasExceptDes[0]);
@@ -217,8 +207,7 @@ public class TobeDoneUI {
 		}
 	}
 
-	
-	static void analyseDelete(String comPara){
+	static void analyseDelete(String comPara) {
 		String useMessage;
 		try {
 			int taskIndex;
@@ -273,12 +262,6 @@ public class TobeDoneUI {
 	static void analyseUndo(String comPara) {
 		String userMessage = null;
 		String lastComType = getComType(lastCommandString);
-		if(lastComType == "delete"||lastComType == "create"||lastComType == "finish"){
-			userMessage = Logic.undo(lastComType);
-		}
-		else{
-			showToUser(MEANINGLESS_UNDO);
-		}
 
 		if (lastComType.equals("delete") || lastComType.equals("create")
 				|| lastComType.equals("finish")) {

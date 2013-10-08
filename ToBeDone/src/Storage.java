@@ -8,7 +8,6 @@ import java.util.Calendar;
 import java.util.Scanner;
 import java.util.Vector;
 
-
 public class Storage {
 
 	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
@@ -18,7 +17,6 @@ public class Storage {
 
 	private static File file = new File(defaultFileName);
 	private static Vector<TaskItem> tasks = getTasksFromFile();
-
 
 	private static Vector<TaskItem> getTasksFromFile() {
 		Vector<TaskItem> fileTasks = new Vector<TaskItem>();
@@ -93,10 +91,9 @@ public class Storage {
 		return tasks;
 	}
 
-
-	public static Vector<TaskItem> retrieveUnfinished(){
+	public static Vector<TaskItem> retrieveUnfinished() {
 		Vector<TaskItem> finishedTask = new Vector<TaskItem>();
-		Date currentDate = (Date) Calendar.getInstance().getTime();
+
 		for (int i = 0; i < tasks.size(); i++) {
 			TaskItem current = tasks.get(i);
 			current.updateStatus();
@@ -107,7 +104,7 @@ public class Storage {
 		}
 		return finishedTask;
 	}
-	
+
 	public static Vector<TaskItem> retrieveFinished() {
 		Vector<TaskItem> finishedTask = new Vector<TaskItem>();
 		for (int i = 0; i < tasks.size(); i++) {
@@ -190,15 +187,5 @@ public class Storage {
 	public static void clear() {
 		tasks.clear();
 		writeTasksToFile(tasks);
-	}
-
-	public static void undo() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public static void redo() {
-		// TODO Auto-generated method stub
-		
 	}
 }
