@@ -7,7 +7,8 @@ public class TaskItem {
 	private boolean valid;
 	private Date startTime=null;
 	private Date endTime=null;
-	private int priority;
+	private int priority = -1;
+	
 	
 	TaskItem() {
 		
@@ -19,6 +20,7 @@ public class TaskItem {
 		endTime = this.endTime;
 		priority = this.priority;
 	}
+	
 	
 	public void setDescription(String taskDescription) {
 		this.description = taskDescription;
