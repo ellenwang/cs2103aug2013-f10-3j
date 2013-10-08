@@ -6,10 +6,11 @@ public class Logic {
 	private static final String MARKED_AS_DONE="The task is marked as done.";
 	private static final String MARKED_AS_UNDONE="The task is marked as undone.";
 	private static final String CREATED_SUCCESS_MESSAGE = "New task has been created.";
-	private static final String DELETE_SUCCESS_MESSAGE="The task is deleted successfully.";
+	private static final String DELETED_SUCCESS_MESSAGE="The task is deleted successfully.";
 	private static final String UPDATE_SUCCESS_MESSAGE="The task is updated successfully.";
 	private static final String INVALID_ITEM="Item not found.";
 	private static final String NO_SEARCH_RESULT="No such task item.";
+	private static final String DELETED_Fail_MESSAGE = "Fail to delete.";
 	private static Vector<TaskItem> aimTasks;
 
 	
@@ -47,7 +48,7 @@ public class Logic {
 		return MARKED_AS_UNDONE;
 	}
 	
-	static String deleteTask(int index){
+	/**static String deleteTask(int index){
 		TaskItem toDelete;
 		int TaskID=indexToTaskID(index);
 		try{
@@ -57,7 +58,7 @@ public class Logic {
 		}
 		Storage.remove(toDelete);
 		return DELETE_SUCCESS_MESSAGE;
-	}
+	}**/
 	
 	static String updateTask(int index, String description, String startTime, String endTime, String priority ){
 		TaskItem toUpdate;
@@ -132,6 +133,15 @@ public class Logic {
 			result += unfinishedList.get(i).toString();
 		}
 		return result;
+	}
+	static String deleteTask(int index){
+		int taskID = indexToTaskID(index);
+		TaskItem taskDeleted = Storage.delete(taskID);
+		if(taskDeleted!=null){
+			return DELETED_SUCCESS_MESSAGE;
+		}else{
+			return DELETED_Fail_MESSAGE;
+		}
 	}
 	
 }
