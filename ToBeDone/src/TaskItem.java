@@ -2,7 +2,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-
 public class TaskItem {
 	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
 			"MM-dd'at'HH:mm");
@@ -12,7 +11,7 @@ public class TaskItem {
 	private boolean valid;
 	private Date startTime;
 	private Date endTime;
-	private int priority = -1;
+	private int priority;
 	private STATUS status;
 
 	static enum STATUS {
@@ -23,7 +22,6 @@ public class TaskItem {
 
 	}
 
-	
 	TaskItem(String description, Date startTime, Date endTime, int priority) {
 		this.description = description;
 		this.startTime = startTime;
@@ -32,8 +30,6 @@ public class TaskItem {
 		status = STATUS.unfinished;
 	}
 
-	
-	
 	public void setDescription(String taskDescription) {
 		this.description = taskDescription;
 	}
@@ -69,7 +65,6 @@ public class TaskItem {
 		}
 	}
 
-
 	public Date getStartTime() {
 		return startTime;
 	}
@@ -101,13 +96,6 @@ public class TaskItem {
 	public void setPriority(int priority) {
 		this.priority = priority;
 	}
-	public void updateStatus(){
-		Date currentDate = (Date) Calendar.getInstance().getTime();
-		if (endTime.before(currentDate)) {
-			this.setStatus(3);
-		}
-		
-	}
 
 	public void updateStatus() {
 		Date currentDate = (Date) Calendar.getInstance().getTime();
@@ -131,4 +119,3 @@ public class TaskItem {
 		return result;
 	}
 }
-
