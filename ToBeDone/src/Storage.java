@@ -70,13 +70,23 @@ public class Storage {
 		Vector<TaskItem> finishedTask = new Vector<TaskItem>();
 		Date currentDate = (Date) Calendar.getInstance().getTime();
 		for (int i=0; i<tasks.size(); i++){
-			if(tasks.get(i).getEndTime().before(currentDate)){
+			if(tasks.get(i).getEndTime().after(currentDate)){
 				finishedTask.add(tasks.get(i));
 			}
 		}
 		return finishedTask;
 	}
 
+	public static Vector<TaskItem> retrieveUnfinished(){
+		Vector<TaskItem> finishedTask = new Vector<TaskItem>();
+		Date currentDate = (Date) Calendar.getInstance().getTime();
+		for (int i=0; i<tasks.size(); i++){
+			if(tasks.get(i).getEndTime().before(currentDate)){
+				finishedTask.add(tasks.get(i));
+			}
+		}
+		return finishedTask;
+	}
 	public TaskItem delete(int taskIndex) {
 		TaskItem deletedTask = tasks.remove(taskIndex);
 		writeTasksToFile(tasks);
