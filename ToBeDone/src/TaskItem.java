@@ -8,6 +8,10 @@ public class TaskItem {
 	private Date startTime=null;
 	private Date endTime=null;
 	private int priority = -1;
+	private STATUS status;
+	private enum STATUS {
+		finished, unfinished, expired
+	};
 	
 	
 	TaskItem() {
@@ -19,6 +23,7 @@ public class TaskItem {
 		startTime = this.startTime;
 		endTime = this.endTime;
 		priority = this.priority;
+		status = STATUS.unfinished;
 	}
 	
 	
