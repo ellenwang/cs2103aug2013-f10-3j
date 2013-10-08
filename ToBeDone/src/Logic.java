@@ -119,10 +119,18 @@ public class Logic {
 	}
 	static String viewFinished(){
 		String result="";
+		Vector<TaskItem> finishedList = Storage.retrieveFinished();
+		for (int i=0; i<finishedList.size(); i++){
+			result += finishedList.get(i).toString();
+		}
 		return result;
 	}
 	static String viewUnfinished(){
 		String result="";
+		Vector<TaskItem> unfinishedList = Storage.retrieveUnfinished();
+		for (int i=0; i<unfinishedList.size(); i++){
+			result += unfinishedList.get(i).toString();
+		}
 		return result;
 	}
 	
