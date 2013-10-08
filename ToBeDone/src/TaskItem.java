@@ -1,3 +1,4 @@
+import java.util.Calendar;
 import java.util.Date;
 
 
@@ -9,7 +10,7 @@ public class TaskItem {
 	private Date endTime=null;
 	private int priority = -1;
 	private STATUS status;
-	private enum STATUS {
+	static enum STATUS {
 		finished, unfinished, expired
 	};
 	
@@ -17,6 +18,7 @@ public class TaskItem {
 	TaskItem() {
 		
 	}
+	
 	
 	TaskItem(String description, Date startTime, Date endTime, int priority) {
 		description = this.description;
@@ -27,6 +29,7 @@ public class TaskItem {
 	}
 	
 	
+	
 	public void setDescription(String taskDescription) {
 		this.description = taskDescription;
 	}
@@ -35,13 +38,35 @@ public class TaskItem {
 		this.taskID = taskID;
 	}
 	
-	public boolean isValid() {
-		return valid;
+
+	public int getStatus() {
+		switch(status){
+		case unfinished:
+			return 1;
+		case finished:
+			return 2;
+		case expired:
+			return 3;
+		default:
+			return -1;
+		}
 	}
 
-	public void setValid(boolean valid) {
-		this.valid = valid;
+
+	public void setStatus(int p){
+		switch(p){
+		case 1:
+			status=STATUS.unfinished;
+			break;
+		case 2:
+			status=STATUS.finished;
+			break;
+		case 3:
+			status=STATUS.expired;
+			break;
+		}
 	}
+
 
 	public Date getStartTime() {
 		return startTime;
@@ -73,6 +98,13 @@ public class TaskItem {
 
 	public void setPriority(int priority) {
 		this.priority = priority;
+	}
+	public void updateStatus(){
+		Date currentDate = (Date) Calendar.getInstance().getTime();
+		if (endTime.before(currentDate)) {
+			this.setStatus(3);
+		}
+		
 	}
 	public String toString(){
 		String result = "";

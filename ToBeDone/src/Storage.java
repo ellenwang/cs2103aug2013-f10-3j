@@ -7,11 +7,14 @@ import java.util.Calendar;
 import java.util.Scanner;
 import java.util.Vector;
 
+
 public class Storage {
+
 	private static String defaultFileName = "ToBeDone.txt";
 	
 	private static File file = new File(defaultFileName);
 	private static Vector<TaskItem> tasks = getTasksFromFile();
+
 
 	private static Vector<TaskItem> getTasksFromFile() {
 		Vector<TaskItem> fileTasks = new Vector<TaskItem>();
@@ -85,28 +88,34 @@ public class Storage {
 		return tasks;
 	}
 	
-	public static TaskItem delete(int taskIndex) {
-		Vector<TaskItem> finishedTask = new Vector<TaskItem>();
-		Date currentDate = (Date) Calendar.getInstance().getTime();
-		for (int i=0; i<tasks.size(); i++){
-			if(tasks.get(i).getEndTime().after(currentDate)){
-				finishedTask.add(tasks.get(i));
-			}
-		}
-		return finishedTask;
-	}
 
 	public static Vector<TaskItem> retrieveUnfinished(){
 		Vector<TaskItem> finishedTask = new Vector<TaskItem>();
-		Date currentDate = (Date) Calendar.getInstance().getTime();
+		
 		for (int i=0; i<tasks.size(); i++){
-			if(tasks.get(i).getEndTime().before(currentDate)){
+			TaskItem current = tasks.get(i);
+			current.updateStatus();
+			int curstatus = current.getStatus();
+			if(curstatus==1){
 				finishedTask.add(tasks.get(i));
 			}
 		}
 		return finishedTask;
 	}
+	
 	public static Vector<TaskItem> retrieveFinished(){
+		Vector<TaskItem> finishedTask = new Vector<TaskItem>();
+		for (int i=0; i<tasks.size(); i++){
+			TaskItem current = tasks.get(i);
+			current.updateStatus();
+			int curstatus = current.getStatus();
+			if(curstatus==2){
+				finishedTask.add(tasks.get(i));
+			}
+		}
+		return finishedTask;
+	}
+	public static Vector<TaskItem> retrieveExpired(){
 		Vector<TaskItem> finishedTask = new Vector<TaskItem>();
 		Date currentDate = (Date) Calendar.getInstance().getTime();
 		for (int i=0; i<tasks.size(); i++){
@@ -124,7 +133,7 @@ public class Storage {
 	}
 
 	private static String taskItemToStorageFormat(TaskItem task) {
-		String storageFormat = "\"" + task.getTaskDescription() + "\"";
+		String storageFormat = "\"" + task.getDescription() + "\"";
 		return storageFormat;
 	}
 
@@ -132,12 +141,22 @@ public class Storage {
 		TaskItem task = new TaskItem();
 		String description = storageFormat.substring(1,
 				storageFormat.lastIndexOf('\"'));
-		task.setTaskDescription(description);
+		task.setDescription(description);
 		return task;
 	}
 
 	public static void clear() {
 		tasks.clear();
 		writeTasksToFile(tasks);
+	}
+
+	public static void undo() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static void redo() {
+		// TODO Auto-generated method stub
+		
 	}
 }

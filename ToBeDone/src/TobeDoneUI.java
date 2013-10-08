@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Scanner;
 
 
+
 public class TobeDoneUI {
 	
 	private static final String WELCOME_MESSAGE = "Now is ToBeDone moment";
@@ -12,14 +13,23 @@ public class TobeDoneUI {
 	private static final String WRONG_TIME_FORMAT = "Please follow the time format as indicated!";
 	private static final String WRONG_TASK_DESCRIPTION_FORMAT = "Please double quote the task description!";
 	private static final String ENDTIME_SMALLER_THAN_STARTTIME = "The end time of tasks can't be smaller than start time";
+	private static final String WRONG_REDO = "a redo command must follow an undo command!";
+	private static final String MEANINGLESS_UNDO = "Meaningless to undo Search/View";
+	
+	private static final int FLOATING_TASK = 1;
+	private static final int DEADLINE_TASK = 2;
+	private static final int TIMED_TASK = 3;
+	
 	private static final int TASK_PRIORITY_HIGH = 3;
 	private static final int TASK_PRIORITY_MEDIUM = 2;
 	private static final int TASK_PRIORITY_LOW = 1;
-
 	
+	private static String lastCommandString = null;
+	
+	static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd'at'HH:mm");
+
 	public static void main(String[] args) {
-		System.out.println(WELCOME_MESSAGE);
-		
+		showToUser(WELCOME_MESSAGE);
 		readCommand();	
 	}
 	
@@ -38,6 +48,9 @@ public class TobeDoneUI {
 			if (scanner.hasNext()) {
 				String comString = scanner.nextLine();
 				commandParser(comString);
+				if(comString != "undo"){
+					lastCommandString = comString;
+				}
 			}
 		}
 		scanner.close();	
@@ -66,8 +79,20 @@ public class TobeDoneUI {
 			break;
 		case "undo":
 			analyseUndo(comPara);
-		case "redo":
-			analyseRedo(comPara);
+			break;
+		case "finish":
+			analyseFinish(comPara);
+			break;
+		case "redo": {
+			if (lastCommandString != "undo") {
+				showToUser(WRONG_REDO);
+				break;
+			}
+			else {
+				analyseRedo(comPara);
+			}
+		}
+			break;
 		default:
 			showToUser(NO_SUCH_COMMAND);
 		}
@@ -106,7 +131,7 @@ public class TobeDoneUI {
 	
 	
 	static void analyseCreate(String comPara) {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd'at'HH:mm");
+		
 		String userMessage;
 		
 		try {
@@ -134,21 +159,17 @@ public class TobeDoneUI {
 			String[] taskParasExceptDes = taskStringExceptDes.split(" ");
 
 			// since there are 3 kind of task. each has different number of parameters
-			int numOfPara = taskParasExceptDes.length;
+			int taskType = taskParasExceptDes.length;
 
-			// a create command has 3 parameters at most
-			if(numOfPara > 3){
-				showToUser(WRONG_COMMAND_FORMAT);
-				return;
-			}
+			
 			
 			// a floating task, just has description and priority
-			if (numOfPara == 1) {
+			if (taskType == FLOATING_TASK) {
 				priority = Integer.parseInt(taskParasExceptDes[0]);
 			}
 
 			// a task just has description\endTime and priority
-			if (numOfPara == 2) {
+			if (taskType == DEADLINE_TASK) {
 				try {
 					taskEndTime = simpleDateFormat.parse(taskParasExceptDes[0]);
 				} catch (ParseException e) {
@@ -159,7 +180,7 @@ public class TobeDoneUI {
 			}
 
 			// a full task with description\startTime\endTime and priority
-			if (numOfPara == 3) {
+			if (taskType == TIMED_TASK) {
 				try {
 					taskStartTime = simpleDateFormat.parse(taskParasExceptDes[0]);
 					taskEndTime = simpleDateFormat.parse(taskParasExceptDes[1]);
@@ -176,6 +197,12 @@ public class TobeDoneUI {
 				priority = Integer.parseInt(taskParasExceptDes[2]);
 			}
 			
+			// a create command has 3 parameters at most
+				if(taskType > TIMED_TASK){
+					showToUser(WRONG_COMMAND_FORMAT);
+					return;
+				}
+						
 			userMessage = Logic.createTask(taskDescription, taskStartTime, taskEndTime, priority);
 			showToUser(userMessage);
 			
@@ -201,7 +228,7 @@ public class TobeDoneUI {
 
 
 	static void analyseView(String comPara){
-		String viewResult;
+		String viewResult = null;
 		
 		//read a specified task
 		if(comPara.length()==1){
@@ -236,36 +263,45 @@ public class TobeDoneUI {
 	
 	static void analyseSearch(String comPara){
 		String searchResult;
-		searchResult = Logic.SearchTask(comPara);
+		searchResult = Logic.searchTask(comPara);
 		showToUser(searchResult);
 	}
 	
 	
 	static void analyseUndo(String comPara){
-		String userMessage;
-		userMessage = Logic.undo(comPara);
-		showToUser(userMessage);
+		String userMessage = null;
+		String lastComType = getComType(lastCommandString);
 		
+		if(lastComType == "delete"||lastComType == "create"||lastComType == "finish"){
+			userMessage = Logic.undo(lastComType);
+		}
+		else{
+			showToUser(MEANINGLESS_UNDO);
+		}
+		
+		showToUser(userMessage);
 	}
 	
 	
 	static void analyseRedo(String comPara){
 		String userMessage;
-		userMessage = Logic.redo(comPara);
+		userMessage = Logic.redo(lastCommandString);
 		showToUser(userMessage);
 	}
 	
-	
-
-
-
-
-
-
-
-
-
-
+	static void analyseFinish(String comPara){
+		
+		//read a specified task
+		if(comPara.length()==1){
+			try {
+				int taskIndex;
+				taskIndex = Integer.parseInt(comPara);
+				Logic.markTask(taskIndex);
+			} catch (Exception e) {
+				showToUser(WRONG_COMMAND_FORMAT);
+			}
+		}
+	}
 
 }
 
