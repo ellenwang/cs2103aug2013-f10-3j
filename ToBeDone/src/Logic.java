@@ -1,4 +1,4 @@
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -12,6 +12,10 @@ public class Logic {
 	private static final String INVALID_ITEM="Item not found.";
 	private static final String NO_SEARCH_RESULT="No such task item.";
 	private static final String DELETED_Fail_MESSAGE = "Fail to delete.";
+	private static final String UNDO_SUCCESS="The data has been recovered.";
+	private static final String UNDO_FAILED="Recover failed";
+	private static final String REDO_SUCCESS="Redo succeed";
+	private static final String REDO_FAILED="Redo failed";
 	private static Vector<TaskItem> aimTasks;
 	
 	private static Storage dataBase=new Storage("database.txt");
@@ -79,7 +83,7 @@ public class Logic {
 		if(endTime!=null){
 			toUpdate.setEndTime(endTime);
 		}
-		if(priority!=null){
+		if(priority!=-1){
 			toUpdate.setPriority(priority);
 		}
 		return UPDATE_SUCCESS_MESSAGE;
@@ -103,10 +107,27 @@ public class Logic {
 	}
 	
 	static int indexToTaskID(int index){
-		TaskItem temp=TobeDoneUI.getItem(index);		
+		TaskItem temp=aimTasks[index];		
 		return temp.getID();
 	}
 	
+	static String undo(){
+		try{
+			Storage.undo();
+		}catch(Exception e){
+			return UNDO_FAILED;
+		}
+		return UNDO_SUCCESS;
+	}
+	
+	static String redo(){
+		try{
+			Storage.redo();
+		}catch(Exception e){
+			return REDO_FAILED;			
+		}
+		return REDO_SUCCESS;
+	}
 	static String viewAll(){
 		String result = "";
 		Vector<TaskItem> list = Storage.retrieveAll();
