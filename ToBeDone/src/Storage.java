@@ -4,17 +4,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.Vector;
- 
+
 public class Storage {
-	private File file;
-	private Vector<TaskItem> tasks;
+	private static String defaultFileName = "ToBeDone.txt";
+	
+	private static File file = new File(defaultFileName);
+	private static Vector<TaskItem> tasks = getTasksFromFile();
 
-	public Storage(String fileName) {
-		file = new File(fileName);
-		tasks = getTasksFromFile();
-	}
-
-	private Vector<TaskItem> getTasksFromFile() {
+	private static Vector<TaskItem> getTasksFromFile() {
 		Vector<TaskItem> fileTasks = new Vector<TaskItem>();
 		try {
 			Scanner in = new Scanner(file);
@@ -30,7 +27,7 @@ public class Storage {
 		return fileTasks;
 	}
 
-	private void writeTasksToFile(Vector<TaskItem> tasks) {
+	private static void writeTasksToFile(Vector<TaskItem> tasks) {
 		try {
 			FileWriter fstream = new FileWriter(file);
 			BufferedWriter out = new BufferedWriter(fstream);
@@ -44,46 +41,69 @@ public class Storage {
 			System.err.println("");
 		}
 	}
+	
+	
+	private static void updateTaskId(Vector<TaskItem> tasks) {
+		for (int i = 0; i < tasks.size(); i++) {
+			tasks.get(i).setTaskID(i);
+		}
+	}
 
-	public void store(TaskItem task) {
+	public static void store(TaskItem task) {
 		tasks.add(task);
+		updateTaskId(tasks);
 		writeTasksToFile(tasks);
 	}
 
-	public void store(int taskIndex, TaskItem task) {
+	public static void store(int taskIndex, TaskItem task) {
 		tasks.add(taskIndex, task);
+		updateTaskId(tasks);
 		writeTasksToFile(tasks);
 	}
+	
+	public static Vector<TaskItem> search(String keyword) {
+		Vector<TaskItem> matchingTasks = new Vector<TaskItem>();
+		
+		for (TaskItem task : tasks) {
+			String taskDescription = task.getTaskDescription();
+			if (taskDescription.contains(keyword)) {
+				matchingTasks.add(task);
+			}
+		}
+		
+		return matchingTasks;
+	}
 
-	public TaskItem retrieve(int taskIndex) {
+	public static TaskItem retrieve(int taskIndex) {
 		TaskItem targetTask = tasks.get(taskIndex);
 		return targetTask;
 	}
 
-	public Vector<TaskItem> retrieveAll() {
+	public static Vector<TaskItem> retrieveAll() {
 		return tasks;
 	}
 
-	public TaskItem delete(int taskIndex) {
+	public static TaskItem delete(int taskIndex) {
 		TaskItem deletedTask = tasks.remove(taskIndex);
+		updateTaskId(tasks);
 		writeTasksToFile(tasks);
 		return deletedTask;
 	}
 
-	private String taskItemToStorageFormat(TaskItem task) {
-		String storageFormat = "\"" + task.getDescription() + "\"";
+	private static String taskItemToStorageFormat(TaskItem task) {
+		String storageFormat = "\"" + task.getTaskDescription() + "\"";
 		return storageFormat;
 	}
 
-	private TaskItem storageFormatToTaskItem(String storageFormat) {
+	private static TaskItem storageFormatToTaskItem(String storageFormat) {
 		TaskItem task = new TaskItem();
 		String description = storageFormat.substring(1,
 				storageFormat.lastIndexOf('\"'));
-		task.setDescription(description);
+		task.setTaskDescription(description);
 		return task;
 	}
 
-	public void clear() {
+	public static void clear() {
 		tasks.clear();
 		writeTasksToFile(tasks);
 	}
