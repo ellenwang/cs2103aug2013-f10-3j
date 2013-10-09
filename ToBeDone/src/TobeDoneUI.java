@@ -13,6 +13,7 @@ public class TobeDoneUI {
 	private static final String ENDTIME_SMALLER_THAN_STARTTIME = "The end time of tasks can't be smaller than start time";
 	private static final String WRONG_REDO = "a redo command must follow an undo command!";
 	private static final String MEANINGLESS_UNDO = "Meaningless to undo Search/View";
+	private static final String INVALID_UNDO = "No command can undo!";
 
 	private static final int FLOATING_TASK = 1;
 	private static final int DEADLINE_TASK = 2;
@@ -79,7 +80,7 @@ public class TobeDoneUI {
 			analyseFinish(comPara);
 			break;
 		case "redo": {
-			if (lastCommandString != "undo") {
+			if (!lastCommandString.equals("undo")) {
 				showToUser(WRONG_REDO);
 				break;
 			} else {
@@ -117,6 +118,10 @@ public class TobeDoneUI {
 			index++;
 		}
 		// divide at the first blank space
+		if (index == comString.length()) {
+			return null;
+		}
+
 		comPara = comString.substring(index + 1);
 
 		return comPara;
@@ -261,11 +266,16 @@ public class TobeDoneUI {
 
 	static void analyseUndo(String comPara) {
 		String userMessage = null;
+
+		if (lastCommandString == null) {
+			showToUser(INVALID_UNDO);
+			return;
+		}
 		String lastComType = getComType(lastCommandString);
 
 		if (lastComType.equals("delete") || lastComType.equals("create")
-				|| lastComType.equals("finish")) {
-			userMessage = Logic.undo(lastComType);
+				|| lastComType.equals("finish") || lastComType.equals("redo")) {
+			userMessage = Logic.undo();
 		} else {
 			showToUser(MEANINGLESS_UNDO);
 		}
@@ -275,7 +285,7 @@ public class TobeDoneUI {
 
 	static void analyseRedo(String comPara) {
 		String userMessage;
-		userMessage = Logic.redo(lastCommandString);
+		userMessage = Logic.redo();
 		showToUser(userMessage);
 	}
 
@@ -291,6 +301,10 @@ public class TobeDoneUI {
 				showToUser(WRONG_COMMAND_FORMAT);
 			}
 		}
+	}
+
+	static String getLastCommandType() {
+		return getComType(lastCommandString);
 	}
 
 }

@@ -11,17 +11,18 @@ public class Logic {
 	private static final String INVALID_ITEM = "Item not found.";
 	private static final String NO_SEARCH_RESULT = "No such task item.";
 	private static final String DELETED_Fail_MESSAGE = "Fail to delete.";
-	private static final String UNDO_SUCCESS = "The data has been recovered.";
-	private static final String UNDO_FAILED = "Recover failed";
-	private static final String UNDO_COMMAND_UNDOABLE = "Can not undo %1$s command";
+	private static final String UNDO_SUCCESS = "The command has been undone.";
+	private static final String UNDO_FAILED = "Could not undo command.";
 	private static final String REDO_SUCCESS = "Redo succeed";
 	private static final String REDO_FAILED = "Redo failed";
 	private static Vector<TaskItem> aimTasks;
 
 	// variables used for undo
-	private static int lastCreatedTaskID;
+	private static TaskItem lastCreatedTask;
 	private static TaskItem lastDeletedTask;
 	private static TaskItem lastUpdatedTask;
+	private static String lastUndoneCommand;
+	private static String lastRedoneCommand;
 
 	static enum LAST_COMMAND {
 		create, delete, update, search, view, undo
@@ -37,7 +38,7 @@ public class Logic {
 
 			TaskItem createNewOne = new TaskItem(description, startTime,
 					endTime, priority);
-			lastCreatedTaskID = Storage.store(createNewOne);
+			lastCreatedTask = Storage.store(createNewOne);
 		} catch (Exception e) {
 			return CREATED_FAIL_MESSAGE;
 		}
@@ -158,25 +159,73 @@ public class Logic {
 		}
 	}
 
-	public static String undo(String lastComType) {
-		switch (lastComType) {
+	public static String undo() {
+		String lastExecutedCommand = TobeDoneUI.getLastCommandType();
+		System.out.println(lastExecutedCommand);
+		
+		if (lastExecutedCommand.equals("undo")) {
+			return UNDO_FAILED;
+		}
+		
+		String feedback;
+		String lastCommand;
+		if (lastExecutedCommand.equals("redo")) {
+			lastCommand = lastRedoneCommand;
+		} else {
+			lastCommand = lastExecutedCommand;
+		}
+		
+		switch (lastCommand) {
 		case "create":
-			Storage.delete(lastCreatedTaskID);
-			return UNDO_SUCCESS;
+			Storage.delete(lastCreatedTask.getTaskID());
+			feedback = UNDO_SUCCESS;
+			break;
 		case "delete":
 			Storage.store(lastDeletedTask.getTaskID(), lastDeletedTask);
-			return UNDO_SUCCESS;
+			feedback = UNDO_SUCCESS;
+			break;
 		case "update":
 			Storage.delete(lastUpdatedTask.getTaskID());
 			Storage.store(lastUpdatedTask.getTaskID(), lastUpdatedTask);
-			return UNDO_SUCCESS;
+			feedback = UNDO_SUCCESS;
+			break;
 		default:
-			return UNDO_FAILED;
+			feedback = UNDO_FAILED;
 		}
+		
+		lastUndoneCommand = lastCommand;
+		
+		return feedback;
 	}
+	
+	public static String redo() {
+		String lastExecutedCommand = TobeDoneUI.getLastCommandType();
+		String feedback;
+		
+		if (!lastExecutedCommand.equals("undo")) {
+			return REDO_FAILED;
+		}
+		
+		switch (lastUndoneCommand) {
+		case "create":
+			lastCreatedTask = Storage.store(lastCreatedTask.getTaskID(), lastCreatedTask);
+			feedback = REDO_SUCCESS;
+			break;
+		case "delete":
+			lastDeletedTask = Storage.delete(lastDeletedTask.getTaskID());
+			feedback = REDO_SUCCESS;
+			break;
+		case "update":
+			Storage.delete(lastUpdatedTask.getTaskID());
+			Storage.store(lastUpdatedTask.getTaskID(), lastUpdatedTask);
+			feedback = REDO_SUCCESS;
+			break;
+		default:
+			feedback = REDO_FAILED;
+		}
 
-	public static String redo(String lastCommandString) {
-		// TODO Auto-generated method stub
-		return null;
+		lastRedoneCommand = lastUndoneCommand;
+		
+		return feedback;
 	}
 }
