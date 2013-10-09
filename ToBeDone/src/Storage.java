@@ -3,8 +3,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Scanner;
 import java.util.Vector;
 
@@ -55,18 +55,18 @@ public class Storage {
 		}
 	}
 
-	public static int store(TaskItem task) {
+	public static TaskItem store(TaskItem task) {
 		tasks.add(task);
 		updateTaskIDs(tasks);
 		writeTasksToFile(tasks);
-		return task.getTaskID();
+		return task;
 	}
 
-	public static int store(int taskIndex, TaskItem task) {
+	public static TaskItem store(int taskIndex, TaskItem task) {
 		tasks.add(taskIndex, task);
 		updateTaskIDs(tasks);
 		writeTasksToFile(tasks);
-		return task.getTaskID();
+		return task;
 	}
 
 	public static Vector<TaskItem> search(String keyword) {
@@ -138,15 +138,28 @@ public class Storage {
 
 	private static String taskItemToStorageFormat(TaskItem task) {
 		String description = task.getDescription();
+
 		Date startTime = task.getStartTime();
-		String startTimeFormatted = simpleDateFormat.format(startTime);
+		String startTimeFormatted;
+		if (startTime != null) {
+			startTimeFormatted = simpleDateFormat.format(startTime);
+		} else {
+			startTimeFormatted = "";
+		}
+
 		Date endTime = task.getEndTime();
-		String endTimeFormatted = simpleDateFormat.format(endTime);
+		String endTimeFormatted;
+		if (endTime != null) {
+			endTimeFormatted = simpleDateFormat.format(endTime);
+		} else {
+			endTimeFormatted = "";
+		}
+
 		int priority = task.getPriority();
 		String separator = ";";
 
-		String storageFormat = "\"" + description + "\"" + startTimeFormatted + separator
-				+ endTimeFormatted + separator + priority;
+		String storageFormat = "\"" + description + "\"" + startTimeFormatted
+				+ separator + endTimeFormatted + separator + priority;
 
 		return storageFormat;
 	}
@@ -158,15 +171,19 @@ public class Storage {
 		Date startTime = null;
 		Date endTime = null;
 		try {
-			startTime = simpleDateFormat.parse(taskInformation[0]);
-			endTime = simpleDateFormat.parse(taskInformation[1]);
+			if (!taskInformation[0].equals("")) {
+				startTime = simpleDateFormat.parse(taskInformation[0]);
+			}
+
+			if (!taskInformation[1].equals("")) {
+				endTime = simpleDateFormat.parse(taskInformation[1]);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		int priority = Integer.parseInt(taskInformation[2]);
-
 		TaskItem task = new TaskItem(description, startTime, endTime, priority);
-		
+
 		return task;
 	}
 
@@ -180,7 +197,7 @@ public class Storage {
 	private static String removeDescription(String storageFormat) {
 		int indexOfEndOfDescription = storageFormat.lastIndexOf('\"');
 		String storageFormatWithoutDescription = storageFormat
-				.substring(indexOfEndOfDescription+1);
+				.substring(indexOfEndOfDescription + 1);
 		return storageFormatWithoutDescription;
 	}
 
