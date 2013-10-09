@@ -1,5 +1,4 @@
 import java.util.Date;
-import java.util.ArrayList;
 import java.util.Vector;
 
 public class Logic {
@@ -18,7 +17,6 @@ public class Logic {
 	private static final String REDO_SUCCESS = "Redo succeed";
 	private static final String REDO_FAILED = "Redo failed";
 	private static Vector<TaskItem> aimTasks;
-
 
 	// variables used for undo
 	private static int lastCreatedTaskID;
@@ -152,6 +150,7 @@ public class Logic {
 	static String deleteTask(int index) {
 		int taskID = indexToTaskID(index);
 		TaskItem taskDeleted = Storage.delete(taskID);
+		lastDeletedTask = taskDeleted;
 		if (taskDeleted != null) {
 			return DELETED_SUCCESS_MESSAGE;
 		} else {
@@ -180,5 +179,4 @@ public class Logic {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }
