@@ -73,11 +73,8 @@ public class Logic {
 			Date endTime, int priority) {
 		TaskItem toUpdate;
 		int TaskID = indexToTaskID(index);
-		try {
-			toUpdate = Storage.retrieve(TaskID);
-		} catch (Exception e) {
-			return INVALID_ITEM;
-		}
+		toUpdate = Storage.delete(TaskID);
+		
 		if (description != null) {
 			toUpdate.setDescription(description);
 		}
@@ -90,6 +87,9 @@ public class Logic {
 		if (priority != -1) {
 			toUpdate.setPriority(priority);
 		}
+
+		Storage.store(toUpdate.getTaskID(), toUpdate);
+
 		return UPDATE_SUCCESS_MESSAGE;
 	}
 
@@ -159,22 +159,19 @@ public class Logic {
 		}
 	}
 
-	public static String undo() {
-		String lastExecutedCommand = TobeDoneUI.getLastCommandType();
-		System.out.println(lastExecutedCommand);
-		
-		if (lastExecutedCommand.equals("undo")) {
+	public static String undo(String lastCommandType) {
+		if (lastCommandType.equals("undo")) {
 			return UNDO_FAILED;
 		}
-		
+
 		String feedback;
 		String lastCommand;
-		if (lastExecutedCommand.equals("redo")) {
+		if (lastCommandType.equals("redo")) {
 			lastCommand = lastRedoneCommand;
 		} else {
-			lastCommand = lastExecutedCommand;
+			lastCommand = lastCommandType;
 		}
-		
+
 		switch (lastCommand) {
 		case "create":
 			Storage.delete(lastCreatedTask.getTaskID());
@@ -192,23 +189,23 @@ public class Logic {
 		default:
 			feedback = UNDO_FAILED;
 		}
-		
+
 		lastUndoneCommand = lastCommand;
-		
+
 		return feedback;
 	}
-	
-	public static String redo() {
-		String lastExecutedCommand = TobeDoneUI.getLastCommandType();
+
+	public static String redo(String lastCommandType) {
 		String feedback;
-		
-		if (!lastExecutedCommand.equals("undo")) {
+
+		if (!lastCommandType.equals("undo")) {
 			return REDO_FAILED;
 		}
-		
+
 		switch (lastUndoneCommand) {
 		case "create":
-			lastCreatedTask = Storage.store(lastCreatedTask.getTaskID(), lastCreatedTask);
+			lastCreatedTask = Storage.store(lastCreatedTask.getTaskID(),
+					lastCreatedTask);
 			feedback = REDO_SUCCESS;
 			break;
 		case "delete":
@@ -225,7 +222,7 @@ public class Logic {
 		}
 
 		lastRedoneCommand = lastUndoneCommand;
-		
+
 		return feedback;
 	}
 }
