@@ -275,7 +275,7 @@ public class TobeDoneUI {
 
 		if (lastComType.equals("delete") || lastComType.equals("create")
 				|| lastComType.equals("finish") || lastComType.equals("redo")) {
-			userMessage = Logic.undo();
+			userMessage = Logic.undo(lastComType);
 		} else {
 			showToUser(MEANINGLESS_UNDO);
 		}
@@ -285,7 +285,8 @@ public class TobeDoneUI {
 
 	static void analyseRedo(String comPara) {
 		String userMessage;
-		userMessage = Logic.redo();
+		String lastComType = getComType(lastCommandString);
+		userMessage = Logic.redo(lastComType);
 		showToUser(userMessage);
 	}
 
@@ -302,9 +303,4 @@ public class TobeDoneUI {
 			}
 		}
 	}
-
-	static String getLastCommandType() {
-		return getComType(lastCommandString);
-	}
-
 }
