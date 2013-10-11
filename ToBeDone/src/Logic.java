@@ -66,8 +66,17 @@ public class Logic {
 	}
 
 	private static String executeSearchCommand(Command command) {
-		// TODO
-		return "";
+		String keyword = command.getCommandParameters().get(0);
+		String result = "";
+		for (int i=0; i<allTaskItems.size(); i++){
+			String taskInfo = allTaskItems.get(i).toString();
+			TaskItem currentItem = allTaskItems.get(i);
+			if (taskInfo.contains(keyword)) {
+				matchingTaskItems.add(currentItem);
+			}
+		}	
+		result = vectorToString(matchingTaskItems);
+		return result;
 	}
 
 	private static String executeUndoCommand() {
@@ -87,5 +96,12 @@ public class Logic {
 	private static int indexToTaskID(int index) {
 		TaskItem task = matchingTaskItems.get(index - 1);
 		return task.getTaskID();
+	}
+	private static String vectorToString (Vector<TaskItem> list) {
+		String result = "";
+		for (int i=0; i<list.size(); i++){
+			result += (i+1) + "" + '.' +list.get(i).toString()+'\n';
+		}
+		return result;
 	}
 }
