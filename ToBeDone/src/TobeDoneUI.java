@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class TobeDoneUI {
 
-	private static final String WELCOME_MESSAGE = "Now is ToBeDone moment";
+	private static final String WELCOME_MESSAGE = "Welcome to ToBeDone!";
 	private static final String NO_SUCH_COMMAND = "No such command!";
 	private static final String WRONG_COMMAND_FORMAT = "Please follow the correct command format!";
 	private static final String WRONG_TIME_FORMAT = "Please follow the time format as indicated!";
@@ -19,9 +19,7 @@ public class TobeDoneUI {
 	private static final int DEADLINE_TASK = 2;
 	private static final int TIMED_TASK = 3;
 
-	private static final int TASK_PRIORITY_HIGH = 3;
-	private static final int TASK_PRIORITY_MEDIUM = 2;
-	private static final int TASK_PRIORITY_LOW = 1;
+	private static final int TASK_PRIORITY_DEFAULT = -1;
 
 	private static String lastCommandString = null;
 
@@ -35,6 +33,15 @@ public class TobeDoneUI {
 
 	static void showToUser(String message) {
 		System.out.println(message);
+		//GUI.userMessage.setText(message);
+	}
+
+	static void DisplayTasksList(String result) {
+		//GUI.tasksListResult.setText(result);
+	}
+
+	static void DisplayTaskDetail(String result) {
+		//GUI.taskDetais.setText(result);
 	}
 
 	static void readCommand() {
@@ -69,6 +76,9 @@ public class TobeDoneUI {
 			break;
 		case "view":
 			analyseView(comPara);
+			break;
+		case "update":
+			analyseUpdate(comPara);
 			break;
 		case "search":
 			analyseSearch(comPara);
@@ -135,7 +145,7 @@ public class TobeDoneUI {
 			String taskDescription = null;
 			Date taskStartTime = null;
 			Date taskEndTime = null;
-			int priority = TASK_PRIORITY_LOW;
+			int priority = TASK_PRIORITY_DEFAULT;
 
 			// the location of the last right quotation, which means the end of
 			// take description
@@ -237,6 +247,8 @@ public class TobeDoneUI {
 			} catch (Exception e) {
 				showToUser(WRONG_COMMAND_FORMAT);
 			}
+			DisplayTaskDetail(viewResult);
+			return;
 		}
 
 		// read a list of task
@@ -256,6 +268,7 @@ public class TobeDoneUI {
 		}
 
 		showToUser(viewResult);
+		//DisplayTasksList(viewResult);
 	}
 
 	static void analyseSearch(String comPara) {
@@ -277,7 +290,7 @@ public class TobeDoneUI {
 				|| lastComType.equals("finish") || lastComType.equals("redo")) {
 			userMessage = Logic.undo(lastComType);
 		} else {
-			showToUser(MEANINGLESS_UNDO);
+			userMessage = MEANINGLESS_UNDO;
 		}
 
 		showToUser(userMessage);
@@ -301,6 +314,73 @@ public class TobeDoneUI {
 			} catch (Exception e) {
 				showToUser(WRONG_COMMAND_FORMAT);
 			}
+		}
+	}
+
+	static void analyseUpdate(String comPara) {
+		int taskIndex = 0;
+		String newDescription = null;
+		Date newStartTime = null;
+		Date newEndTime = null;
+		int newPriority = TASK_PRIORITY_DEFAULT;
+
+		String parasWithoutIndex = comPara.substring(2);
+		try {
+			try {
+				taskIndex = comPara.charAt(0) - '0';
+			} catch (Exception e) {
+				showToUser(WRONG_COMMAND_FORMAT);
+				return;
+			}
+
+			int indexOfDes = parasWithoutIndex.lastIndexOf('\"');
+			if (indexOfDes == -1 || indexOfDes == 0) {
+				showToUser(WRONG_TASK_DESCRIPTION_FORMAT);
+				return;
+			}
+
+			newDescription = parasWithoutIndex.substring(1, indexOfDes);
+
+			// taskParasExceptDes contains taskStartTime/taskEndTime and
+			// priority except description
+			String taskStringExceptDes = parasWithoutIndex
+					.substring(indexOfDes + 2);
+			String[] updateParas = taskStringExceptDes.split(" ");
+
+			int updateParasNum = updateParas.length;
+
+			try {
+				newStartTime = simpleDateFormat.parse(updateParas[0]);
+				newEndTime = simpleDateFormat.parse(updateParas[1]);
+			} catch (Exception e) {
+				System.err.println("");
+			}
+			newPriority = Integer.parseInt(updateParas[2]);
+			String feedback = Logic.updateTask(taskIndex, newDescription, newStartTime,
+					newEndTime, newPriority);
+
+			showToUser(feedback);
+			/*
+			 * for (int i = 0; i < updateParasNum; i++) { if
+			 * (updateParas[i].startsWith("(") && updateParas[i].substring(1,
+			 * 6).equals("start")) { String startTimeString =
+			 * updateParas[i].substring(7); try { newStartTime =
+			 * simpleDateFormat.parse(startTimeString); } catch (ParseException
+			 * e) { showToUser(WRONG_TIME_FORMAT); return; } }
+			 * 
+			 * if (updateParas[i].startsWith("(") && updateParas[i].substring(1,
+			 * 4).equals("end")) { String endTimeString =
+			 * updateParas[i].substring(5); try { newEndTime =
+			 * simpleDateFormat.parse(endTimeString); } catch (ParseException e)
+			 * { showToUser(WRONG_TIME_FORMAT); return; } }
+			 * 
+			 * if (updateParas[i].length() == 1) { try { newPriority =
+			 * Integer.parseInt(updateParas[0]); } catch (Exception e) {
+			 * showToUser(WRONG_COMMAND_FORMAT); } } Logic.updateTask(taskIndex,
+			 * newDescription, newStartTime, newEndTime, newPriority); }
+			 */
+		} catch (Exception e) {
+			showToUser(WRONG_COMMAND_FORMAT);
 		}
 	}
 }

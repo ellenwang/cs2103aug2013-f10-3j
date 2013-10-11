@@ -9,6 +9,9 @@ import java.util.Scanner;
 import java.util.Vector;
 
 public class Storage {
+	private static final String MESSAGE_WRITE_TO_FILE_FAILED = "Failed to write to file.";
+	private static final String MESSAGE_READ_FROM_FILE_FAILED = "Failed to read from file.";
+	private static final String MESSAGE_PARSE_DATE_FAILED = "Failed to parse date.";
 
 	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
 			"MM-dd'at'HH:mm");
@@ -29,7 +32,7 @@ public class Storage {
 			}
 			in.close();
 		} catch (IOException e) {
-			System.err.println("");
+			System.err.println(MESSAGE_READ_FROM_FILE_FAILED);
 		}
 		return fileTasks;
 	}
@@ -45,7 +48,7 @@ public class Storage {
 
 			out.close();
 		} catch (IOException e) {
-			System.err.println("");
+			System.err.println(MESSAGE_WRITE_TO_FILE_FAILED);
 		}
 	}
 
@@ -179,7 +182,7 @@ public class Storage {
 				endTime = simpleDateFormat.parse(taskInformation[1]);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.err.println(MESSAGE_PARSE_DATE_FAILED);
 		}
 		int priority = Integer.parseInt(taskInformation[2]);
 		TaskItem task = new TaskItem(description, startTime, endTime, priority);
