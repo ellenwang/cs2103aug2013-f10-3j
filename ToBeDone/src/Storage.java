@@ -42,8 +42,6 @@ public class Storage {
 			in.close();
 		} catch (IOException e) {
 			System.err.println(MESSAGE_FAILED_TO_READ_FROM_FILE);
-		} catch (ParseException e) {
-			System.err.println(MESSAGE_FAILED_TO_PARSE_DATE);
 		}
 		return fileTasks;
 	}
@@ -92,19 +90,31 @@ public class Storage {
 		return formattedDate;
 	}
 
-	private static TaskItem storageFormatToTaskItem(String storageFormat)
-			throws ParseException {
+	private static TaskItem storageFormatToTaskItem(String storageFormat) {
 		String[] taskInformation = splitStorageFormat(storageFormat);
 
 		String description = taskInformation[0];
-		Date startTime = simpleDateFormat.parse(taskInformation[1]);
-		Date endTime = simpleDateFormat.parse(taskInformation[2]);
+		Date startTime = parseDate(taskInformation[1]);
+		Date endTime = parseDate(taskInformation[2]);
 		int priority = Integer.parseInt(taskInformation[3]);
 		TaskItem.Status status = TaskItem.Status.valueOf(taskInformation[4]);
 
 		TaskItem task = new TaskItem(description, startTime, endTime, priority,
 				status);
 		return task;
+	}
+	
+	private static Date parseDate(String date) {
+		Date parsedDate = null;
+		if (!date.equals("")) {
+			try {
+				parsedDate = simpleDateFormat.parse(date);
+			} catch (ParseException e) {
+				System.err.println(MESSAGE_FAILED_TO_PARSE_DATE);
+			}
+		}
+		
+		return parsedDate;
 	}
 
 	private static String[] splitStorageFormat(String storageFormat) {
@@ -113,7 +123,7 @@ public class Storage {
 
 		String[] taskInformationExceptDescription = storageFormatWithoutDescription
 				.split(";");
-		String[] allTaskInformation = new String[taskInformationExceptDescription.length];
+		String[] allTaskInformation = new String[taskInformationExceptDescription.length + 1];
 
 		allTaskInformation[0] = description;
 		for (int i = 0; i < taskInformationExceptDescription.length; i++) {

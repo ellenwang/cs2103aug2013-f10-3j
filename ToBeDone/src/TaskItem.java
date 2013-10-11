@@ -1,7 +1,11 @@
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 public class TaskItem {
+	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+			"dd/MM','HH:mm");
+
 	private int taskID;
 	private String description;
 	private Date startTime;
@@ -89,14 +93,28 @@ public class TaskItem {
 
 	public String toString() {
 		String result = "";
+		String formattedStartTime = formatDate(getStartTime());
+		String formattedEndTime = formatDate(getEndTime());
+
 		if (getStartTime() != null) {
-			result = getDescription() + "\t starts from: " + getStartTime()
-					+ "\t ends at: " + getEndTime();
+			result = getDescription() + "\t starts from: " + formattedStartTime
+					+ "\t ends at: " + formattedEndTime;
 		} else if (getEndTime() != null) {
-			result = getDescription() + "\t deadline: " + getEndTime();
+			result = getDescription() + "\t deadline: " + formattedEndTime;
 		} else {
 			result = getDescription();
 		}
 		return result;
+	}
+
+	private static String formatDate(Date date) {
+		String formattedDate;
+		if (date != null) {
+			formattedDate = simpleDateFormat.format(date);
+		} else {
+			formattedDate = "";
+		}
+
+		return formattedDate;
 	}
 }

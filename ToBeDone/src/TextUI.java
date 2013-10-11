@@ -12,6 +12,7 @@ public class TextUI {
 	}
 
 	public static void run() {
+		Logic.init();
 		showToUser(MESSAGE_WELCOME);
 		readAndExecuteCommands();
 	}

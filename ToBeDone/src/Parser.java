@@ -21,23 +21,26 @@ public class Parser {
 		String comParaString = getComParaString(commandString);
 
 		if (comParaString == null) {
-			parameters = null;
-			return parameters;
+			return null;
 		}
 
-		String description = getDescription(comParaString);
-		if (description != null) {
-			parameters.add(description);
-		}
+		if (comParaString.startsWith("\"")) {
+			String description = getDescription(comParaString);
+			if (description != null) {
+				parameters.add(description);
+			}
 
-		if (description.equals(WRONG_DESCRIPTION)) {
-			Exception exception = new Exception(WRONG_DESCRIPTION);
-			throw exception;
-		}
+			if (description.equals(WRONG_DESCRIPTION)) {
+				Exception exception = new Exception(WRONG_DESCRIPTION);
+				throw exception;
+			}
 
-		String[] parasExceptDes = getComParasExceptDes(comParaString);
-		for (int i = 0; i < parasExceptDes.length; i++) {
-			parameters.add(parasExceptDes[i]);
+			String[] parasExceptDes = getComParasExceptDes(comParaString);
+			for (int i = 0; i < parasExceptDes.length; i++) {
+				parameters.add(parasExceptDes[i]);
+			}
+		} else {
+			parameters.add(comParaString);
 		}
 
 		return parameters;
