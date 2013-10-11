@@ -3,24 +3,34 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
 import java.util.Vector;
 
+
 public class Storage {
-	private static final String MESSAGE_WRITE_TO_FILE_FAILED = "Failed to write to file.";
-	private static final String MESSAGE_READ_FROM_FILE_FAILED = "Failed to read from file.";
+	// messages to the user
+	private static final String MESSAGE_FAILED_TO_WRITE_TO_FILE = "Failed to write to file.";
+	private static final String MESSAGE_FAILED_TO_READ_FROM_FILE = "Failed to read from file.";
 	private static final String MESSAGE_PARSE_DATE_FAILED = "Failed to parse date.";
-
+	private static final String FILE_NAME = "ToBeDone.txt";
+	
 	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-			"MM-dd'at'HH:mm");
+			"MM/dd','HH:mm");
+	
+	// file written to and read from
+	private static File file = new File(FILE_NAME);
 
-	private static String defaultFileName = "ToBeDone.txt";
-
-	private static File file = new File(defaultFileName);
-	private static Vector<TaskItem> tasks = getTasksFromFile();
-
+	
+	public static void store(Vector<TaskItem> taskItems) {
+		writeTasksToFile(taskItems);
+	}
+	
+	public static Vector<TaskItem> retrieve() {
+		Vector<TaskItem> allTasks = getTasksFromFile();
+		return allTasks;
+	}
+	
 	private static Vector<TaskItem> getTasksFromFile() {
 		Vector<TaskItem> fileTasks = new Vector<TaskItem>();
 		try {
@@ -32,7 +42,7 @@ public class Storage {
 			}
 			in.close();
 		} catch (IOException e) {
-			System.err.println(MESSAGE_READ_FROM_FILE_FAILED);
+			System.err.println(MESSAGE_FAILED_TO_READ_FROM_FILE);
 		}
 		return fileTasks;
 	}
@@ -48,97 +58,11 @@ public class Storage {
 
 			out.close();
 		} catch (IOException e) {
-			System.err.println(MESSAGE_WRITE_TO_FILE_FAILED);
+			System.err.println(MESSAGE_FAILED_TO_WRITE_TO_FILE);
 		}
 	}
 
-	private static void updateTaskIDs(Vector<TaskItem> tasks) {
-		for (int i = 0; i < tasks.size(); i++) {
-			tasks.get(i).setTaskID(i);
-		}
-	}
-
-	public static TaskItem store(TaskItem task) {
-		tasks.add(task);
-		updateTaskIDs(tasks);
-		writeTasksToFile(tasks);
-		return task;
-	}
-
-	public static TaskItem store(int taskIndex, TaskItem task) {
-		tasks.add(taskIndex, task);
-		updateTaskIDs(tasks);
-		writeTasksToFile(tasks);
-		return task;
-	}
-
-	public static Vector<TaskItem> search(String keyword) {
-		Vector<TaskItem> matchingTasks = new Vector<TaskItem>();
-
-		for (TaskItem task : tasks) {
-			String taskInfo = task.toString();
-			if (taskInfo.contains(keyword)) {
-				matchingTasks.add(task);
-			}
-		}
-
-		return matchingTasks;
-	}
-
-	public static TaskItem retrieve(int taskIndex) {
-		TaskItem targetTask = tasks.get(taskIndex);
-		return targetTask;
-	}
-
-	public static Vector<TaskItem> retrieveAll() {
-		return tasks;
-	}
-
-	public static Vector<TaskItem> retrieveUnfinished() {
-		Vector<TaskItem> finishedTask = new Vector<TaskItem>();
-
-		for (int i = 0; i < tasks.size(); i++) {
-			TaskItem current = tasks.get(i);
-			current.updateStatus();
-			int curstatus = current.getStatus();
-			if (curstatus == 1) {
-				finishedTask.add(tasks.get(i));
-			}
-		}
-		return finishedTask;
-	}
-
-	public static Vector<TaskItem> retrieveFinished() {
-		Vector<TaskItem> finishedTask = new Vector<TaskItem>();
-		for (int i = 0; i < tasks.size(); i++) {
-			TaskItem current = tasks.get(i);
-			current.updateStatus();
-			int curstatus = current.getStatus();
-			if (curstatus == 2) {
-				finishedTask.add(tasks.get(i));
-			}
-		}
-		return finishedTask;
-	}
-
-	public static Vector<TaskItem> retrieveExpired() {
-		Vector<TaskItem> finishedTask = new Vector<TaskItem>();
-		Date currentDate = (Date) Calendar.getInstance().getTime();
-		for (int i = 0; i < tasks.size(); i++) {
-			if (tasks.get(i).getEndTime().after(currentDate)) {
-				finishedTask.add(tasks.get(i));
-			}
-		}
-		return finishedTask;
-	}
-
-	public static TaskItem delete(int taskIndex) {
-		TaskItem deletedTask = tasks.remove(taskIndex);
-		updateTaskIDs(tasks);
-		writeTasksToFile(tasks);
-		return deletedTask;
-	}
-
+	
 	private static String taskItemToStorageFormat(TaskItem task) {
 		String description = task.getDescription();
 
@@ -166,7 +90,7 @@ public class Storage {
 
 		return storageFormat;
 	}
-
+	
 	private static TaskItem storageFormatToTaskItem(String storageFormat) {
 		String description = extractDescription(storageFormat);
 		String storageFormatWithoutDescription = removeDescription(storageFormat);
@@ -189,7 +113,7 @@ public class Storage {
 
 		return task;
 	}
-
+	
 	private static String extractDescription(String storageFormat) {
 		int indexOfEndOfDescription = storageFormat.lastIndexOf('\"');
 		String description = storageFormat
@@ -202,10 +126,5 @@ public class Storage {
 		String storageFormatWithoutDescription = storageFormat
 				.substring(indexOfEndOfDescription + 1);
 		return storageFormatWithoutDescription;
-	}
-
-	public static void clear() {
-		tasks.clear();
-		writeTasksToFile(tasks);
 	}
 }
