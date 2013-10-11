@@ -7,10 +7,10 @@ public class TaskItem {
 	private Date startTime;
 	private Date endTime;
 	private int priority;
-	private STATUS status;
+	private Status status;
 
-	static enum STATUS {
-		finished, unfinished, expired
+	static enum Status {
+		FINISHED, UNFINISHED, EXPIRED
 	};
 
 	TaskItem() {
@@ -22,7 +22,13 @@ public class TaskItem {
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.priority = priority;
-		status = STATUS.unfinished;
+		status = Status.UNFINISHED;
+	}
+
+	TaskItem(String description, Date startTime, Date endTime, int priority,
+			Status status) {
+		this(description, startTime, endTime, priority);
+		this.status = status;
 	}
 
 	public void setDescription(String taskDescription) {
@@ -33,31 +39,12 @@ public class TaskItem {
 		this.taskID = taskID;
 	}
 
-	public int getStatus() {
-		switch (status) {
-		case unfinished:
-			return 1;
-		case finished:
-			return 2;
-		case expired:
-			return 3;
-		default:
-			return -1;
-		}
+	public Status getStatus() {
+		return status;
 	}
 
-	public void setStatus(int p) {
-		switch (p) {
-		case 1:
-			status = STATUS.unfinished;
-			break;
-		case 2:
-			status = STATUS.finished;
-			break;
-		case 3:
-			status = STATUS.expired;
-			break;
-		}
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 
 	public Date getStartTime() {
@@ -95,7 +82,7 @@ public class TaskItem {
 	public void updateStatus() {
 		Date currentDate = (Date) Calendar.getInstance().getTime();
 		if (endTime.before(currentDate)) {
-			this.setStatus(3);
+			status = Status.EXPIRED;
 		}
 
 	}

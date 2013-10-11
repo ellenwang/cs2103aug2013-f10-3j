@@ -57,38 +57,40 @@ public class Logic {
 			Vector<TaskItem> firstPriorityTasks = new Vector<TaskItem>();
 			Vector<TaskItem> secondPriorityTasks = new Vector<TaskItem>();
 			Vector<TaskItem> thirdPriorityTasks = new Vector<TaskItem>();
-			for (int i=0; i<allTasks.size(); i++){
+			for (int i = 0; i < allTasks.size(); i++) {
 				TaskItem currentTask = allTasks.get(i);
-				if (currentTask.getPriority()==1) {
+				if (currentTask.getPriority() == 1) {
 					firstPriorityTasks.add(currentTask);
-				} else if (currentTask.getPriority()==2) {
+				} else if (currentTask.getPriority() == 2) {
 					secondPriorityTasks.add(currentTask);
-				} else if (currentTask.getPriority()==3) {
+				} else if (currentTask.getPriority() == 3) {
 					thirdPriorityTasks.add(currentTask);
-				} 
+				}
 			}
-			result = vectorToString(firstPriorityTasks) + vectorToString(secondPriorityTasks) 
+			result = vectorToString(firstPriorityTasks)
+					+ vectorToString(secondPriorityTasks)
 					+ vectorToString(thirdPriorityTasks);
 		} else if (range.equals("finished")) {
-			for (int i=0; i<allTasks.size(); i++) {
+			for (int i = 0; i < allTasks.size(); i++) {
 				TaskItem currentTask = allTasks.get(i);
 				currentTask.updateStatus();
-				if(currentTask.getStatus()==2){
+				if (currentTask.getStatus() == TaskItem.Status.FINISHED) {
 					matchingTasks.add(currentTask);
 				}
 			}
 			result = vectorToString(matchingTasks);
 		} else if (range.equals("unfinished")) {
-			for (int i=0; i<allTasks.size(); i++) {
+			for (int i = 0; i < allTasks.size(); i++) {
 				TaskItem currentTask = allTasks.get(i);
 				currentTask.updateStatus();
-				if(currentTask.getStatus()==1){
+				if (currentTask.getStatus() == TaskItem.Status.UNFINISHED) {
 					matchingTasks.add(currentTask);
 				}
 			}
 			result = vectorToString(matchingTasks);
 		} else {
-			result = String.format(MESSAGE_INVALID_COMMAND, command.getCommandType());
+			result = String.format(MESSAGE_INVALID_COMMAND,
+					command.getCommandType());
 		}
 		return result;
 	}
@@ -106,13 +108,13 @@ public class Logic {
 	private static String executeSearchCommand(Command command) {
 		String keyword = command.getCommandParameters().get(0);
 		String result = "";
-		for (int i=0; i<allTasks.size(); i++){
+		for (int i = 0; i < allTasks.size(); i++) {
 			String taskInfo = allTasks.get(i).toString();
 			TaskItem currentItem = allTasks.get(i);
 			if (taskInfo.contains(keyword)) {
 				matchingTasks.add(currentItem);
 			}
-		}	
+		}
 		result = vectorToString(matchingTasks);
 		return result;
 	}
@@ -141,10 +143,11 @@ public class Logic {
 		TaskItem task = matchingTasks.get(index - 1);
 		return task.getTaskID();
 	}
-	private static String vectorToString (Vector<TaskItem> list) {
+
+	private static String vectorToString(Vector<TaskItem> list) {
 		String result = "";
-		for (int i=0; i<list.size(); i++){
-			result += (i+1) + "" + '.' +list.get(i).toString()+'\n';
+		for (int i = 0; i < list.size(); i++) {
+			result += (i + 1) + "" + '.' + list.get(i).toString() + '\n';
 		}
 		return result;
 	}
