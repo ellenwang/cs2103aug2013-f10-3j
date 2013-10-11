@@ -15,12 +15,11 @@ public class Storage {
 	private static final String MESSAGE_PARSE_DATE_FAILED = "Failed to parse date.";
 	private static final String FILE_NAME = "ToBeDone.txt";
 	
-	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-			"MM/dd','HH:mm");
-	
 	// file written to and read from
 	private static File file = new File(FILE_NAME);
 
+	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+			"dd/MM','HH:mm");
 	
 	public static void store(Vector<TaskItem> taskItems) {
 		writeTasksToFile(taskItems);
