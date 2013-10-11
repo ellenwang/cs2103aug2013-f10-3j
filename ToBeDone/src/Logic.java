@@ -13,8 +13,8 @@ public class Logic {
 	private static final String DELETED_Fail_MESSAGE = "Fail to delete.";
 	private static final String UNDO_SUCCESS = "The command has been undone.";
 	private static final String UNDO_FAILED = "Could not undo command.";
-	private static final String REDO_SUCCESS = "Redo succeed";
-	private static final String REDO_FAILED = "Redo failed";
+	private static final String REDO_SUCCESS = "The command has been redone.";
+	private static final String REDO_FAILED = "Could not redo command.";
 	private static Vector<TaskItem> aimTasks;
 
 	// variables used for undo
@@ -73,8 +73,11 @@ public class Logic {
 			Date endTime, int priority) {
 		TaskItem toUpdate;
 		int TaskID = indexToTaskID(index);
-		toUpdate = Storage.delete(TaskID);
-		
+		try {
+			toUpdate = Storage.delete(TaskID);
+		} catch (Exception e) {
+			return INVALID_ITEM;
+		}
 		if (description != null) {
 			toUpdate.setDescription(description);
 		}
@@ -87,9 +90,8 @@ public class Logic {
 		if (priority != -1) {
 			toUpdate.setPriority(priority);
 		}
-
-		Storage.store(toUpdate.getTaskID(), toUpdate);
-
+		
+		lastUpdatedTask = Storage.store(toUpdate.getTaskID(), toUpdate);
 		return UPDATE_SUCCESS_MESSAGE;
 	}
 
@@ -117,9 +119,9 @@ public class Logic {
 
 	static String viewAll() {
 		String result = "";
-		Vector<TaskItem> list = Storage.retrieveAll();
-		for (int i = 0; i < list.size(); i++) {
-			result += list.get(i).toString();
+		aimTasks = Storage.retrieveAll();
+		for (int i = 0; i < aimTasks.size(); i++) {
+			result += (i+1) + "" + '.' +aimTasks.get(i).toString()+'\n';
 		}
 		return result;
 	}
@@ -159,19 +161,19 @@ public class Logic {
 		}
 	}
 
-	public static String undo(String lastCommandType) {
-		if (lastCommandType.equals("undo")) {
+	public static String undo(String lastExecutedCommand) {
+		if (lastExecutedCommand.equals("undo")) {
 			return UNDO_FAILED;
 		}
-
+		
 		String feedback;
 		String lastCommand;
-		if (lastCommandType.equals("redo")) {
+		if (lastExecutedCommand.equals("redo")) {
 			lastCommand = lastRedoneCommand;
 		} else {
-			lastCommand = lastCommandType;
+			lastCommand = lastExecutedCommand;
 		}
-
+		
 		switch (lastCommand) {
 		case "create":
 			Storage.delete(lastCreatedTask.getTaskID());
@@ -189,23 +191,22 @@ public class Logic {
 		default:
 			feedback = UNDO_FAILED;
 		}
-
+		
 		lastUndoneCommand = lastCommand;
-
+		
 		return feedback;
 	}
-
-	public static String redo(String lastCommandType) {
+	
+	public static String redo(String lastExecutedCommand) {
 		String feedback;
-
-		if (!lastCommandType.equals("undo")) {
+		
+		if (!lastExecutedCommand.equals("undo")) {
 			return REDO_FAILED;
 		}
-
+		
 		switch (lastUndoneCommand) {
 		case "create":
-			lastCreatedTask = Storage.store(lastCreatedTask.getTaskID(),
-					lastCreatedTask);
+			lastCreatedTask = Storage.store(lastCreatedTask.getTaskID(), lastCreatedTask);
 			feedback = REDO_SUCCESS;
 			break;
 		case "delete":
@@ -222,7 +223,7 @@ public class Logic {
 		}
 
 		lastRedoneCommand = lastUndoneCommand;
-
+		
 		return feedback;
 	}
 }
