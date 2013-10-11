@@ -51,8 +51,46 @@ public class Logic {
 	}
 
 	private static String executeViewCommand(Command command) {
-		// TODO
-		return "";
+		String range = command.getCommandParameters().get(0);
+		String result = "";
+		if (range.equals("all")) {
+			Vector<TaskItem> firstPriorityTasks = new Vector<TaskItem>();
+			Vector<TaskItem> secondPriorityTasks = new Vector<TaskItem>();
+			Vector<TaskItem> thirdPriorityTasks = new Vector<TaskItem>();
+			for (int i=0; i<allTaskItems.size(); i++){
+				TaskItem currentTask = allTaskItems.get(i);
+				if (currentTask.getPriority()==1) {
+					firstPriorityTasks.add(currentTask);
+				} else if (currentTask.getPriority()==2) {
+					secondPriorityTasks.add(currentTask);
+				} else if (currentTask.getPriority()==3) {
+					thirdPriorityTasks.add(currentTask);
+				} 
+			}
+			result = vectorToString(firstPriorityTasks) + vectorToString(secondPriorityTasks) 
+					+ vectorToString(thirdPriorityTasks);
+		} else if (range.equals("finished")) {
+			for (int i=0; i<allTaskItems.size(); i++) {
+				TaskItem currentTask = allTaskItems.get(i);
+				currentTask.updateStatus();
+				if(currentTask.getStatus()==2){
+					matchingTaskItems.add(currentTask);
+				}
+			}
+			result = vectorToString(matchingTaskItems);
+		} else if (range.equals("unfinished")) {
+			for (int i=0; i<allTaskItems.size(); i++) {
+				TaskItem currentTask = allTaskItems.get(i);
+				currentTask.updateStatus();
+				if(currentTask.getStatus()==1){
+					matchingTaskItems.add(currentTask);
+				}
+			}
+			result = vectorToString(matchingTaskItems);
+		} else {
+			result = String.format(MESSAGE_INVALID_COMMAND, command.getCommandType());
+		}
+		return result;
 	}
 
 	private static String executeUpdateCommand(Command command) {
