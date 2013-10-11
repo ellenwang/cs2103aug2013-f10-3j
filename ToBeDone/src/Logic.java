@@ -41,6 +41,9 @@ public class Logic {
 	private static TaskItem lastDeletedTask;
 	private static TaskItem lastUpdatedTask;
 
+  static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+			"dd\\MM','HH:mm");
+  
 	public static void init() {
 		updateTaskIDs();
 	}
@@ -176,10 +179,44 @@ public class Logic {
 		return result;
 	}
 
-	private static String executeUpdateCommand(Command command) {
-		// TODO
-		return "";
+private static String executeUpdateCommand(Command command) {
+		int index = Integer.parseInt(command.getCommandParameters().get(0));
+		int taskID = indexToTaskID(index);
+		TaskItem updatedTask = allTaskItems.get(taskID);
+		lastUpdatedTask = updatedTask;
+		
+		for (int i = 1; i < command.getCommandParameters().capacity(); i++) {
+			String parameter = command.getCommandParameters().get(i);
+			if (parameter.startsWith("\"")) {
+				updatedTask.setDescription(parameter);
+			}
+			
+			if(parameter.startsWith("(start)")){
+				String newStartTimeString = parameter.substring(7);
+				try {
+					updatedTask.setStartTime(simpleDateFormat.parse(newStartTimeString));
+				} catch (ParseException e) {
+					return MESSAGE_WRONG_TIME_FORMAT;
+				}
+				
+			}
+			
+			if (parameter.startsWith("(end)")) {
+				String newEndTimeString = parameter.substring(5);
+				try {
+					updatedTask.setEndTime(simpleDateFormat.parse(newEndTimeString));
+				} catch (ParseException e) {
+					return MESSAGE_WRONG_TIME_FORMAT;
+				}
+			}
+			
+			if (parameter.length() == 1) {
+				updatedTask.setPriority(Integer.parseInt(parameter));
+			}
+		}
+		return UPDATE_SUCCESSFULLY;
 	}
+
 
 	private static String executeDeleteCommand(Command command) {
 		String indexToDelete = command.getCommandParameters().get(0);
