@@ -57,8 +57,8 @@ public class Logic {
 			Vector<TaskItem> firstPriorityTasks = new Vector<TaskItem>();
 			Vector<TaskItem> secondPriorityTasks = new Vector<TaskItem>();
 			Vector<TaskItem> thirdPriorityTasks = new Vector<TaskItem>();
-			for (int i=0; i<allTaskItems.size(); i++){
-				TaskItem currentTask = allTaskItems.get(i);
+			for (int i=0; i<allTasks.size(); i++){
+				TaskItem currentTask = allTasks.get(i);
 				if (currentTask.getPriority()==1) {
 					firstPriorityTasks.add(currentTask);
 				} else if (currentTask.getPriority()==2) {
@@ -70,23 +70,23 @@ public class Logic {
 			result = vectorToString(firstPriorityTasks) + vectorToString(secondPriorityTasks) 
 					+ vectorToString(thirdPriorityTasks);
 		} else if (range.equals("finished")) {
-			for (int i=0; i<allTaskItems.size(); i++) {
-				TaskItem currentTask = allTaskItems.get(i);
+			for (int i=0; i<allTasks.size(); i++) {
+				TaskItem currentTask = allTasks.get(i);
 				currentTask.updateStatus();
 				if(currentTask.getStatus()==2){
-					matchingTaskItems.add(currentTask);
+					matchingTasks.add(currentTask);
 				}
 			}
-			result = vectorToString(matchingTaskItems);
+			result = vectorToString(matchingTasks);
 		} else if (range.equals("unfinished")) {
-			for (int i=0; i<allTaskItems.size(); i++) {
-				TaskItem currentTask = allTaskItems.get(i);
+			for (int i=0; i<allTasks.size(); i++) {
+				TaskItem currentTask = allTasks.get(i);
 				currentTask.updateStatus();
 				if(currentTask.getStatus()==1){
-					matchingTaskItems.add(currentTask);
+					matchingTasks.add(currentTask);
 				}
 			}
-			result = vectorToString(matchingTaskItems);
+			result = vectorToString(matchingTasks);
 		} else {
 			result = String.format(MESSAGE_INVALID_COMMAND, command.getCommandType());
 		}
@@ -106,14 +106,14 @@ public class Logic {
 	private static String executeSearchCommand(Command command) {
 		String keyword = command.getCommandParameters().get(0);
 		String result = "";
-		for (int i=0; i<allTaskItems.size(); i++){
-			String taskInfo = allTaskItems.get(i).toString();
-			TaskItem currentItem = allTaskItems.get(i);
+		for (int i=0; i<allTasks.size(); i++){
+			String taskInfo = allTasks.get(i).toString();
+			TaskItem currentItem = allTasks.get(i);
 			if (taskInfo.contains(keyword)) {
-				matchingTaskItems.add(currentItem);
+				matchingTasks.add(currentItem);
 			}
 		}	
-		result = vectorToString(matchingTaskItems);
+		result = vectorToString(matchingTasks);
 		return result;
 	}
 

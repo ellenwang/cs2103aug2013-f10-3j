@@ -23,10 +23,14 @@ public class TextUI {
 	private static void readAndExecuteCommands() {
 		String input = "";
 		while (!input.equals("exit")) {
-			input = readUserInput();
-			Command command = Parser.parseCommand(input);
-			String feedback = Logic.executeCommand(command);
-			showToUser(feedback);
+			try {
+				input = readUserInput();
+				Command command = Parser.parseCommand(input);
+				String feedback = Logic.executeCommand(command);
+				showToUser(feedback);
+			} catch (Exception e) {
+				System.err.println(e.getMessage());
+			}
 		}
 	}
 
