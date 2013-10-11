@@ -126,7 +126,6 @@ public class Logic {
 	}
 
 	private static String executeViewCommand(Command command) {
-		matchingTasks.clear();
 
 		String range = command.getCommandParameters().get(0);
 		String result = "";
@@ -145,11 +144,13 @@ public class Logic {
 				}
 			}
 
+			matchingTasks.clear();
 			matchingTasks.addAll(firstPriorityTasks);
 			matchingTasks.addAll(secondPriorityTasks);
 			matchingTasks.addAll(thirdPriorityTasks);
 			result = vectorToString(matchingTasks);
 		} else if (range.equals("finished")) {
+			matchingTasks.clear();
 			for (int i = 0; i < allTasks.size(); i++) {
 				TaskItem currentTask = allTasks.get(i);
 				currentTask.updateStatus();
@@ -159,6 +160,7 @@ public class Logic {
 			}
 			result = vectorToString(matchingTasks);
 		} else if (range.equals("unfinished")) {
+			matchingTasks.clear();
 			for (int i = 0; i < allTasks.size(); i++) {
 				TaskItem currentTask = allTasks.get(i);
 				currentTask.updateStatus();
