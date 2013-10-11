@@ -6,12 +6,12 @@ public class Logic {
 	private static final String MESSAGE_INVALID_COMMAND = "Invalid command: \"%1$s\"";
 	private static final String MESSAGE_FAILED_TO_UNDO = "Failed to undo command: \"%1$s\"";
 	private static final String MESSAGE_FAILED_TO_REDO = "Failed to redo command: \"%1$s\"";
-	
-	// all task items
-	private static Vector<TaskItem> allTaskItems;
 
-	// task items matching the latest view or search command
-	private static Vector<TaskItem> matchingTaskItems;
+	// all tasks
+	private static Vector<TaskItem> allTasks;
+
+	// tasks matching the latest view or search command
+	private static Vector<TaskItem> matchingTasks;
 
 	// variables used for undo and redo command
 	private static Command lastModifyingCommand;
@@ -74,18 +74,24 @@ public class Logic {
 		// TODO
 		return "";
 	}
-	
+
 	private static String executeRedoCommand() {
 		// TODO
 		return "";
 	}
-	
+
 	private static String executeExitCommand() {
 		return MESSAGE_EXIT;
 	}
 
+	private static void updateTaskIDs() {
+		for (int i = 0; i < allTasks.size(); i++) {
+			allTasks.get(i).setTaskID(i);
+		}
+	}
+
 	private static int indexToTaskID(int index) {
-		TaskItem task = matchingTaskItems.get(index - 1);
+		TaskItem task = matchingTasks.get(index - 1);
 		return task.getTaskID();
 	}
 }
