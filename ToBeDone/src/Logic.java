@@ -51,8 +51,46 @@ public class Logic {
 	}
 
 	private static String executeViewCommand(Command command) {
-		// TODO
-		return "";
+		String range = command.getCommandParameters().get(0);
+		String result = "";
+		if (range.equals("all")) {
+			Vector<TaskItem> firstPriorityTasks = new Vector<TaskItem>();
+			Vector<TaskItem> secondPriorityTasks = new Vector<TaskItem>();
+			Vector<TaskItem> thirdPriorityTasks = new Vector<TaskItem>();
+			for (int i=0; i<allTaskItems.size(); i++){
+				TaskItem currentTask = allTaskItems.get(i);
+				if (currentTask.getPriority()==1) {
+					firstPriorityTasks.add(currentTask);
+				} else if (currentTask.getPriority()==2) {
+					secondPriorityTasks.add(currentTask);
+				} else if (currentTask.getPriority()==3) {
+					thirdPriorityTasks.add(currentTask);
+				} 
+			}
+			result = vectorToString(firstPriorityTasks) + vectorToString(secondPriorityTasks) 
+					+ vectorToString(thirdPriorityTasks);
+		} else if (range.equals("finished")) {
+			for (int i=0; i<allTaskItems.size(); i++) {
+				TaskItem currentTask = allTaskItems.get(i);
+				currentTask.updateStatus();
+				if(currentTask.getStatus()==2){
+					matchingTaskItems.add(currentTask);
+				}
+			}
+			result = vectorToString(matchingTaskItems);
+		} else if (range.equals("unfinished")) {
+			for (int i=0; i<allTaskItems.size(); i++) {
+				TaskItem currentTask = allTaskItems.get(i);
+				currentTask.updateStatus();
+				if(currentTask.getStatus()==1){
+					matchingTaskItems.add(currentTask);
+				}
+			}
+			result = vectorToString(matchingTaskItems);
+		} else {
+			result = String.format(MESSAGE_INVALID_COMMAND, command.getCommandType());
+		}
+		return result;
 	}
 
 	private static String executeUpdateCommand(Command command) {
@@ -66,8 +104,17 @@ public class Logic {
 	}
 
 	private static String executeSearchCommand(Command command) {
-		// TODO
-		return "";
+		String keyword = command.getCommandParameters().get(0);
+		String result = "";
+		for (int i=0; i<allTaskItems.size(); i++){
+			String taskInfo = allTaskItems.get(i).toString();
+			TaskItem currentItem = allTaskItems.get(i);
+			if (taskInfo.contains(keyword)) {
+				matchingTaskItems.add(currentItem);
+			}
+		}	
+		result = vectorToString(matchingTaskItems);
+		return result;
 	}
 
 	private static String executeUndoCommand() {
@@ -93,5 +140,12 @@ public class Logic {
 	private static int indexToTaskID(int index) {
 		TaskItem task = matchingTasks.get(index - 1);
 		return task.getTaskID();
+	}
+	private static String vectorToString (Vector<TaskItem> list) {
+		String result = "";
+		for (int i=0; i<list.size(); i++){
+			result += (i+1) + "" + '.' +list.get(i).toString()+'\n';
+		}
+		return result;
 	}
 }
