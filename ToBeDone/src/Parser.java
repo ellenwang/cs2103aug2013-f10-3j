@@ -1,20 +1,7 @@
-//import java.util.Scanner;
 import java.util.Vector;
-
 
 public class Parser {
 	static final String WRONG_DESCRIPTION = "Wrong description format!";
-	
-//	public static void main(String[] args) {
-//		Scanner scanner = new Scanner(System.in);
-//		String string = scanner.nextLine();
-//		try {
-//			parseCommand(string);
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
 	
 	public static Command parseCommand(String commandString) throws Exception {
 		String commandType = getComType(commandString);
@@ -26,42 +13,43 @@ public class Parser {
 			throw e;
 		}
 	}
-		
-	private static Vector<String> getComParas(String commandString) throws Exception {
-		Vector<String> parameters = new Vector<String>(); 
+
+	private static Vector<String> getComParas(String commandString)
+			throws Exception {
+		Vector<String> parameters = new Vector<String>();
 		String comParaString = getComParaString(commandString);
-		
-		if(comParaString == null){
+
+		if (comParaString == null) {
 			parameters = null;
 			return parameters;
 		}
-		
-		//only for the update command, description is not the first parameter 
-		if(comParaString.contains("\"")&&comParaString.charAt(0)!='\"'){
-			parameters.add(comParaString.charAt(0)+"");
+
+		// only for the update command, description is not the first parameter
+		if (comParaString.contains("\"") && comParaString.charAt(0) != '\"') {
+			parameters.add(comParaString.charAt(0) + "");
 			comParaString = comParaString.substring(2);
 		}
-		
+
 		String description = getDescription(comParaString);
-			
-		if(description != null){
-			if(description.equals(WRONG_DESCRIPTION)){
+
+		if (description != null) {
+			if (description.equals(WRONG_DESCRIPTION)) {
 				Exception exception = new Exception(WRONG_DESCRIPTION);
 				throw exception;
 			}
 			parameters.add(description);
 		}
-		
+
 		String[] parasExceptDes = getComParasExceptDes(comParaString);
 		if (parasExceptDes != null) {
 			for (int i = 0; i < parasExceptDes.length; i++) {
 				parameters.add(parasExceptDes[i]);
 			}
 		}
-		
-		return parameters;	
+
+		return parameters;
 	}
-	
+
 	protected static String[] getComParasExceptDes(String comParaString) {
 		int indexOfDes = comParaString.lastIndexOf('\"');
 		String[] parasArray = null;
@@ -85,17 +73,17 @@ public class Parser {
 		if (indexOfDes == -1) {
 			return null;
 		}
-		if(indexOfDes == 0){
+		if (indexOfDes == 0) {
 			return WRONG_DESCRIPTION;
 		}
-		if(!comParaString.startsWith("\"")){
+		if (!comParaString.startsWith("\"")) {
 			return WRONG_DESCRIPTION;
 		}
-		
-		String description = comParaString.substring(1,indexOfDes);
+
+		String description = comParaString.substring(1, indexOfDes);
 		return description;
-	}	
-	
+	}
+
 	private static String getComParaString(String commandString) {
 		String comParaString = null;
 		int index = 0;
@@ -112,7 +100,7 @@ public class Parser {
 		comParaString = commandString.substring(index + 1);
 		return comParaString;
 	}
-	
+
 	private static String getComType(String commandString) {
 		String comType = null;
 		int index = 0;
@@ -123,6 +111,25 @@ public class Parser {
 		}
 		// divide at the first blank space
 		comType = commandString.substring(0, index);
+		
+		if ("create".startsWith(comType)) {
+			comType = "create";
+		} else if ("view".startsWith(comType)) {
+			comType = "view";
+		} else if ("exit".startsWith(comType)) {
+			comType = "exit";
+		} else if ("update".startsWith(comType)) {
+			comType = "update";
+		} else if ("delete".startsWith(comType)) {
+			comType = "delete";
+		} else if ("search".startsWith(comType)) {
+			comType = "search";
+		} else if ("undo".startsWith(comType)) {
+			comType = "undo";
+		} else if ("redo".startsWith(comType)) {
+			comType = "redo";
+		}
+		
 		return comType;
 	}
 }

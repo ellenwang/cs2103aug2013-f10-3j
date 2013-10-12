@@ -2,7 +2,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class TaskItem {
+public class TaskItem implements Cloneable {
 	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
 			"dd/MM','HH:mm");
 
@@ -17,11 +17,12 @@ public class TaskItem {
 		FINISHED, UNFINISHED, EXPIRED
 	};
 
-	TaskItem() {
+	public TaskItem() {
 
 	}
 
-	TaskItem(String description, Date startTime, Date endTime, int priority) {
+	public TaskItem(String description, Date startTime, Date endTime,
+			int priority) {
 		this.description = description;
 		this.startTime = startTime;
 		this.endTime = endTime;
@@ -29,10 +30,15 @@ public class TaskItem {
 		status = Status.UNFINISHED;
 	}
 
-	TaskItem(String description, Date startTime, Date endTime, int priority,
-			Status status) {
+	public TaskItem(String description, Date startTime, Date endTime,
+			int priority, Status status) {
 		this(description, startTime, endTime, priority);
 		this.status = status;
+	}
+
+	public TaskItem(TaskItem task) {
+		this(task.getDescription(), task.getStartTime(), task.getEndTime(),
+				task.getPriority(), task.getStatus());
 	}
 
 	public void setDescription(String taskDescription) {
@@ -116,5 +122,14 @@ public class TaskItem {
 		}
 
 		return formattedDate;
+	}
+
+	protected Object clone() throws CloneNotSupportedException {
+		TaskItem clone = (TaskItem) super.clone();
+
+		clone.startTime = (Date) startTime.clone();
+		clone.endTime = (Date) endTime.clone();
+
+		return clone;
 	}
 }

@@ -103,7 +103,7 @@ public class Storage {
 				status);
 		return task;
 	}
-	
+
 	private static Date parseDate(String date) {
 		Date parsedDate = null;
 		if (!date.equals("")) {
@@ -113,7 +113,7 @@ public class Storage {
 				System.err.println(MESSAGE_FAILED_TO_PARSE_DATE);
 			}
 		}
-		
+
 		return parsedDate;
 	}
 
