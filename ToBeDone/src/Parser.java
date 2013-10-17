@@ -112,6 +112,8 @@ public class Parser {
 		// divide at the first blank space
 		comType = commandString.substring(0, index);
 		
+		comType = comType.toLowerCase();
+		
 		if ("create".startsWith(comType)) {
 			comType = "create";
 		} else if ("view".startsWith(comType)) {

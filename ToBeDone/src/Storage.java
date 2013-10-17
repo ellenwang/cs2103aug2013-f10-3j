@@ -7,6 +7,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Storage {
 	// messages to the user
@@ -14,7 +16,15 @@ public class Storage {
 	private static final String MESSAGE_FAILED_TO_READ_FROM_FILE = "Failed to read from file.";
 	private static final String MESSAGE_FAILED_TO_PARSE_DATE = "Failed to parse date.";
 	private static final String FILE_NAME = "ToBeDone.txt";
+	
+	// logger
+	private static Logger logger = Logger.getLogger("logger");
 
+	// set logging level
+	static {
+		logger.setLevel(Level.WARNING);
+	}
+	
 	// file written to and read from
 	private static File file = new File(FILE_NAME);
 
@@ -33,6 +43,7 @@ public class Storage {
 	private static Vector<TaskItem> getTasksFromFile() {
 		Vector<TaskItem> fileTasks = new Vector<TaskItem>();
 		try {
+			logger.log(Level.INFO, "accessing file content");
 			Scanner in = new Scanner(file);
 			while (in.hasNextLine()) {
 				String storageFormatOfTask = in.nextLine();
@@ -42,6 +53,7 @@ public class Storage {
 			in.close();
 		} catch (IOException e) {
 			System.err.println(MESSAGE_FAILED_TO_READ_FROM_FILE);
+			logger.log(Level.INFO, "error, could not access file content");
 		}
 		return fileTasks;
 	}
@@ -93,6 +105,7 @@ public class Storage {
 	private static TaskItem storageFormatToTaskItem(String storageFormat) {
 		String[] taskInformation = splitStorageFormat(storageFormat);
 
+		assert taskInformation.length == 5;
 		String description = taskInformation[0];
 		Date startTime = parseDate(taskInformation[1]);
 		Date endTime = parseDate(taskInformation[2]);

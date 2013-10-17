@@ -17,12 +17,12 @@ public class Logic {
 	private static final String MESSAGE_DELETE_ALL_SUCCESSFUL = "Deleted all tasks.";
 	private static final String MESSAGE_NO_TASKS_TO_DELETE = "No tasks to delete.";
 	private static final String MESSAGE_NO_TASKS_TO_RESTORE = "No tasks to restore.";
-	private static final String MESSAGE_TASKS_RESTORED = "All tasks has been restored";
+	private static final String MESSAGE_TASKS_RESTORED = "All tasks has been restored.";
 	private static final String MESSAGE_CREATE_SUCCESSFUL = "Created task: %1$s";
 	private static final String MESSAGE_UPDATE_SUCCESSFUL = "Old task:\t%1$s\nUpdated task:\t%2$s";
 	private static final String MESSAGE_WRONG_TIME_FORMAT = "Wrong time format.";
-	private static final String MESSAGE_TOO_MANY_PARAMETERS = "Wrong command format. Too many parameters";
-	private static final String MESSAGE_ENDTIME_SMALLER_THAN_STARTTIME = "The end time of tasks can't be before the start time";
+	private static final String MESSAGE_TOO_MANY_PARAMETERS = "Wrong command format. Too many parameters.";
+	private static final String MESSAGE_ENDTIME_SMALLER_THAN_STARTTIME = "The end time of tasks can't be before the start time.";
 
 	// task types
 	private static final int FLOATING_TASK = 2;
@@ -222,6 +222,7 @@ public class Logic {
 
 		}
 
+		updateTaskIDs();
 		Storage.store(allTasks);
 		lastModifyingCommand = command;
 		return String.format(MESSAGE_UPDATE_SUCCESSFUL, lastUpdatedTask,
