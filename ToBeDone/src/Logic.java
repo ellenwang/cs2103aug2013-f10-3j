@@ -2,6 +2,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Logic {
 	// messages to the user
@@ -29,6 +31,14 @@ public class Logic {
 	private static final int DEADLINE_TASK = 3;;
 	private static final int TIMED_TASK = 4;
 
+	// logger
+	private static Logger logger = Logger.getLogger("Logic_logger");
+
+	// set logging level
+	static {
+		logger.setLevel(Level.WARNING);
+	}
+
 	static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
 			"dd/MM,HH:mm");
 
@@ -53,6 +63,7 @@ public class Logic {
 
 	public static String executeCommand(Command command) {
 		String commandType = command.getCommandType();
+		logger.log(Level.INFO, "The execution of command starts here.");
 		switch (commandType) {
 		case "create":
 			return executeCreateCommand(command);
@@ -136,49 +147,51 @@ public class Logic {
 
 		String range = command.getCommandParameters().get(0);
 		String result = "";
-		if (range.equals("all")) {
-			Vector<TaskItem> firstPriorityTasks = new Vector<TaskItem>();
-			Vector<TaskItem> secondPriorityTasks = new Vector<TaskItem>();
-			Vector<TaskItem> thirdPriorityTasks = new Vector<TaskItem>();
-			for (int i = 0; i < allTasks.size(); i++) {
-				TaskItem currentTask = allTasks.get(i);
-				if (currentTask.getPriority() == 1) {
-					firstPriorityTasks.add(currentTask);
-				} else if (currentTask.getPriority() == 2) {
-					secondPriorityTasks.add(currentTask);
-				} else if (currentTask.getPriority() == 3) {
-					thirdPriorityTasks.add(currentTask);
+		try {
+			if (range.equals("all")) {
+				Vector<TaskItem> firstPriorityTasks = new Vector<TaskItem>();
+				Vector<TaskItem> secondPriorityTasks = new Vector<TaskItem>();
+				Vector<TaskItem> thirdPriorityTasks = new Vector<TaskItem>();
+				for (int i = 0; i < allTasks.size(); i++) {
+					TaskItem currentTask = allTasks.get(i);
+					if (currentTask.getPriority() == 1) {
+						firstPriorityTasks.add(currentTask);
+					} else if (currentTask.getPriority() == 2) {
+						secondPriorityTasks.add(currentTask);
+					} else if (currentTask.getPriority() == 3) {
+						thirdPriorityTasks.add(currentTask);
+					}
 				}
-			}
 
-			matchingTasks.clear();
-			matchingTasks.addAll(firstPriorityTasks);
-			matchingTasks.addAll(secondPriorityTasks);
-			matchingTasks.addAll(thirdPriorityTasks);
-			result = vectorToString(matchingTasks);
-		} else if (range.equals("finished")) {
-			matchingTasks.clear();
-			for (int i = 0; i < allTasks.size(); i++) {
-				TaskItem currentTask = allTasks.get(i);
-				currentTask.updateStatus();
-				if (currentTask.getStatus() == TaskItem.Status.FINISHED) {
-					matchingTasks.add(currentTask);
+				matchingTasks.clear();
+				matchingTasks.addAll(firstPriorityTasks);
+				matchingTasks.addAll(secondPriorityTasks);
+				matchingTasks.addAll(thirdPriorityTasks);
+				result = vectorToString(matchingTasks);
+			} else if (range.equals("finished")) {
+				matchingTasks.clear();
+				for (int i = 0; i < allTasks.size(); i++) {
+					TaskItem currentTask = allTasks.get(i);
+					currentTask.updateStatus();
+					if (currentTask.getStatus() == TaskItem.Status.FINISHED) {
+						matchingTasks.add(currentTask);
+					}
 				}
-			}
-			result = vectorToString(matchingTasks);
-		} else if (range.equals("unfinished")) {
-			matchingTasks.clear();
-			for (int i = 0; i < allTasks.size(); i++) {
-				TaskItem currentTask = allTasks.get(i);
-				currentTask.updateStatus();
-				if (currentTask.getStatus() == TaskItem.Status.UNFINISHED) {
-					matchingTasks.add(currentTask);
+				result = vectorToString(matchingTasks);
+			} else if (range.equals("unfinished")) {
+				matchingTasks.clear();
+				for (int i = 0; i < allTasks.size(); i++) {
+					TaskItem currentTask = allTasks.get(i);
+					currentTask.updateStatus();
+					if (currentTask.getStatus() == TaskItem.Status.UNFINISHED) {
+						matchingTasks.add(currentTask);
+					}
 				}
+				result = vectorToString(matchingTasks);
 			}
-			result = vectorToString(matchingTasks);
-		} else {
+		} catch (Exception e) {
 			result = String.format(MESSAGE_INVALID_COMMAND_PARAMETER, command
-					.getCommandParameters().get(0));
+					.getCommandParameters().get(0)) + "System message" + e.getMessage();
 		}
 		return result;
 	}
@@ -231,8 +244,9 @@ public class Logic {
 
 	private static String executeDeleteCommand(Command command) {
 		String feedback;
+		assert command.getCommandParameters().size() == 1;
 		String commandParameter = command.getCommandParameters().get(0);
-
+		
 		if (commandParameter.equals("all")) {
 			if (allTasks.size() != 0) {
 				lastDeletedTasks = new Vector<TaskItem>(allTasks);
@@ -257,7 +271,7 @@ public class Logic {
 
 	private static String executeSearchCommand(Command command) {
 		matchingTasks.clear();
-
+		assert command.getCommandParameters().size()==1;
 		String keyword = command.getCommandParameters().get(0);
 		String result = "";
 		for (int i = 0; i < allTasks.size(); i++) {
