@@ -29,7 +29,7 @@ public class Storage {
 	private static File file = new File(FILE_NAME);
 
 	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-			"dd/MM','HH:mm");
+			"dd/MM','HH:mmyyyy");
 
 	public static void store(Vector<TaskItem> taskItems) {
 		writeTasksToFile(taskItems);
