@@ -22,6 +22,7 @@ public class Logic {
 	private static final String MESSAGE_TASKS_RESTORED = "All tasks has been restored.";
 	private static final String MESSAGE_CREATE_SUCCESSFUL = "Created task: %1$s";
 	private static final String MESSAGE_UPDATE_SUCCESSFUL = "Old task:\t%1$s\nUpdated task:\t%2$s";
+  private static final String MESSAGE_FINISH_SUCCESSFUL = "Finished task: \"%1$s\".";
 	private static final String MESSAGE_WRONG_TIME_FORMAT = "Wrong time format.";
 	private static final String MESSAGE_TOO_MANY_PARAMETERS = "Wrong command format. Too many parameters.";
 	private static final String MESSAGE_ENDTIME_SMALLER_THAN_STARTTIME = "The end time of tasks can't be before the start time.";
@@ -39,8 +40,9 @@ public class Logic {
 		logger.setLevel(Level.WARNING);
 	}
 
+  private static int CURRENT_YEAR;
 	static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-			"dd/MM,HH:mm");
+			"dd/MM,HH:mmYYYY");
 
 	// all tasks
 	private static Vector<TaskItem> allTasks = Storage.retrieve();
@@ -59,9 +61,11 @@ public class Logic {
 
 	public static void init() {
 		updateTaskIDs();
+    CURRENT_YEAR = (Calendar.getInstance()).get(Calendar.YEAR);
 	}
 
 	public static String executeCommand(Command command) {
+    init();
 		String commandType = command.getCommandType();
 		logger.log(Level.INFO, "The execution of command starts here.");
 		switch (commandType) {
@@ -77,6 +81,8 @@ public class Logic {
 			return executeDeleteCommand(command);
 		case "search":
 			return executeSearchCommand(command);
+     case "finish":
+			return executeFinshCommand(command);
 		case "undo":
 			return executeUndoCommand();
 		case "redo":
@@ -86,6 +92,20 @@ public class Logic {
 		}
 	}
 
+  private static String executeFinshCommand(Command command) {
+		String indexToFinish = command.getCommandParameters().get(0);
+		int index = Integer.parseInt(indexToFinish);
+		int taskID = indexToTaskID(index);
+		TaskItem finshedTaskItem = allTasks.get(taskID);
+
+		finshedTaskItem.setStatus(TaskItem.Status.FINISHED);
+		updateTaskIDs();
+		Storage.store(allTasks);
+    lastModifyingCommand = command;
+
+		return String.format(MESSAGE_FINISH_SUCCESSFUL, finshedTaskItem.getDescription());
+	}
+  
 	private static String executeCreateCommand(Command command) {
 		// / since there are 3 kind of task. each has different number of
 		// parameters
@@ -105,7 +125,7 @@ public class Logic {
 		// a task just has description\endTime and priority
 		if (taskType == DEADLINE_TASK) {
 			try {
-				taskEndTime = simpleDateFormat.parse(Para.get(1));
+				taskEndTime = simpleDateFormat.parse(Para.get(1)+CURRENT_YEAR);
 			} catch (ParseException e) {
 				return MESSAGE_WRONG_TIME_FORMAT;
 			}
@@ -115,8 +135,8 @@ public class Logic {
 		// a full task with description\startTime\endTime and priority
 		if (taskType == TIMED_TASK) {
 			try {
-				taskStartTime = simpleDateFormat.parse(Para.get(1));
-				taskEndTime = simpleDateFormat.parse(Para.get(2));
+				taskStartTime = simpleDateFormat.parse(Para.get(1)+CURRENT_YEAR);
+				taskEndTime = simpleDateFormat.parse(Para.get(2)+CURRENT_YEAR);
 			} catch (ParseException e) {
 				return MESSAGE_WRONG_TIME_FORMAT;
 			}
@@ -178,7 +198,17 @@ public class Logic {
 					}
 				}
 				result = vectorToString(matchingTasks);
-			} else if (range.equals("unfinished")) {
+			} else if (range.equals("expired")) {
+        matchingTasks.clear();
+        for (int i = 0; i < allTasks.size(); i++) {
+          TaskItem currentTask = allTasks.get(i);
+				  currentTask.updateStatus();
+				  if (currentTask.getStatus() == TaskItem.Status.EXPIRED) {
+					matchingTasks.add(currentTask);
+				}
+			}
+			result = vectorToString(matchingTasks);         
+     }else if (range.equals("unfinished")) {
 				matchingTasks.clear();
 				for (int i = 0; i < allTasks.size(); i++) {
 					TaskItem currentTask = allTasks.get(i);
@@ -208,7 +238,7 @@ public class Logic {
 				String newStartTimeString = parameter.substring(7);
 				try {
 					updatedTask.setStartTime(simpleDateFormat
-							.parse(newStartTimeString));
+							.parse(newStartTimeString+CURRENT_YEAR));
 				} catch (ParseException e) {
 					return MESSAGE_WRONG_TIME_FORMAT;
 				}
@@ -219,7 +249,7 @@ public class Logic {
 				String newEndTimeString = parameter.substring(5);
 				try {
 					updatedTask.setEndTime(simpleDateFormat
-							.parse(newEndTimeString));
+							.parse(newEndTimeString+CURRENT_YEAR));
 				} catch (ParseException e) {
 					return MESSAGE_WRONG_TIME_FORMAT;
 				}
