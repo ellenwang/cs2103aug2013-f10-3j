@@ -91,7 +91,7 @@ public class TaskItem implements Cloneable {
 
 	public void updateStatus() {
 		Date currentDate = (Date) Calendar.getInstance().getTime();
-		if (endTime.before(currentDate)) {
+		if (endTime!=null&&endTime.before(currentDate)) {
 			status = Status.EXPIRED;
 		}
 
