@@ -1,5 +1,6 @@
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -22,7 +23,7 @@ public class Logic {
 	private static final String MESSAGE_TASKS_RESTORED = "All tasks has been restored.";
 	private static final String MESSAGE_CREATE_SUCCESSFUL = "Created task: %1$s";
 	private static final String MESSAGE_UPDATE_SUCCESSFUL = "Old task:\t%1$s\nUpdated task:\t%2$s";
-  private static final String MESSAGE_FINISH_SUCCESSFUL = "Finished task: \"%1$s\".";
+    private static final String MESSAGE_FINISH_SUCCESSFUL = "Finished task: \"%1$s\".";
 	private static final String MESSAGE_WRONG_TIME_FORMAT = "Wrong time format.";
 	private static final String MESSAGE_TOO_MANY_PARAMETERS = "Wrong command format. Too many parameters.";
 	private static final String MESSAGE_ENDTIME_SMALLER_THAN_STARTTIME = "The end time of tasks can't be before the start time.";
@@ -42,7 +43,7 @@ public class Logic {
 
   private static int CURRENT_YEAR;
 	static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-			"dd/MM,HH:mmYYYY");
+			"dd/MM,HH:mmyyyy");
 
 	// all tasks
 	private static Vector<TaskItem> allTasks = Storage.retrieve();
@@ -61,7 +62,7 @@ public class Logic {
 
 	public static void init() {
 		updateTaskIDs();
-    CURRENT_YEAR = (Calendar.getInstance()).get(Calendar.YEAR);
+		CURRENT_YEAR = (Calendar.getInstance()).get(Calendar.YEAR);
 	}
 
 	public static String executeCommand(Command command) {
@@ -81,7 +82,7 @@ public class Logic {
 			return executeDeleteCommand(command);
 		case "search":
 			return executeSearchCommand(command);
-     case "finish":
+		case "finish":
 			return executeFinshCommand(command);
 		case "undo":
 			return executeUndoCommand();
@@ -126,6 +127,7 @@ public class Logic {
 		if (taskType == DEADLINE_TASK) {
 			try {
 				taskEndTime = simpleDateFormat.parse(Para.get(1)+CURRENT_YEAR);
+				System.out.println(taskEndTime.toString());
 			} catch (ParseException e) {
 				return MESSAGE_WRONG_TIME_FORMAT;
 			}
