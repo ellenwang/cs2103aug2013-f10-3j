@@ -127,7 +127,6 @@ public class Logic {
 		if (taskType == DEADLINE_TASK) {
 			try {
 				taskEndTime = simpleDateFormat.parse(Para.get(1)+CURRENT_YEAR);
-				System.out.println(taskEndTime.toString());
 			} catch (ParseException e) {
 				return MESSAGE_WRONG_TIME_FORMAT;
 			}
