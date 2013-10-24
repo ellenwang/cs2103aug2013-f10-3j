@@ -27,7 +27,7 @@ public class Logic {
 	private static final String MESSAGE_WRONG_TIME_FORMAT = "Wrong time format.";
 	private static final String MESSAGE_TOO_MANY_PARAMETERS = "Wrong command format. Too many parameters.";
 	private static final String MESSAGE_ENDTIME_SMALLER_THAN_STARTTIME = "The end time of tasks can't be before the start time.";
-
+	private static final String MESSAGE_SYNC_SUCCESS="Synchronize succeed.";
 	// task types
 	private static final int FLOATING_TASK = 2;
 	private static final int DEADLINE_TASK = 3;;
@@ -442,6 +442,9 @@ public class Logic {
 		return feedback;
 	}
 
+	public static String executeSync(){
+		return MESSAGE_SYNC_SUCCESS;
+	}
 	private static String executeExitCommand() {
 		return MESSAGE_EXIT;
 	}
