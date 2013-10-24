@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class TaskItem implements Cloneable {
 	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-			"dd/MM','HH:mm");
+			"dd/MM,HH:mmyyyy");
 
 	private int taskID;
 	private String description;
