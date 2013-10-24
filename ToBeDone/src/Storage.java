@@ -15,8 +15,10 @@ public class Storage {
 	private static final String MESSAGE_FAILED_TO_WRITE_TO_FILE = "Failed to write to file.";
 	private static final String MESSAGE_FAILED_TO_READ_FROM_FILE = "Failed to read from file.";
 	private static final String MESSAGE_FAILED_TO_PARSE_DATE = "Failed to parse date.";
+
+	// name of file
 	private static final String FILE_NAME = "ToBeDone.txt";
-	
+
 	// logger
 	private static Logger logger = Logger.getLogger("logger");
 
@@ -24,12 +26,23 @@ public class Storage {
 	static {
 		logger.setLevel(Level.WARNING);
 	}
-	
+
 	// file written to and read from
 	private static File file = new File(FILE_NAME);
 
 	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
 			"dd/MM','HH:mmyyyy");
+
+	/**
+	 * Changes the file to which the tasks are stored to and retrieved from.
+	 * Used for testing to not overwrite tasks in the default file name.
+	 * 
+	 * @param newFile
+	 *            new file to where tasks are stored to and retrieved from.
+	 */
+	public static void changeFile(File newFile) {
+		file = newFile;
+	}
 
 	public static void store(Vector<TaskItem> taskItems) {
 		writeTasksToFile(taskItems);
