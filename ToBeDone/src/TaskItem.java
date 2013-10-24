@@ -91,7 +91,7 @@ public class TaskItem implements Cloneable {
 
 	public void updateStatus() {
 		Date currentDate = (Date) Calendar.getInstance().getTime();
-		if (endTime!=null&&endTime.before(currentDate)) {
+		if (endTime != null && endTime.before(currentDate)) {
 			status = Status.EXPIRED;
 		}
 
@@ -113,23 +113,27 @@ public class TaskItem implements Cloneable {
 		return result;
 	}
 
+	public boolean equals(TaskItem task) {
+		boolean equalDescription = this.description.equals(task.description);
+		boolean equalStartTime = this.startTime.equals(task.startTime);
+		boolean equalEndTime = this.endTime.equals(task.endTime);
+		boolean equalPriority = this.priority == task.priority;
+		boolean equalStatus = this.status.equals(task.status);
+		boolean equalTask = equalDescription && equalStartTime && equalEndTime
+				&& equalPriority && equalStatus;
+		return equalTask;
+	}
+
 	private static String formatDate(Date date) {
 		String formattedDate;
 		if (date != null) {
 			formattedDate = simpleDateFormat.format(date);
+			// remove year
+			formattedDate = formattedDate.substring(0, formattedDate.length() - 4);
 		} else {
 			formattedDate = "";
 		}
 
 		return formattedDate;
-	}
-
-	protected Object clone() throws CloneNotSupportedException {
-		TaskItem clone = (TaskItem) super.clone();
-
-		clone.startTime = (Date) startTime.clone();
-		clone.endTime = (Date) endTime.clone();
-
-		return clone;
 	}
 }
