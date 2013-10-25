@@ -1,5 +1,7 @@
 import java.util.Scanner;
 
+import Command.Command;
+
 public class TextUI {
 	// messages to the user
 	private static final String MESSAGE_WELCOME = "Welcome to ToBeDone!";
