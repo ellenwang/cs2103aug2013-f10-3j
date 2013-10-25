@@ -6,6 +6,8 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import Command.Command;
+
 public class Logic {
 	// messages to the user
 	private static final String MESSAGE_EXIT = "Exiting ToBeDone.";

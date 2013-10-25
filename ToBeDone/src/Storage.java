@@ -10,6 +10,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
 public class Storage {
 	// messages to the user
 	private static final String MESSAGE_FAILED_TO_WRITE_TO_FILE = "Failed to write to file.";

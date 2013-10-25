@@ -1,5 +1,7 @@
 import java.util.Vector;
 
+import Command.Command;
+
 public class Parser {
 	static final String WRONG_DESCRIPTION = "Wrong description format!";
 	
