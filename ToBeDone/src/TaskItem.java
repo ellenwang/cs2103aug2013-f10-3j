@@ -16,7 +16,8 @@ public class TaskItem implements Cloneable {
 	static enum Status {
 		FINISHED, UNFINISHED, EXPIRED
 	};
-
+	
+	
 	public TaskItem() {
 
 	}
