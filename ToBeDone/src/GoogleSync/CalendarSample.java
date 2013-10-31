@@ -1,4 +1,5 @@
-package com.google.api.services.samples.calendar.cmdline;
+package GoogleSync;
+
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;

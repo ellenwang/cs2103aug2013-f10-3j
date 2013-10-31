@@ -1,3 +1,4 @@
+package Storage;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -8,6 +9,8 @@ import java.util.Date;
 import java.util.Vector;
 
 import org.junit.Test;
+
+import TaskItem.TaskItem;
 
 
 public class StorageAtd {
@@ -57,6 +60,7 @@ public class StorageAtd {
 		}
 		int priority = 2;
 		TaskItem.Status status = TaskItem.Status.FINISHED;
+		
 		TaskItem task1 = new TaskItem(description, startTime, endTime, priority, status);
 		tasks.add(task1);
 		Storage.store(tasks);

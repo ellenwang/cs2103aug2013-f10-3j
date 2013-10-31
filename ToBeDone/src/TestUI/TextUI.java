@@ -1,6 +1,8 @@
+package TestUI;
 import java.util.Scanner;
 
 import Command.Command;
+import Logic.Logic;
 
 public class TextUI {
 	// messages to the user

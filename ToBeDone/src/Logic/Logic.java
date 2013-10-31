@@ -1,3 +1,5 @@
+package Logic;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -6,6 +8,8 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import Storage.Storage;
+import TaskItem.TaskItem;
 import Command.Command;
 
 public class Logic {
@@ -34,6 +38,7 @@ public class Logic {
 	private static final int FLOATING_TASK = 2;
 	private static final int DEADLINE_TASK = 3;;
 	private static final int TIMED_TASK = 4;
+    public static int here = 0;
 
 	// logger
 	private static Logger logger = Logger.getLogger("Logic_logger");
