@@ -1,3 +1,4 @@
+package Storage;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -9,6 +10,8 @@ import java.util.Scanner;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import TaskItem.TaskItem;
 
 
 public class Storage {
@@ -98,6 +101,7 @@ public class Storage {
 
 		int priority = task.getPriority();
 		TaskItem.Status status = task.getStatus();
+	
 
 		String storageFormat = "\"" + description + "\"" + formattedStartTime
 				+ ";" + formattedEndTime + ";" + priority + ";" + status;

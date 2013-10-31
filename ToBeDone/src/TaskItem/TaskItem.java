@@ -1,3 +1,4 @@
+package TaskItem;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -13,7 +14,7 @@ public class TaskItem implements Cloneable {
 	private int priority;
 	private Status status;
 
-	static enum Status {
+	public static enum Status {
 		FINISHED, UNFINISHED, EXPIRED
 	};
 	
@@ -74,11 +75,11 @@ public class TaskItem implements Cloneable {
 		this.endTime = endTime;
 	}
 
-	String getDescription() {
+	public String getDescription() {
 		return description;
 	}
 
-	int getTaskID() {
+	public int getTaskID() {
 		return taskID;
 	}
 
