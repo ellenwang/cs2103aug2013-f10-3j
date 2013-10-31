@@ -9,7 +9,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import Storage.Storage;
+import TaskItem.DeadlineTaskItem;
+import TaskItem.FloatingTaskItem;
 import TaskItem.TaskItem;
+import TaskItem.TimedTaskItem;
 import Command.Command;
 
 public class Logic {
@@ -120,7 +123,8 @@ public class Logic {
 		// parameters
 		Vector<String> Para = command.getCommandParameters();
 		int taskType = Para.size();
-
+		TaskItem newItem = new TaskItem();
+		
 		String taskDescription = Para.get(0);
 		Date taskStartTime = null;
 		Date taskEndTime = null;
@@ -129,6 +133,7 @@ public class Logic {
 		// a floating task, just has description and priority
 		if (taskType == FLOATING_TASK) {
 			priority = Integer.parseInt(Para.get(1));
+			newItem = new FloatingTaskItem(taskDescription, priority);
 		}
 
 		// a task just has description\endTime and priority
@@ -140,6 +145,7 @@ public class Logic {
 				return MESSAGE_WRONG_TIME_FORMAT;
 			}
 			priority = Integer.parseInt(Para.get(2));
+			newItem = new DeadlineTaskItem(taskDescription, priority, taskEndTime);
 		}
 
 		// a full task with description\startTime\endTime and priority
@@ -158,6 +164,7 @@ public class Logic {
 			}
 
 			priority = Integer.parseInt(Para.get(3));
+			newItem = new TimedTaskItem(taskDescription, priority, taskStartTime, taskEndTime);
 		}
 
 		// a create command has 3 parameters at most
@@ -165,8 +172,7 @@ public class Logic {
 			return MESSAGE_TOO_MANY_PARAMETERS;
 		}
 
-		TaskItem newItem = new TaskItem(taskDescription, taskStartTime,
-				taskEndTime, priority);
+		
 		allTasks.add(newItem);
 		updateTaskIDs();
 		Storage.store(allTasks);
