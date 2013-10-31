@@ -23,7 +23,7 @@ public class SearchCommand extends Command {
 	public void setUndoable(boolean undoable) {
 		this.undoable = undoable;
 	}
-	private static String executeSearchCommand(Command command) {
+	private static String execute(Command command) {
 		matchingTasks.clear();
 		assert command.getCommandParameters().size() == 1;
 		String keyword = command.getCommandParameters().get(0);

@@ -3,6 +3,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import TaskItem.TaskItem.Status;
+
 public class TaskItem implements Cloneable {
 	String description;
 	int priority;
@@ -20,10 +22,7 @@ public class TaskItem implements Cloneable {
 	}
 	
 	
-	public TaskItem() {
-	
-	}
-
+	public TaskItem() { }
 
 	public int getTaskID() {
 		return taskID;
@@ -49,9 +48,11 @@ public class TaskItem implements Cloneable {
 	public void setStatus(Status status) {
 		this.status = status;
 	}
-	
-	
-	
+	public String toStorageFormat(){
+		String formatedString = "";
+		formatedString = "\"" + description + "\"" + priority + ";" + status;
+		return formatedString;
+	}
 	
 	
 //	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(

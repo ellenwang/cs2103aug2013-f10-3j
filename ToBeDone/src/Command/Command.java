@@ -2,6 +2,7 @@ package Command;
 
 import java.util.Vector;
 
+import Logic.CommandStack;
 import Storage.Storage;
 import TaskItem.TaskItem;
 
@@ -57,5 +58,33 @@ public class Command {
 		}
 
 		return result;
+	}
+	public String executeCommand(){
+		Command.execute();
+	}
+	public String undo(){
+		CommandStack commandlist = new CommandStack();
+		String feedback;
+		if (!commandlist.getCommandStack().empty()){
+			Command currentCommand = commandlist.getLatestCommand();
+			
+			feedback = currentCommand.undo();
+		} else {
+			feedback = "No more command to undo.";
+		}
+		
+		return feedback;
+	}
+	public String redo(){
+		CommandStack commandlist = new CommandStack();
+		String feedback;
+		if (!commandlist.getCommandStack().empty()){
+			Command currentCommand = commandlist.getLatestCommand();
+			feedback = currentCommand.undo();
+		} else {
+			feedback = "No more command to redo.";
+		}
+		
+		return feedback;
 	}
 }

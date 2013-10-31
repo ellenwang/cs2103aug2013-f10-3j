@@ -91,6 +91,9 @@ public class Storage {
 	}
 
 	private static String taskItemToStorageFormat(TaskItem task) {
+		String storeInfo = task.toStorageFormat();
+		return storeInfo;
+		
 		String description = task.getDescription();
 
 		Date startTime = task.getStartTime();
