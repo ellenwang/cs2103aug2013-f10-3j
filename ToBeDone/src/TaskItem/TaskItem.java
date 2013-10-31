@@ -1,15 +1,16 @@
 package TaskItem;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
-import TaskItem.TaskItem.Status;
+import java.text.SimpleDateFormat;
 
 public class TaskItem implements Cloneable {
 	String description;
 	int priority;
 	Status status;
 	int taskID;
+	
+	SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+			"dd/MM','HH:mmyyyy");
+	
 	
 	public static enum Status {
 	FINISHED, UNFINISHED, EXPIRED 
@@ -22,6 +23,7 @@ public class TaskItem implements Cloneable {
 	}
 	
 	
+	//getter and setter
 	public TaskItem() { }
 
 	public int getTaskID() {
@@ -48,12 +50,21 @@ public class TaskItem implements Cloneable {
 	public void setStatus(Status status) {
 		this.status = status;
 	}
+	
+
 	public String toStorageFormat(){
 		String formatedString = "";
-		formatedString = "\"" + description + "\"" + priority + ";" + status;
+		formatedString = "\"" + description + "\"" + priority + status;
 		return formatedString;
 	}
 	
+	public boolean equals(TaskItem task) {
+		boolean equalDescription = this.description.equals(task.description);
+		boolean equalPriority = this.priority == task.priority;
+		boolean equalStatus = this.status.equals(task.status);
+		boolean equalTask = equalDescription && equalPriority && equalStatus;
+		return equalTask;
+	}
 	
 //	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
 //			"dd/MM,HH:mmyyyy");
@@ -190,3 +201,4 @@ public class TaskItem implements Cloneable {
 //		return formattedDate;
 //	}
 }
+
