@@ -2,7 +2,7 @@ package TestUI;
 import java.util.Scanner;
 
 import Command.Command;
-import Logic.Logic;
+import Logic.CommandCreator;
 
 public class TextUI {
 	// messages to the user
@@ -16,7 +16,6 @@ public class TextUI {
 	}
 
 	public static void run() {
-		Logic.init();
 		showToUser(MESSAGE_WELCOME);
 		readAndExecuteCommands();
 	}
@@ -30,7 +29,8 @@ public class TextUI {
 		while (!input.equals("exit")) {
 			try {
 				input = readUserInput();
-				Command command = Parser.parseCommand(input);
+				Command command = CommandCreator.parseCommand(input);
+				CommandStack.push(command);
 				String feedback = Logic.executeCommand(command);
 				showToUser(feedback);
 			} catch (Exception e) {

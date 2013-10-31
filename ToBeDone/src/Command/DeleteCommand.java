@@ -74,7 +74,7 @@ public class DeleteCommand extends Command{
 		return feedback;
 	}
 	
-	private static String executeDeleteCommand(Command command) {
+	private static String execute(Command command) {
 		String feedback;
 		assert command.getCommandParameters().size() == 1;
 		String commandParameter = command.getCommandParameters().get(0);

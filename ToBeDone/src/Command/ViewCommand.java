@@ -23,7 +23,7 @@ public class ViewCommand extends Command{
 	public void setUndoable(boolean undoable) {
 		this.undoable = undoable;
 	}
-	private static String executeViewCommand(Command command) {
+	private static String execute(Command command) {
 		String regex = "[0-9]+";
 		String range = command.getCommandParameters().get(0);
 		String result = "";

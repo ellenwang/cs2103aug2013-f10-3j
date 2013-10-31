@@ -55,7 +55,7 @@ public class CreateCommand extends Command {
 		return feedback;
 	}
 
-	public void executeCreateCommand() {
+	public void execute() {
 		// / since there are 3 kind of task. each has different number of
 		// parameters
 		Vector<String> Para = command.getCommandParameters();

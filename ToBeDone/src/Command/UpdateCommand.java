@@ -46,7 +46,7 @@ public class UpdateCommand extends Command{
 				lastUpdatedTask, updatedTask);
 		return feedback;
 	}
-	private static String executeUpdateCommand(Command command) {
+	private static String execute(Command command) {
 		int index = Integer.parseInt(command.getCommandParameters().get(0));
 		int taskID = indexToTaskID(index);
 		TaskItem updatedTask = allTasks.get(taskID);
