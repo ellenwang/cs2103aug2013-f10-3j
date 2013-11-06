@@ -30,13 +30,16 @@ import com.tobedone.utilities.Constants;
  * 
  */
 public class AddCommandAtd {
-	private Storage storage = Storage.getInstance();
-	private ToDoList toDoList = new ToDoListImp();
-	private CommandParser commandParser = CommandParser.getInstance();
+	private Storage storage;
+	private ToDoList toDoList;
+	private CommandParser commandParser;
 
 	@Before
 	public void before() {
+		storage = Storage.getInstance();
 		storage.changeToTestFile();
+		toDoList = new ToDoListImp();
+		commandParser = CommandParser.getInstance();
 		storage.clear();
 	}
 
@@ -49,7 +52,7 @@ public class AddCommandAtd {
 	@Test
 	public void testAddFloatingTask() throws Exception {
 		String description = "test floating task";
-		String commandString = "add" + " " + description;
+		String commandString = "add " + description;
 		Parser parser = Parser.getInstance();
 		Command command = parser.parseCommand(commandString);
 		command.execute();
