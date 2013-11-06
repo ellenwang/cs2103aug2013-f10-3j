@@ -27,7 +27,7 @@ public class CommandParser {
 		currentYear = (Calendar.getInstance()).get(Calendar.YEAR)
 				+ Constants.EMPTY_STRING;
 		currentMonth = (Calendar.getInstance()).get(Calendar.MONTH)
-				+ Constants.EMPTY_STRING + Constants.ONE;
+				+ Constants.ONE+ Constants.EMPTY_STRING ;
 		currentDay = (Calendar.getInstance()).get(Calendar.DAY_OF_MONTH)
 				+ Constants.EMPTY_STRING;
 		
