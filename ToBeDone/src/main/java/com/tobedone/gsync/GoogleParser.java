@@ -45,7 +45,7 @@ public class GoogleParser {
 			DateTime start = new DateTime(currentDate, TimeZone.getDefault());
 			event.setStart(new EventDateTime().setDateTime(start));
 			
-			Date endTime = ((TimedTask) task).getEndTime();
+			Date endTime = ((DeadlinedTask) task).getEndTime();
 			DateTime end = new DateTime(endTime, TimeZone.getDefault());
 			event.setEnd(new EventDateTime().setDateTime(end));
 		}else{
