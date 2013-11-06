@@ -3,12 +3,13 @@ package test.storage;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.tobedone.storage.Storage;
@@ -16,20 +17,28 @@ import com.tobedone.taskitem.TaskItem;
 import com.tobedone.taskitem.TimedTask;
 import com.tobedone.utilities.Constants;
 
+/**
+ * @author A0118441M
+ *
+ */
 public class StorageAtd {
 	private static final String MESSAGE_PARSING_ERROR = "Parsing error";
-
-	private static final String TESTING_FILE_NAME = "test.txt";
-	private static final File TEST_FILE = new File(TESTING_FILE_NAME);
 
 	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
 			"dd/MM','HH:mmyyyy");
 
-	private static Storage storage;
-
-	// change the file to a testfile to not overwrite data of ToBeDone
-	static {
-		storage = Storage.getTestInstance(TEST_FILE);
+	private static Storage storage = Storage.getInstance();
+	
+	@Before
+	public void before() {
+		storage.changeToTestFile();
+		storage.clear();
+	}
+	
+	@After
+	public void after() {
+		storage.clear();
+		storage.changeToMainFile();
 	}
 
 	@Test
@@ -86,7 +95,6 @@ public class StorageAtd {
 		// Retrieve a single task
 		receivedTasks = storage.retrieve();
 		assertEquals(receivedTasks.size(), tasks.size());
-		System.out.println(receivedTasks.get(0) + "\n" + task1);
 		assertTrue(receivedTasks.get(0).equals(task1));
 	}
 

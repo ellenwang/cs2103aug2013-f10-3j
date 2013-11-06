@@ -117,7 +117,7 @@ public class CommandParser {
 	 * @return the date object
 	 */
 	//
-	protected Date parseDate(String datePartern) throws Exception {
+	public Date parseDate(String datePartern) throws Exception {
 		String dayString = currentDay;
 		String yearString = currentYear;
 		String monthString = currentMonth;
