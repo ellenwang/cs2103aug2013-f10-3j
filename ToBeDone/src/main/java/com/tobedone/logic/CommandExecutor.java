@@ -42,9 +42,9 @@ public class CommandExecutor {
 	 */
 	// @author A0117215R
 	public static CommandExecutor getInstance(String cmdString) {
-		if(theOneCommandExecutor == null){
-			theOneCommandExecutor = new CommandExecutor(cmdString);
-		}
+		
+		theOneCommandExecutor = new CommandExecutor(cmdString);
+		
 		return theOneCommandExecutor;
 	}
 }
