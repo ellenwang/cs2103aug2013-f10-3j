@@ -23,7 +23,7 @@ public class CommandParseMap {
 		commandmap.put(Constants.CMD_FINISH, Constants.PARSER_CLA_NAME_FINISH);
 		commandmap.put(Constants.CMD_SHORTCUT_FINISH, Constants.PARSER_CLA_NAME_FINISH);
 		//List
-		commandmap.put(Constants.CMD_LIST, Constants.PARSER_CLA_NAME_FINISH);
+		commandmap.put(Constants.CMD_LIST, Constants.PARSER_CLA_NAME_LIST);
 		commandmap.put(Constants.CMD_SHORTCUT_LIST_ALL, Constants.PARSER_CLA_NAME_LSA);
 		commandmap.put(Constants.CMD_SHORTCUT_LIST_UNFINISHED, Constants.PARSER_CLA_NAME_LSU);
 		commandmap.put(Constants.CMD_SHORTCUT_LIST_FINISHED, Constants.PARSER_CLA_NAME_LSF);
