@@ -41,11 +41,11 @@ import com.google.api.services.calendar.model.Events;
  *
  */
 public class GoogleCalendar {
+	
 	private static SimpleDateFormat simpleDateAndTimeFormat = new SimpleDateFormat(
 			"yyyy'-'MM'-'dd'T'HH:mm:ss");
 	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
 			"yyyy-MM-dd");
-
 	/**
 	 * Be sure to specify the name of your application. If the application name
 	 * is {@code null} or blank, the application will log a warning. Suggested
@@ -118,8 +118,6 @@ public class GoogleCalendar {
 					httpTransport, JSON_FACTORY, credential)
 					.setApplicationName(APPLICATION_NAME).build();
 
-			// run commands
-
 			// CalendarList
 			CalendarList calendarList = client.calendarList().list().execute();
 
@@ -149,9 +147,16 @@ public class GoogleCalendar {
 					.execute();
 			List<Event> items = events.getItems();
 			for (Event event : items) {
-				Date startTime = toDate(event.getStart());
-				Date endTime = toDate(event.getEnd());
-
+				long calendarTimeZoneOffset;
+				if (event.getStart().getDateTime() != null) {
+				    calendarTimeZoneOffset = 1000*60*event.getStart().getDateTime().getTimeZoneShift();
+				} else {
+					calendarTimeZoneOffset = 1000*60*event.getStart().getDate().getTimeZoneShift();
+				}
+				long thisTimeZoneOffset = TimeZone.getDefault().getRawOffset();
+				long offset = thisTimeZoneOffset - calendarTimeZoneOffset;
+				Date startTime = new Date(toDate(event.getStart()).getTime() + offset);
+				Date endTime = new Date(toDate(event.getEnd()).getTime() + offset);
 				int priority = 2;
 
 				String description = event.getSummary();
@@ -173,7 +178,8 @@ public class GoogleCalendar {
 			res = simpleDateAndTimeFormat.parse(t.toString());
 		} else if (e.getDate() != null) {
 			DateTime t = e.getDate();
-			res = simpleDateFormat.parse(t.toString());
+			String temp = t.toString();
+			res = simpleDateFormat.parse(temp);
 		}
 		return res;
 	}
@@ -202,12 +208,18 @@ public class GoogleCalendar {
 
 			// Show and select calendar
 			CalendarListEntry calendar = displayAndSelectCalendar(calendarList);
+			String calendarId = calendar.getId();
+			
+			// download calendar tasks
+			Vector<TaskItem> calendarTasks = downloadFromCalendar(calendarId);
 
 			// upload to google
-			String calendarId = calendar.getId();
 			for (TaskItem task : tasks) {
-				Event e = taskToEvent(task);
-				upload(calendarId, e);
+				if (!calendarTasks.contains(task)) {
+					Event e = taskToEvent(task);
+					
+					upload(calendarId, e);
+				}
 			}
 
 			feedback = "Successfully uploaded to Google Calendar.";
@@ -218,6 +230,17 @@ public class GoogleCalendar {
 		}
 
 		return feedback;
+	}
+	
+
+	private static Vector<TaskItem> removeDuplicates(Vector<TaskItem> tasks) {
+		Vector<TaskItem> noDuplicates = new Vector<TaskItem>();
+		for (TaskItem task : tasks) {
+			if (!noDuplicates.contains(task)) {
+				noDuplicates.add(task);
+			}
+		}
+		return noDuplicates;
 	}
 
 	private static CalendarListEntry displayAndSelectCalendar(

@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class TaskItem implements Cloneable {
 	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-			"dd/MM,HH:mmyyyy");
+			"HH:mm,dd/MM,yyyy");
 
 	private int taskID;
 	private String description;
@@ -106,24 +106,42 @@ public class TaskItem implements Cloneable {
 		String formattedEndTime = formatDate(getEndTime());
 
 		if (getStartTime() != null) {
-			result = getDescription() + "\t starts from: " + formattedStartTime
-					+ "\t ends at: " + formattedEndTime;
+			result = getDescription() + "\n\tfrom: " + formattedStartTime
+					+ "\n\tto:   " + formattedEndTime;
 		} else if (getEndTime() != null) {
-			result = getDescription() + "\t deadline: " + formattedEndTime;
+			result = getDescription() + "\n\tdeadline: " + formattedEndTime;
 		} else {
 			result = getDescription();
 		}
 		return result;
 	}
 
-	public boolean equals(TaskItem task) {
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof TaskItem)) {
+			return false;
+		}
+		TaskItem task = (TaskItem) obj;
+		
 		boolean equalDescription = this.description.equals(task.description);
-		boolean equalStartTime = this.startTime.equals(task.startTime);
-		boolean equalEndTime = this.endTime.equals(task.endTime);
+		boolean equalStartTime;
+		if(this.startTime == null ? task.startTime == null : this.startTime.equals(task.startTime)){
+			equalStartTime=true;
+		}else{
+			equalStartTime = false;
+		}
+		boolean equalEndTime ;
+		if(this.endTime == null ? task.endTime == null : this.endTime.equals(task.endTime)){
+			equalEndTime=true;
+		}else{
+			equalEndTime = false;
+		}
+		
 		boolean equalPriority = this.priority == task.priority;
 		boolean equalStatus = this.status.equals(task.status);
-		boolean equalTask = equalDescription && equalStartTime && equalEndTime
-				&& equalPriority && equalStatus;
+		boolean equalTask = equalDescription && equalStartTime && equalEndTime;
 		return equalTask;
 	}
 
@@ -131,8 +149,6 @@ public class TaskItem implements Cloneable {
 		String formattedDate;
 		if (date != null) {
 			formattedDate = simpleDateFormat.format(date);
-			// remove year
-			formattedDate = formattedDate.substring(0, formattedDate.length() - 4);
 		} else {
 			formattedDate = "";
 		}

@@ -1,6 +1,7 @@
 package com;
 
-
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -30,6 +31,8 @@ public class Logic {
 	private static final String MESSAGE_WRONG_TIME_FORMAT = "Wrong time format.";
 	private static final String MESSAGE_TOO_MANY_PARAMETERS = "Wrong command format. Too many parameters.";
 	private static final String MESSAGE_ENDTIME_SMALLER_THAN_STARTTIME = "The end time of tasks can't be before the start time.";
+	private static final String MESSAGE_CREATE_DUPLICATE = "This task has already been created.";
+	private static final String MESSAGE_VIEW_EMPTY = "No task to view.";
 
 	// task types
 	private static final int FLOATING_TASK = 2;
@@ -44,12 +47,12 @@ public class Logic {
 		logger.setLevel(Level.WARNING);
 	}
 
+	// all tasks
+	private static Vector<TaskItem> allTasks;
+	
 	private static int CURRENT_YEAR;
 	static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-			"dd/MM,HH:mmyyyy");
-
-	// all tasks
-	private static Vector<TaskItem> allTasks = Storage.retrieve();
+			"HH:mm,dd/MM,yyyy");
 
 	// tasks matching the latest view or search command
 	private static Vector<TaskItem> matchingTasks = new Vector<TaskItem>();
@@ -63,10 +66,19 @@ public class Logic {
 	private static Vector<TaskItem> lastDeletedTasks = new Vector<TaskItem>();
 	private static TaskItem lastUpdatedTask;
 
+	private static Storage storage = Storage.getInstance();
+
 	public static void init() {
+		allTasks = storage.retrieve();
 		updateTaskIDs();
+		try {
+			System.setErr(new PrintStream(new FileOutputStream("err.log")));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		CURRENT_YEAR = (Calendar.getInstance()).get(Calendar.YEAR);
 	}
+	
 
 	public static String executeCommand(Command command) {
 		init();
@@ -108,7 +120,7 @@ public class Logic {
 
 		finshedTaskItem.setStatus(TaskItem.Status.FINISHED);
 		updateTaskIDs();
-		Storage.store(allTasks);
+		storage.store(allTasks);
 		lastModifyingCommand = command;
 
 		return String.format(MESSAGE_FINISH_SUCCESSFUL,
@@ -134,8 +146,12 @@ public class Logic {
 		// a task just has description\endTime and priority
 		if (taskType == DEADLINE_TASK) {
 			try {
-				taskEndTime = simpleDateFormat
-						.parse(Para.get(1) + CURRENT_YEAR);
+				if (Para.get(1).indexOf(",") != Para.get(1).lastIndexOf(",")) {
+					taskEndTime = simpleDateFormat.parse(Para.get(1));
+				} else {
+					taskEndTime = simpleDateFormat.parse(Para.get(1) + ","
+							+ CURRENT_YEAR);
+				}
 			} catch (ParseException e) {
 				return MESSAGE_WRONG_TIME_FORMAT;
 			}
@@ -145,10 +161,20 @@ public class Logic {
 		// a full task with description\startTime\endTime and priority
 		if (taskType == TIMED_TASK) {
 			try {
-				taskStartTime = simpleDateFormat.parse(Para.get(1)
-						+ CURRENT_YEAR);
-				taskEndTime = simpleDateFormat
-						.parse(Para.get(2) + CURRENT_YEAR);
+				if (Para.get(1).indexOf(",") != Para.get(1).lastIndexOf(",")) {
+					taskStartTime = simpleDateFormat.parse(Para.get(1));
+				} else {
+					taskStartTime = simpleDateFormat.parse(Para.get(1) + ","
+							+ CURRENT_YEAR);
+				}
+
+				if (Para.get(2).indexOf(",") != Para.get(2).lastIndexOf(",")) {
+					taskEndTime = simpleDateFormat.parse(Para.get(2));
+				} else {
+					taskEndTime = simpleDateFormat.parse(Para.get(2) + ","
+							+ CURRENT_YEAR);
+				}
+
 			} catch (ParseException e) {
 				return MESSAGE_WRONG_TIME_FORMAT;
 			}
@@ -167,12 +193,21 @@ public class Logic {
 
 		TaskItem newItem = new TaskItem(taskDescription, taskStartTime,
 				taskEndTime, priority);
-		allTasks.add(newItem);
-		updateTaskIDs();
-		Storage.store(allTasks);
-		lastModifyingCommand = command;
-		lastCreatedTask = newItem;
-		return String.format(MESSAGE_CREATE_SUCCESSFUL, newItem);
+		boolean flag = true;
+		for (int i = 0; i < allTasks.size(); i++) {
+			if (newItem.equals(allTasks.get(i))) {
+				flag = false;
+			}
+		}
+		if (flag) {
+			allTasks.add(newItem);
+			updateTaskIDs();
+			storage.store(allTasks);
+			lastModifyingCommand = command;
+			lastCreatedTask = newItem;
+			return String.format(MESSAGE_CREATE_SUCCESSFUL, newItem);
+		}
+		return MESSAGE_CREATE_DUPLICATE;
 	}
 
 	private static String executeViewCommand(Command command) {
@@ -199,6 +234,9 @@ public class Logic {
 				matchingTasks.addAll(firstPriorityTasks);
 				matchingTasks.addAll(secondPriorityTasks);
 				matchingTasks.addAll(thirdPriorityTasks);
+				if (matchingTasks.size() == 0) {
+					return MESSAGE_VIEW_EMPTY;
+				}
 				result = vectorToString(matchingTasks);
 			} else if (range.equals("finished")) {
 				matchingTasks.clear();
@@ -208,6 +246,9 @@ public class Logic {
 					if (currentTask.getStatus() == TaskItem.Status.FINISHED) {
 						matchingTasks.add(currentTask);
 					}
+				}
+				if (matchingTasks.size() == 0) {
+					return MESSAGE_VIEW_EMPTY;
 				}
 				result = vectorToString(matchingTasks);
 			} else if (range.equals("expired")) {
@@ -219,6 +260,9 @@ public class Logic {
 						matchingTasks.add(currentTask);
 					}
 				}
+				if (matchingTasks.size() == 0) {
+					return MESSAGE_VIEW_EMPTY;
+				}
 				result = vectorToString(matchingTasks);
 			} else if (range.equals("unfinished")) {
 				matchingTasks.clear();
@@ -229,12 +273,18 @@ public class Logic {
 						matchingTasks.add(currentTask);
 					}
 				}
+				if (matchingTasks.size() == 0) {
+					return MESSAGE_VIEW_EMPTY;
+				}
 				result = vectorToString(matchingTasks);
 			} else if (isNumeric(range)) {
 				matchingTasks.clear();
 
 				int index = Integer.parseInt(range);
-				matchingTasks.add(allTasks.get(index-1));
+				matchingTasks.add(allTasks.get(index - 1));
+				if (matchingTasks.size() == 0) {
+					return MESSAGE_VIEW_EMPTY;
+				}
 				result = vectorToString(matchingTasks);
 			}
 		} catch (Exception e) {
@@ -265,8 +315,17 @@ public class Logic {
 			if (parameter.startsWith("(start)")) {
 				String newStartTimeString = parameter.substring(7);
 				try {
-					updatedTask.setStartTime(simpleDateFormat
-							.parse(newStartTimeString + CURRENT_YEAR));
+					if (newStartTimeString.indexOf(",") != newStartTimeString
+							.lastIndexOf(",")) {
+						Date newTaskStartTime = simpleDateFormat
+								.parse(newStartTimeString);
+						updatedTask.setStartTime(newTaskStartTime);
+					} else {
+						Date newTaskStartTime = simpleDateFormat
+								.parse(newStartTimeString + "," + CURRENT_YEAR);
+						updatedTask.setEndTime(newTaskStartTime);
+					}
+
 				} catch (ParseException e) {
 					return MESSAGE_WRONG_TIME_FORMAT;
 				}
@@ -276,8 +335,16 @@ public class Logic {
 			else if (parameter.startsWith("(end)")) {
 				String newEndTimeString = parameter.substring(5);
 				try {
-					updatedTask.setEndTime(simpleDateFormat
-							.parse(newEndTimeString + CURRENT_YEAR));
+					if (newEndTimeString.indexOf(",") != newEndTimeString
+							.lastIndexOf(",")) {
+						Date newTaskEndTime = simpleDateFormat
+								.parse(newEndTimeString);
+						updatedTask.setEndTime(newTaskEndTime);
+					} else {
+						Date newTaskEndTime = simpleDateFormat
+								.parse(newEndTimeString + "," + CURRENT_YEAR);
+						updatedTask.setEndTime(newTaskEndTime);
+					}
 				} catch (ParseException e) {
 					return MESSAGE_WRONG_TIME_FORMAT;
 				}
@@ -290,11 +357,16 @@ public class Logic {
 			else {
 				updatedTask.setDescription(parameter);
 			}
+		}
 
+		if (updatedTask.getEndTime() != null
+				&& updatedTask.getStartTime() != null
+				&& updatedTask.getEndTime().before(updatedTask.getStartTime())) {
+			return MESSAGE_ENDTIME_SMALLER_THAN_STARTTIME;
 		}
 
 		updateTaskIDs();
-		Storage.store(allTasks);
+		storage.store(allTasks);
 		lastModifyingCommand = command;
 		return String.format(MESSAGE_UPDATE_SUCCESSFUL, lastUpdatedTask,
 				updatedTask);
@@ -322,7 +394,7 @@ public class Logic {
 					.format(MESSAGE_DELETE_SUCCESSFUL, lastDeletedTask);
 		}
 
-		Storage.store(allTasks);
+		storage.store(allTasks);
 		lastModifyingCommand = command;
 		return feedback;
 	}
@@ -367,7 +439,7 @@ public class Logic {
 		case "create":
 			lastDeletedTask = allTasks.remove(lastCreatedTask.getTaskID());
 			updateTaskIDs();
-			Storage.store(allTasks);
+			storage.store(allTasks);
 			feedback = String
 					.format(MESSAGE_DELETE_SUCCESSFUL, lastCreatedTask);
 			break;
@@ -388,12 +460,12 @@ public class Logic {
 				feedback = String.format(MESSAGE_CREATE_SUCCESSFUL,
 						lastDeletedTask);
 			}
-			Storage.store(allTasks);
+			storage.store(allTasks);
 			break;
 		case "update":
 			lastUpdatedTask = allTasks.set(lastUpdatedTask.getTaskID(),
 					lastUpdatedTask);
-			Storage.store(allTasks);
+			storage.store(allTasks);
 			TaskItem updatedTask = allTasks.get(lastUpdatedTask.getTaskID());
 			feedback = String.format(MESSAGE_UPDATE_SUCCESSFUL,
 					lastUpdatedTask, updatedTask);
@@ -428,7 +500,7 @@ public class Logic {
 		case "create":
 			allTasks.add(lastCreatedTask.getTaskID(), lastCreatedTask);
 			updateTaskIDs();
-			Storage.store(allTasks);
+			storage.store(allTasks);
 			feedback = String
 					.format(MESSAGE_CREATE_SUCCESSFUL, lastCreatedTask);
 			break;
@@ -448,13 +520,13 @@ public class Logic {
 				feedback = String.format(MESSAGE_DELETE_SUCCESSFUL,
 						lastDeletedTask);
 			}
-			Storage.store(allTasks);
+			storage.store(allTasks);
 
 			break;
 		case "update":
 			lastUpdatedTask = allTasks.set(lastUpdatedTask.getTaskID(),
 					lastUpdatedTask);
-			Storage.store(allTasks);
+			storage.store(allTasks);
 			TaskItem updatedTask = allTasks.get(lastUpdatedTask.getTaskID());
 			feedback = String.format(MESSAGE_UPDATE_SUCCESSFUL,
 					lastUpdatedTask, updatedTask);
@@ -468,22 +540,35 @@ public class Logic {
 
 		return feedback;
 	}
-	
+
 	private static String executeUploadCommand() {
-		String feedback = com.google.api.services.samples.calendar.cmdline.GoogleCalendar.upload(allTasks);
+		String feedback = com.google.api.services.samples.calendar.cmdline.GoogleCalendar
+				.upload(allTasks);
 		return feedback;
 	}
-	
+
 	private static String executeDownloadCommand() {
-		Vector<TaskItem> newTasks = com.google.api.services.samples.calendar.cmdline.GoogleCalendar.download();
+		Vector<TaskItem> newTasks = com.google.api.services.samples.calendar.cmdline.GoogleCalendar
+				.download();
 		allTasks.addAll(newTasks);
+		allTasks = removeDuplicates(allTasks);
 		updateTaskIDs();
-		Storage.store(allTasks);
+		storage.store(allTasks);
 		return "Successfully downloaded all tasks from Google Calendar";
 	}
 
 	private static String executeExitCommand() {
 		return MESSAGE_EXIT;
+	}
+
+	private static Vector<TaskItem> removeDuplicates(Vector<TaskItem> tasks) {
+		Vector<TaskItem> noDuplicates = new Vector<TaskItem>();
+		for (TaskItem task : tasks) {
+			if (!noDuplicates.contains(task)) {
+				noDuplicates.add(task);
+			}
+		}
+		return noDuplicates;
 	}
 
 	private static void updateTaskIDs() {

@@ -1,6 +1,5 @@
 package com;
 
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -14,13 +13,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Storage {
-	// messages to the user
-	public static final String MESSAGE_FAILED_TO_WRITE_TO_FILE = "Failed to write to file.";
-	public static final String MESSAGE_FAILED_TO_READ_FROM_FILE = "Failed to read from file.";
-	public static final String MESSAGE_FAILED_TO_PARSE_DATE = "Failed to parse date.";
-	public static final String MESSAGE_STORE_SUCCESSFUL = "Successfully stored tasks.";
-	public static final String MESSAGE_TASK_LIST_NULL = "Store aborted, list of tasks is null";
-
 	// name of file
 	private static final String FILE_NAME = "ToBeDone.txt";
 
@@ -35,35 +27,65 @@ public class Storage {
 	// file written to and read from
 	private static File file = new File(FILE_NAME);
 
-	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-			"dd/MM','HH:mmyyyy");
+	// private static singleton storage object
+	private static Storage storage;
+
+	static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+			"HH:mm,dd/MM,yyyy");
+
+	/**
+	 * Singleton private constructor.
+	 * 
+	 */
+	private Storage() {
+
+	}
+
+	/**
+	 * Gets an instance of the singleton Storage object.
+	 * 
+	 * @return singleton instance
+	 */
+	public static Storage getInstance() {
+		if (storage == null) {
+			storage = new Storage();
+		}
+		return storage;
+	}
 
 	/**
 	 * Changes the file to which the tasks are stored to and retrieved from.
 	 * Used for testing to not overwrite tasks in the default file name.
 	 * 
 	 * @param newFile
-	 *            new file to where tasks are stored to and retrieved from.
+	 *            new file to where tasks are stored to and retrieved from
 	 */
-	public static void changeFile(File newFile) {
+	public void changeFile(File newFile) {
 		file = newFile;
 	}
 
-	public static String store(Vector<TaskItem> taskItems) {
+	/**
+	 * Stores the specified tasks in the file.
+	 * 
+	 * @param taskItems
+	 *            the tasks to be stored
+	 * @return feedback on how the store operation went
+	 */
+	public String store(Vector<TaskItem> taskItems) {
 		if (taskItems != null) {
 			writeTasksToFile(taskItems);
-			return MESSAGE_STORE_SUCCESSFUL;
+			return Constants.MESSAGE_STORE_SUCCESSFUL;
 		} else {
-			return MESSAGE_TASK_LIST_NULL;
+			return Constants.MESSAGE_TASK_LIST_NULL;
 		}
 	}
 
-	public static Vector<TaskItem> retrieve() {
-		Vector<TaskItem> allTasks = getTasksFromFile();
-		return allTasks;
-	}
-
-	private static Vector<TaskItem> getTasksFromFile() {
+	/**
+	 * Retrieves all tasks from the file.
+	 * 
+	 * @return all tasks stored in the file
+	 */
+	public Vector<TaskItem> retrieve() {
 		Vector<TaskItem> fileTasks = new Vector<TaskItem>();
 		try {
 			logger.log(Level.INFO, "accessing file content");
@@ -75,13 +97,19 @@ public class Storage {
 			}
 			in.close();
 		} catch (IOException e) {
-			System.err.println(MESSAGE_FAILED_TO_READ_FROM_FILE);
+			System.err.println(Constants.MESSAGE_FAILED_TO_READ_FROM_FILE);
 			logger.log(Level.INFO, "error, could not access file content");
 		}
 		return fileTasks;
 	}
 
-	private static void writeTasksToFile(Vector<TaskItem> tasks) {
+	/**
+	 * Stores the specified tasks in the file.
+	 * 
+	 * @param tasks
+	 *            the tasks to be stored
+	 */
+	private void writeTasksToFile(Vector<TaskItem> tasks) {
 		try {
 			FileWriter fstream = new FileWriter(file);
 			BufferedWriter out = new BufferedWriter(fstream);
@@ -92,11 +120,19 @@ public class Storage {
 
 			out.close();
 		} catch (IOException e) {
-			System.err.println(MESSAGE_FAILED_TO_WRITE_TO_FILE);
+			System.err.println(Constants.MESSAGE_FAILED_TO_WRITE_TO_FILE);
 		}
 	}
 
-	private static String taskItemToStorageFormat(TaskItem task) {
+	/**
+	 * Converts a task item into the storage format, that is how the task is
+	 * stored in the file.
+	 * 
+	 * @param task
+	 *            the task item to be converted into storage format
+	 * @return the storage format of the task
+	 */
+	private String taskItemToStorageFormat(TaskItem task) {
 		String description = task.getDescription();
 
 		Date startTime = task.getStartTime();
@@ -114,18 +150,15 @@ public class Storage {
 		return storageFormat;
 	}
 
-	private static String formatDate(Date date) {
-		String formattedDate;
-		if (date != null) {
-			formattedDate = simpleDateFormat.format(date);
-		} else {
-			formattedDate = "";
-		}
-
-		return formattedDate;
-	}
-
-	private static TaskItem storageFormatToTaskItem(String storageFormat) {
+	/**
+	 * Converts a task in storage format, that is how the task is stored in the
+	 * file, to a task item.
+	 * 
+	 * @param storageFormat
+	 *            the storage format of the task
+	 * @return the storage format converted into a task item
+	 */
+	private TaskItem storageFormatToTaskItem(String storageFormat) {
 		String[] taskInformation = splitStorageFormat(storageFormat);
 
 		assert taskInformation.length == 5;
@@ -140,20 +173,54 @@ public class Storage {
 		return task;
 	}
 
-	private static Date parseDate(String date) {
+	/**
+	 * Converts a date into a string representation.
+	 * 
+	 * @param date
+	 *            the date to be converted
+	 * @return string representation of date
+	 */
+	private String formatDate(Date date) {
+		String formattedDate;
+		if (date != null) {
+			formattedDate = simpleDateFormat.format(date);
+		} else {
+			formattedDate = "";
+		}
+
+		return formattedDate;
+	}
+
+	/**
+	 * Parses a string representation of a date to a date.
+	 * 
+	 * @param date
+	 *            the string representation of the date
+	 * @return the string representation parsed to a date
+	 */
+	private Date parseDate(String date) {
 		Date parsedDate = null;
 		if (!date.equals("")) {
 			try {
 				parsedDate = simpleDateFormat.parse(date);
 			} catch (ParseException e) {
-				System.err.println(MESSAGE_FAILED_TO_PARSE_DATE);
+				System.err.println(Constants.MESSAGE_FAILED_TO_PARSE_DATE);
 			}
 		}
 
 		return parsedDate;
 	}
 
-	private static String[] splitStorageFormat(String storageFormat) {
+	/**
+	 * Splits a storage format into an array containing the representation of
+	 * the different fields of the task.
+	 * 
+	 * @param storageFormat
+	 *            the storage format to be split
+	 * @return an array of the string representation of the different fields in
+	 *         a task
+	 */
+	private String[] splitStorageFormat(String storageFormat) {
 		String description = extractDescription(storageFormat);
 		String storageFormatWithoutDescription = removeDescription(storageFormat);
 
@@ -169,14 +236,28 @@ public class Storage {
 		return allTaskInformation;
 	}
 
-	private static String extractDescription(String storageFormat) {
+	/**
+	 * Extracts the description of a storage format.
+	 * 
+	 * @param storageFormat
+	 *            the storage format from which the description is to be
+	 *            extracted
+	 * @return the description of the task represented by the storage format
+	 */
+	private String extractDescription(String storageFormat) {
 		int indexOfEndOfDescription = storageFormat.lastIndexOf('\"');
 		String description = storageFormat
 				.substring(1, indexOfEndOfDescription);
 		return description;
 	}
 
-	private static String removeDescription(String storageFormat) {
+	/**
+	 * Removes the description from a storage format.
+	 * 
+	 * @param storageFormat the storage format from which the description is to be removed
+	 * @return the specified storage format without the description
+	 */
+	private String removeDescription(String storageFormat) {
 		int indexOfEndOfDescription = storageFormat.lastIndexOf('\"');
 		String storageFormatWithoutDescription = storageFormat
 				.substring(indexOfEndOfDescription + 1);

@@ -29,8 +29,8 @@ public class Parser {
 
 		// only for the update command, description is not the first parameter
 		if (comParaString.contains("\"") && comParaString.charAt(0) != '\"') {
-			parameters.add(comParaString.charAt(0) + "");
-			comParaString = comParaString.substring(2);
+			parameters.add(comParaString.substring(0,comParaString.indexOf('\"')-1));
+			comParaString = comParaString.substring(comParaString.indexOf('\"'));
 		}
 
 		String description = getDescription(comParaString);
