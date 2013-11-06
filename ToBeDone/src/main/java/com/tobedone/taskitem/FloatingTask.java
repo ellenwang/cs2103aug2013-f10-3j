@@ -1,7 +1,5 @@
 package com.tobedone.taskitem;
 
-import com.tobedone.taskitem.TaskItem.Status;
-import com.tobedone.utilities.Constants;
 
 
 /**

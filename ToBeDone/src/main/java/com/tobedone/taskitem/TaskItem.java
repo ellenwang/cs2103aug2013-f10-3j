@@ -1,8 +1,6 @@
 package com.tobedone.taskitem;
 
-import com.tobedone.utilities.Constants;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 
