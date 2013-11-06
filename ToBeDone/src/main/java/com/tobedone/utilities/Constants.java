@@ -3,8 +3,6 @@ package com.tobedone.utilities;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import com.tobedone.taskitem.TaskItem.Priority;
-
 //@author A0105682H
 public class Constants {
 	// Error Message
@@ -31,6 +29,7 @@ public class Constants {
 	public static final int PRIORITY_HIGH = 3;
 	public static final int PRIORITY_MEDIUM = 2;
 	public static final int PRIORITY_LOW = 1;
+	public static final int DEFAULT_PRIORITY = 2;
 	// Feedback
 	public static final String MSG_NO_UNDO = "Unable to undo actions.";
 	public static final String MSG_CHECK_SEARCH_SYNTAX = "Please check search syntax.";
@@ -218,5 +217,6 @@ public class Constants {
 	public static final String MESSAGE_FAILED_TO_PARSE_DATE = "Failed to parse date.";
 	public static final String MESSAGE_STORE_SUCCESSFUL = "Successfully stored tasks.";
 	public static final String MESSAGE_TASK_LIST_NULL = "Store aborted, list of tasks is null";
+	public static final String MESSAGE_FILE_NOT_FOUND = "File not found.";
 
 }

@@ -2,6 +2,8 @@ package com.tobedone.storage;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
@@ -18,9 +20,15 @@ import com.tobedone.taskitem.TaskItem;
 import com.tobedone.taskitem.TimedTask;
 import com.tobedone.utilities.Constants;
 
+/**
+ * 
+ * @author A0118441M
+ * 
+ */
 public class Storage {
 	// name of file
 	private static final String FILE_NAME = "ToBeDone.txt";
+	private static final String TEST_FILE_NAME = "test.txt";
 
 	// logger
 	private static Logger logger = Logger.getLogger("logger");
@@ -36,9 +44,6 @@ public class Storage {
 	// singleton storage object
 	private static Storage storage;
 
-	// used for testing, singleton test storage object
-	private static Storage testStorage;
-	
 	static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
 			"HH:mm,dd/MM,yyyy");
 
@@ -61,35 +66,34 @@ public class Storage {
 		}
 		return storage;
 	}
+
+	/**
+	 * Used for testing.
+	 * Change the file written to and read from to a test file.
+	 */
+	public void changeToTestFile() {
+		file = new File(TEST_FILE_NAME);
+	}
 	
 	/**
-	 * Used for testing.
-	 * Gets an instance of the singleton Storage test object.
-	 * 
-	 * @param testFile
-	 * @return
+	 * Change the file written to and read from to the main file.
 	 */
-	public static Storage getTestInstance(File testFile) {
-		if (testStorage == null) {
-			testStorage = new Storage();
-			testStorage.changeFile(testFile);
-		}
-		return testStorage;
+	public void changeToMainFile() {
+		file = new File(FILE_NAME);
 	}
 
 	/**
-	 * Used for testing.
-	 * Changes the file to which the tasks are stored to and retrieved from.
-	 * Used for testing to not overwrite tasks in the default file name.
-	 *
+	 * Clears the file of all content.
 	 * 
-	 * @param newFile
-	 *            new file to where tasks are stored to and retrieved from
 	 */
-	private void changeFile(File newFile) {
-		file = newFile;
+	public void clear() {
+		try {
+			FileOutputStream writer = new FileOutputStream(file);
+		} catch (FileNotFoundException e) {
+			System.err.println(Constants.MESSAGE_FILE_NOT_FOUND);
+		}
 	}
-
+	
 	/**
 	 * Stores the specified tasks in the file.
 	 * 
@@ -217,6 +221,7 @@ public class Storage {
 			task = new TimedTask(description, startTime, endTime, priority);
 		}
 
+		task.setStatus(status);
 		return task;
 	}
 
