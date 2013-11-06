@@ -1,7 +1,6 @@
 package com.tobedone.taskitem;
-import com.tobedone.*;
-import java.util.Date;
 import java.util.Comparator;
+import java.util.Date;
 
 import com.tobedone.utilities.Constants;
 
@@ -33,21 +32,21 @@ private Date endTime;
 		if (obj == this) {
 			return true;
 		}
-		if (!(obj instanceof TimedTask)) {
+		if (!(obj instanceof DeadlinedTask)) {
 			return false;
 		}
-		TimedTask task = (TimedTask) obj;
+		DeadlinedTask task = (DeadlinedTask) obj;
 		
-		boolean equalDescription = this.description.equals(task.description);
-		boolean equalEndTime ;
-		if(this.endTime == task.getEndTime()){
-			equalEndTime=true;
-		}else{
-			equalEndTime = false;
+		boolean equalDescription = description.equals(task.description);
+		boolean equalEndTime;
+		if (endTime == null) {
+			equalEndTime = task.getEndTime() == null;
+		} else {
+			equalEndTime = endTime.equals(task.getEndTime());
 		}
 		
-		boolean equalPriority = this.priority == task.priority;
-		boolean equalStatus = this.status.equals(task.status);
+		boolean equalPriority = priority == task.priority;
+		boolean equalStatus = status.equals(task.status);
 		boolean equalTask = equalDescription && equalPriority && equalStatus && equalEndTime;
 		return equalTask;
 	}

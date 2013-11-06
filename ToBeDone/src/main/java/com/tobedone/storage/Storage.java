@@ -12,12 +12,11 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.tobedone.utilities.*;
 import com.tobedone.taskitem.DeadlinedTask;
 import com.tobedone.taskitem.FloatingTask;
 import com.tobedone.taskitem.TaskItem;
-import com.tobedone.taskitem.TaskItem.Priority;
 import com.tobedone.taskitem.TimedTask;
+import com.tobedone.utilities.Constants;
 
 public class Storage {
 	// name of file
@@ -34,14 +33,17 @@ public class Storage {
 	// file written to and read from
 	private static File file = new File(FILE_NAME);
 
-	// private static singleton storage object
+	// singleton storage object
 	private static Storage storage;
 
+	// used for testing, singleton test storage object
+	private static Storage testStorage;
+	
 	static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
 			"HH:mm,dd/MM,yyyy");
 
 	/**
-	 * Singleton private constructor.
+	 * Singleton default constructor.
 	 * 
 	 */
 	private Storage() {
@@ -59,15 +61,32 @@ public class Storage {
 		}
 		return storage;
 	}
+	
+	/**
+	 * Used for testing.
+	 * Gets an instance of the singleton Storage test object.
+	 * 
+	 * @param testFile
+	 * @return
+	 */
+	public static Storage getTestInstance(File testFile) {
+		if (testStorage == null) {
+			testStorage = new Storage();
+			testStorage.changeFile(testFile);
+		}
+		return testStorage;
+	}
 
 	/**
+	 * Used for testing.
 	 * Changes the file to which the tasks are stored to and retrieved from.
 	 * Used for testing to not overwrite tasks in the default file name.
+	 *
 	 * 
 	 * @param newFile
 	 *            new file to where tasks are stored to and retrieved from
 	 */
-	public void changeFile(File newFile) {
+	private void changeFile(File newFile) {
 		file = newFile;
 	}
 
@@ -170,7 +189,6 @@ public class Storage {
 
 		return storageFormat;
 	}
-
 
 	/**
 	 * Converts a task in storage format, that is how the task is stored in the
