@@ -89,8 +89,12 @@ public class Storage {
 	public void clear() {
 		try {
 			FileOutputStream writer = new FileOutputStream(file);
+			writer.write((new String()).getBytes());
+			writer.close();
 		} catch (FileNotFoundException e) {
 			System.err.println(Constants.MESSAGE_FILE_NOT_FOUND);
+		} catch (IOException e) {
+			System.err.println(Constants.MESSAGE_FAILED_TO_WRITE_TO_FILE);
 		}
 	}
 	
