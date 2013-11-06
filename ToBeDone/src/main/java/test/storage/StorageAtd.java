@@ -27,10 +27,11 @@ public class StorageAtd {
 	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
 			"dd/MM','HH:mmyyyy");
 
-	private static Storage storage = Storage.getInstance();
+	private static Storage storage;
 	
 	@Before
 	public void before() {
+		storage = Storage.getInstance();
 		storage.changeToTestFile();
 		storage.clear();
 	}
