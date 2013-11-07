@@ -19,7 +19,7 @@ import com.tobedone.logic.ToDoListImp;
 public abstract class Command {
 	protected static Logger logger = Logger.getLogger(Command.class);
 	protected String feedback;
-	protected static CommandExecuteResult result;
+	protected CommandExecuteResult result;
 	protected boolean isUndoable = false;
 	protected boolean exitSystemStatus = false;
 	protected static ToDoList toDoService = new ToDoListImp();

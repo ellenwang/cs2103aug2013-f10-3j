@@ -28,6 +28,8 @@ public class UpdateCommandParser extends CommandParser {
 		
 		index = parseIndex(indexofindex, paraString);
 		
+		int indexofdescription = indexofindex + ((Integer) index).toString().length();
+		
 		if(paraString.endsWith(Constants.STR_PRI_HIGH)
 				||paraString.endsWith(Constants.STR_PRI_NORMAL)
 				||paraString.endsWith(Constants.STR_PRI_LOW)){
@@ -37,7 +39,7 @@ public class UpdateCommandParser extends CommandParser {
 		if(indexoffrom!= Constants.NOT_FOUND_INDEX 
 				&& indexofby == Constants.NOT_FOUND_INDEX){
 			if (indexofindex + 1 < indexoffrom - 1) {
-				newdescription = paraString.substring(indexofindex + 1,
+				newdescription = paraString.substring(indexofdescription,
 						indexoffrom - 1);
 			}
 			String endTimeString;
@@ -65,7 +67,7 @@ public class UpdateCommandParser extends CommandParser {
 		}else if (indexofto != Constants.NOT_FOUND_INDEX
 				&&indexofby == Constants.NOT_FOUND_INDEX) {
 			if (indexofindex + 1 < indexofto - 1) {
-				newdescription = paraString.substring(indexofindex + 1,
+				newdescription = paraString.substring(indexofdescription,
 						indexofto - 1);
 			}
 			
@@ -81,7 +83,7 @@ public class UpdateCommandParser extends CommandParser {
 			
 		}else if(indexofby != Constants.NOT_FOUND_INDEX){
 			if (indexofindex + 1 < indexofby - 1) {
-				newdescription = paraString.substring(indexofindex + 1,
+				newdescription = paraString.substring(indexofdescription,
 						indexofby - 1);
 			}
 			String deadlineSting;
@@ -96,10 +98,10 @@ public class UpdateCommandParser extends CommandParser {
 		}else{
 			if(indexofpriority!=Constants.NOT_FOUND_INDEX){
 				if(indexofindex+1<indexofpriority-1){
-					newdescription = paraString.substring(indexofindex+1,indexofpriority-1);
+					newdescription = paraString.substring(indexofdescription,indexofpriority-1);
 				}	
 			}else{
-				newdescription = paraString;
+				newdescription = paraString.substring(indexofdescription);
 			}
 		}
 

@@ -18,7 +18,6 @@ public class ListCommand extends Command {
 	}
 
 	protected void executeCommand() {
-		// TODO Auto-generated method stub
 		if (scope.equals("all")) {
 			for (TaskItem task : allTasks) {
 				aimTasks.add(task);
