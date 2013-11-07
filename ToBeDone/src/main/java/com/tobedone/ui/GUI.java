@@ -33,7 +33,7 @@ import java.util.Vector;
  * @since 01-09-2013
  * 
  *        This class takes charge of Display GUI of 2BeDone
- *        
+ * 
  */
 public class GUI extends JFrame {
 
@@ -44,30 +44,35 @@ public class GUI extends JFrame {
 	private final JLabel inputTips = new JLabel(Constants.TIP_BEGIN);
 	private final JLabel feedback = new JLabel(Constants.INFO_UNFINISHED_TASKS);
 	private static CommandExecuteResult executeResult;
-	private int[] tableRows = new int[Constants.TABLE_ROW_MAX_COUNT]; 
+	private int[] tableRows = new int[Constants.TABLE_ROW_MAX_COUNT];
 
-	public static void setExecuteResult(CommandExecuteResult result){
+	public static void setExecuteResult(CommandExecuteResult result) {
 		executeResult = result;
 	}
-	
+
 	/**
 	 * Launch the application.
-	 * @throws ParseException 
+	 * 
+	 * @throws ParseException
 	 */
 	public static void main(String[] args) throws ParseException {
-//		Date date1 = Constants.simpleDateFormat.parse("10:00,12-11-2013");
-//		Date date2 = Constants.simpleDateFormat.parse("11:00,12-11-2013");
-//		TaskItem taskItem1 =new TaskItem("attend se tutorial", "finished",date1, date2, 1);
-//		TaskItem taskItem2 =new TaskItem("call mom", "unfinished", null, date2, 3);
-//		TaskItem taskItem3 =new TaskItem("call mom", "unfinished", null, null, 2);
-//		
-//		Vector<TaskItem> tasks = new Vector<TaskItem>();
-//		tasks.add(taskItem1);
-//		tasks.add(taskItem2);
-//		tasks.add(taskItem3);
-//		
-//		CommandExecuteResult result = new CommandExecuteResult(tasks, Constants.INFO_ALL_TASKS);
-//		GUI.setExecuteResult(result);
+		// Date date1 = Constants.simpleDateFormat.parse("10:00,12-11-2013");
+		// Date date2 = Constants.simpleDateFormat.parse("11:00,12-11-2013");
+		// TaskItem taskItem1 =new TaskItem("attend se tutorial",
+		// "finished",date1, date2, 1);
+		// TaskItem taskItem2 =new TaskItem("call mom", "unfinished", null,
+		// date2, 3);
+		// TaskItem taskItem3 =new TaskItem("call mom", "unfinished", null,
+		// null, 2);
+		//
+		// Vector<TaskItem> tasks = new Vector<TaskItem>();
+		// tasks.add(taskItem1);
+		// tasks.add(taskItem2);
+		// tasks.add(taskItem3);
+		//
+		// CommandExecuteResult result = new CommandExecuteResult(tasks,
+		// Constants.INFO_ALL_TASKS);
+		// GUI.setExecuteResult(result);
 		BasicConfigurator.configure();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -91,18 +96,17 @@ public class GUI extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		
+
 		inputTips.setFont(new Font("Apple Braille", Font.PLAIN, 11));
 		inputTips.setForeground(new Color(0x102b6a));
 		inputTips.setBounds(13, 63, 424, 15);
 		contentPane.add(inputTips);
-		
+
 		feedback.setFont(new Font("Apple Braille", Font.PLAIN, 11));
 		feedback.setForeground(new Color(0x102b6a));
 		feedback.setBounds(13, 90, 424, 15);
 		contentPane.add(feedback);
-		
+
 		textField = new JTextField();
 		textField.setForeground(Color.DARK_GRAY);
 		textField.addKeyListener(new KeyAdapter() {
@@ -114,46 +118,43 @@ public class GUI extends JFrame {
 				} catch (Exception e1) {
 					System.err.println();
 				}
-				
+
 				String inputString = textField.getText();
-				
-				if(keyCode==KeyEvent.VK_ENTER){
+
+				if (keyCode == KeyEvent.VK_ENTER) {
+					textField.setText("");
 					TextUI.readUserInput(inputString);
 					TextUI.executeCommands();
-					
-					display(TextUI.getCommandExecuteResult());
-				}
-				
-				inputTips.setText(autoSetTips(inputString));
-				if(keyCode != KeyEvent.VK_BACK_SPACE){
-				textField.setText(autoSetInput(inputString));}
-			}	
-		});
-		
 
-		
+					display(TextUI.getCommandExecuteResult());
+
+				}
+
+				inputTips.setText(autoSetTips(inputString));
+				if (keyCode != KeyEvent.VK_BACK_SPACE
+						&& keyCode != KeyEvent.VK_ENTER) {
+					textField.setText(autoSetInput(inputString));
+				}
+			}
+		});
+
 		textField.setBounds(10, 36, 595, 24);
 		contentPane.add(textField);
 		textField.setColumns(10);
 
-		
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 108, 595, 240);
 		contentPane.add(scrollPane);
-		
+
 		tasksList = new JTable();
 		tasksList.setShowVerticalLines(false);
 		tasksList.setShowHorizontalLines(false);
 		tasksList.setRowSelectionAllowed(false);
 		tasksList.setShowGrid(false);
 		scrollPane.setViewportView(tasksList);
-		tasksList.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"Index", "Status", "Description", "Start Time/Date", "End Time/Date"
-			}
-		));
+		tasksList.setModel(new DefaultTableModel(new Object[][] {},
+				new String[] { "Index", "Status", "Description",
+						"Start Time/Date", "End Time/Date" }));
 		tasksList.getColumnModel().getColumn(0).setPreferredWidth(45);
 		tasksList.getColumnModel().getColumn(0).setMinWidth(45);
 		tasksList.getColumnModel().getColumn(0).setMaxWidth(45);
@@ -170,130 +171,136 @@ public class GUI extends JFrame {
 		tasksList.getColumnModel().getColumn(4).setMinWidth(127);
 		tasksList.getColumnModel().getColumn(4).setMaxWidth(127);
 		tasksList.setRowHeight(30);
-//		
-//		display(executeResult);
+		//
+		// display(executeResult);
 	}
-	
-	protected void display(CommandExecuteResult result){
+
+	protected void display(CommandExecuteResult result) {
 		for (int i = 0; i < result.getAimTasks().size(); i++) {
-			tableRows[i]=result.getAimTasks().get(i).getPriority();
+			tableRows[i] = result.getAimTasks().get(i).getPriority();
 		}
 		DefaultTableCellRenderer dtc = new DefaultTableCellRenderer() {
 			public Component getTableCellRendererComponent(JTable table,
 					Object value, boolean isSelected, boolean hasFocus,
 					int row, int column) {
-					if(tableRows[row]==1){
-						setForeground(new Color(0x1a2933));
-					}
-					if(tableRows[row]==2){
-						setForeground(new Color(0x87481f));
-					}
-					if(tableRows[row]==3){
-						setForeground(new Color(0xb22c46));
-					}
+				if (tableRows[row] == 1) {
+					setForeground(new Color(0x1a2933));
+				}
+				if (tableRows[row] == 2) {
+					setForeground(new Color(0x87481f));
+				}
+				if (tableRows[row] == 3) {
+					setForeground(new Color(0xb22c46));
+				}
 				return super.getTableCellRendererComponent(table, value,
 						isSelected, hasFocus, row, column);
 
 			}
 		};
-		
+
 		DefaultTableModel tableModel = (DefaultTableModel) tasksList.getModel();
 		tableModel.setRowCount(0);
 		feedback.setText(result.getFeedback());
-		for (int i = 0; i < result.getAimTasks().size(); i++) {	
+		for (int i = 0; i < result.getAimTasks().size(); i++) {
 			tableModel.addRow(getAttributes(result.getAimTasks().get(i), i));
 		}
-		
+
 		tasksList.getColumnModel().getColumn(0).setCellRenderer(dtc);
 		tasksList.getColumnModel().getColumn(1).setCellRenderer(dtc);
 		tasksList.getColumnModel().getColumn(2).setCellRenderer(dtc);
 		tasksList.getColumnModel().getColumn(3).setCellRenderer(dtc);
 		tasksList.getColumnModel().getColumn(4).setCellRenderer(dtc);
 	}
-	
-	private String[] getAttributes(TaskItem task, int index){
+
+	private String[] getAttributes(TaskItem task, int index) {
 		String indexString = index + Constants.EMPTY_STRING;
 		String description = task.getDescription();
 		String status;
 		String start;
 		String end;
-		
-		if(task.getStatus().equals("finished")){
+
+		if (task.getStatus().equals("finished")) {
 			status = "���";
-		}else{
+		} else {
 			status = "-";
 		}
-		
-		if(task instanceof TimedTask){
-			start = Constants.simpleDateFormat.format(((TimedTask)task).getStartTime());
-			end = Constants.simpleDateFormat.format(((TimedTask)task).getEndTime());
-		}else if(task instanceof DeadlinedTask){
+
+		if (task instanceof TimedTask) {
+			start = Constants.simpleDateFormat.format(((TimedTask) task)
+					.getStartTime());
+			end = Constants.simpleDateFormat.format(((TimedTask) task)
+					.getEndTime());
+		} else if (task instanceof DeadlinedTask) {
 			start = Constants.EMPTY_STRING;
-			end = Constants.simpleDateFormat.format(((DeadlinedTask)task).getEndTime());
-		}else{
+			end = Constants.simpleDateFormat.format(((DeadlinedTask) task)
+					.getEndTime());
+		} else {
 			start = Constants.EMPTY_STRING;
 			end = Constants.EMPTY_STRING;
-		}		
-		return new String[]{indexString,status,description,start,end};
+		}
+		return new String[] { indexString, status, description, start, end };
 	}
-	
+
 	/**
-	 * generate tips according to user input 
+	 * generate tips according to user input
 	 * 
 	 * @return the tips
 	 */
 	// @author A0117215R
 	private String autoSetTips(String input) {
-		if(input.equals("")){
+		if (input.equals("")) {
 			return Constants.TIP_BEGIN;
-		}else if(input.startsWith("++")){
-			return Constants.TIP_UPDATE;
-		}else if(input.startsWith("a")||input.startsWith("+")){
+		} else if (input.startsWith("c")) {
+			return Constants.TIP_CLEAR;
+		} else if (input.startsWith("a") || input.startsWith("+")) {
 			return Constants.TIP_ADD;
-		}else if(input.startsWith("++")){
+		} else if (input.startsWith("++")) {
 			return Constants.TIP_UPDATE;
-		}else if(input.startsWith("u")){
+		} else if (input.startsWith("u")) {
 			return Constants.TIP_UPDATE;
-		}else if(input.startsWith("s")){
-			return Constants.TIP_SEARCH + Constants.TIP_SEPRETER + Constants.TIP_SYNC;
-		}else if(input.startsWith("l")){
+		} else if (input.startsWith("s")) {
+			return Constants.TIP_SEARCH + Constants.TIP_SEPRETER
+					+ Constants.TIP_SYNC;
+		} else if (input.startsWith("l")) {
 			return Constants.TIP_LIST;
-		}else if(input.startsWith("h")||input.startsWith("?")){
+		} else if (input.startsWith("h") || input.startsWith("?")) {
 			return Constants.TIP_HELP;
-		}else if(input.startsWith("r")){
+		} else if (input.startsWith("r")) {
 			return Constants.TIP_REMOVE;
-		}else{
+		} else {
 			return Constants.TIP_WRONG;
 		}
 	}
-	
+
 	/**
 	 * Automatically fill user input
 	 * 
 	 * @return the filled input
 	 */
 	// @author A0117215R
-	private String autoSetInput(String input){
-		
-		if(input.equals("")){
+	private String autoSetInput(String input) {
+
+		if (input.equals("")) {
 			return Constants.TIP_BEGIN;
-		}else if(input.equals("a")){
+		} else if (input.equals("a")) {
 			return Constants.CMD_ADD;
-		}else if(input.equals("u")){
+		} else if (input.equals("c")) {
+			return Constants.CMD_CLEAR;
+		} else if (input.equals("u")) {
 			return Constants.CMD_UPDATE;
-		}else if(input.equals("se")){
+		} else if (input.equals("se")) {
 			return Constants.CMD_SEARCH;
-		}else if(input.equals("sy")){
+		} else if (input.equals("sy")) {
 			return Constants.CMD_SYNC;
-		}else if(input.equals("l")){
+		} else if (input.equals("l")) {
 			return Constants.CMD_LIST;
-		}else if(input.equals("h")){
+		} else if (input.equals("h")) {
 			return Constants.CMD_HELP;
-		}else if(input.equals("r")){
+		} else if (input.equals("r")) {
 			return Constants.CMD_REMOVE;
-		}else{
+		} else {
 			return input;
 		}
 	}
-	
+
 }

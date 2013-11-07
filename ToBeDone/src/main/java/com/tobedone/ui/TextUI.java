@@ -25,6 +25,8 @@ public class TextUI {
 			} catch (Exception e) {
 				System.err.println(e.getMessage());
 			}
+		} else {
+			System.exit(0);
 		}
 	}
 
