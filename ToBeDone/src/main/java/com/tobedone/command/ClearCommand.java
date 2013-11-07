@@ -19,6 +19,7 @@ public class ClearCommand extends Command {
 	// @author A0105682H
 	public ClearCommand() {
 		super();
+		originalList = new Vector<TaskItem>();
 		isUndoable = true;
 	}
 
@@ -27,7 +28,9 @@ public class ClearCommand extends Command {
 	public void executeCommand() {
 		try {
 			logger.info(LogMessages.INFO_CLEAR);
-			originalList = toDoService.getAllTasks();
+			for (TaskItem task : toDoService.getAllTasks()) {
+				originalList.add(task);
+			}
 			toDoService.clear();
 			feedback = Constants.MSG_CLEAR;
 			aimTasks = originalList;

@@ -52,7 +52,7 @@ public class CommandHistory {
 	// @author A0105682H
 	public Command pop() {
 		logger.info(LogMessages.INFO_POP_COMMAND);
-		Command lastestCommand = new NotUndoableCommand();
-		return lastestCommand;
+		Command lastCommand = commandlist.pop();
+		return lastCommand;
 	}
 }

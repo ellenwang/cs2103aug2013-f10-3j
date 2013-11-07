@@ -23,7 +23,7 @@ public class ListCommand extends Command {
 		// TODO Auto-generated method stub
 		if (scope.equals("all")){
 			aimTasks = allTasks;
-			feedback = "al list";
+			feedback = "all list";
 			result = new CommandExecuteResult(aimTasks, feedback);
 		} else if (scope.equals("unfinished")) {
 			status = TaskItem.Status.UNFINISHED;
