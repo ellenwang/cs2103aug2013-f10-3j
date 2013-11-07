@@ -41,7 +41,8 @@ public class GCalCommand extends Command {
 				googleCal.initAuthenication();
 			}
 			// CalendarList
-			String chosenCalendarId = googleCal.chooseCalendar();
+			//String chosenCalendarId = googleCal.chooseCalendar();
+			String chosenCalendarId = "primary";
 			allTasks = googleCal.sync(allTasks, chosenCalendarId);
 			//updateTaskIDs();
 			toDoService.storeAllTask(allTasks);

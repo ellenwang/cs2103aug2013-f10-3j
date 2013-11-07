@@ -1,4 +1,4 @@
-package test;
+package test.gsync;
 
 import java.io.IOException;
 import java.text.ParseException;
