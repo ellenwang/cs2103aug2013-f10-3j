@@ -148,7 +148,10 @@ public class GoogleParser {
 	public Vector<TaskItem> removeDuplicate(Vector<TaskItem> tasks) {
 		Vector<TaskItem> noDuplicates = new Vector<TaskItem>();
 		for (TaskItem task : tasks) {
-			if (!noDuplicates.contains(task)) {
+//			if (!noDuplicates.contains(task)) {
+//				noDuplicates.add(task);
+//			}
+			if(!isExisted(task, noDuplicates)){
 				noDuplicates.add(task);
 			}
 		}
@@ -156,6 +159,12 @@ public class GoogleParser {
 	}
 
 	public boolean isExisted(TaskItem t, Vector<TaskItem> tasks) {
-		return tasks.contains(t);
+		for(TaskItem e : tasks){
+			if(e.getDescription().equals(t.getDescription())){
+				return true;
+			}			
+		}
+		return false;
+		//return tasks.contains(t);
 	}
 }
