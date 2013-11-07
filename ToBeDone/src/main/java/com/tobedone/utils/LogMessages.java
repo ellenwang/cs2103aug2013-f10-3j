@@ -1,4 +1,4 @@
-package com.tobedone.utilities;
+package com.tobedone.utils;
 
 public class LogMessages {
 	// ERROR
