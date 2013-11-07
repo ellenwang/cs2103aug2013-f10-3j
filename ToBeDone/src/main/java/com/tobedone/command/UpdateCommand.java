@@ -10,92 +10,131 @@ import com.tobedone.exception.TaskNotExistException;
 import com.tobedone.taskitem.DeadlinedTask;
 import com.tobedone.taskitem.FloatingTask;
 import com.tobedone.taskitem.TaskItem;
+import com.tobedone.taskitem.TaskItem.Status;
 import com.tobedone.taskitem.TimedTask;
 import com.tobedone.utils.Constants;
 import com.tobedone.utils.LogMessages;
 
-
 public class UpdateCommand extends Command {
-
 	private static int index = -1;
-	Vector <TaskItem> aimTasks;
 	private String newDescription = null;
 	private Date newStartTime = null;
 	private Date newEndTime = null;
-	private int priority = -1;
-	private Date deadline = null;
-	public UpdateCommand (int id, String des, Date start, Date end, Date deadline, int prioirty){
+	private int newPriority = -1;
+	private Date newDeadline = null;
+	private TaskItem oldTask;
+	private TaskItem newTask;
+	private Vector<TaskItem> matchingTasks;
+
+	public UpdateCommand(int id, String des, Date start, Date end,
+			Date deadline, int priority) {
 		index = id;
 		newDescription = des;
 		newStartTime = start;
 		newEndTime = end;
-		this.deadline = deadline;
-		this.priority = prioirty;
+		this.newDeadline = deadline;
+		this.newPriority = priority;
 		isUndoable = true;
-		aimTasks = new Vector<TaskItem>();
+		this.matchingTasks = toDoService.getMatchingTasks();
+		oldTask = matchingTasks.get(index);
 	}
-	
+
 	public void executeCommand() throws TaskNotExistException, IOException {
-		TaskItem newTask = setParams();
-		toDoService.updateTask(index, newTask);
-		feedback = Constants.MSG_UPDATE_SUCCESSFUL;
-		aimTasks.add(newTask);
-	}
-	
-	public TaskItem setParams(){
-		TaskItem task = null;
-		TaskItem currentTask = toDoService.getAllTasks().get(index);
-		if (currentTask instanceof FloatingTask) {
-			if (newDescription!=null){
-				currentTask.setDescription(newDescription);
-			} 
-			if (priority != -1) {
-				currentTask.setPriority(priority);
-			}
-		} else if (currentTask instanceof DeadlinedTask) {
-			if (newDescription!=null){
-				currentTask.setDescription(newDescription);
-			} 
-			if (deadline != null){
-				((DeadlinedTask) currentTask).setEndTime(deadline);
-			}
-			if (priority != -1) {
-				currentTask.setPriority(priority);
-			}
-		} else if (currentTask instanceof TimedTask){
-			if (newDescription!=null){
-				currentTask.setDescription(newDescription);
-			} 
-			if (newEndTime != null){
-				((TimedTask) currentTask).setEndTime(newEndTime);
-			}
-			if (priority != -1) {
-				currentTask.setPriority(priority);
-			}
-			if (newStartTime != null){
-				((TimedTask) currentTask).setStartTime(newStartTime);
-			}	
+		for (TaskItem task : matchingTasks) {
+			aimTasks.add(task);
 		}
-		task = currentTask;
-		return task;
+
+		newTask = setParams();
+
+		TaskItem oldTask = toDoService.updateTask(index, newTask);
+		aimTasks.remove(oldTask);
+		aimTasks.add(newTask);
+
+		feedback = Constants.MSG_UPDATE_SUCCESSFUL;
 	}
-	public void undo(){
-		TaskItem updatedTask;
-		TaskItem oldTask;
-		try {
-			oldTask = toDoService.getLastUpdatedTask();
-			updatedTask = toDoService.getLastCreatedTask();
-			if (updatedTask != null) {
-				toDoService.deleteTask(updatedTask);
-				toDoService.createTask(oldTask);
+
+	public TaskItem setParams() {
+		TaskItem newTask;
+		String description;
+		int priority;
+		Date deadline;
+		Date startTime;
+		Date endTime;
+
+		if (newDescription != null) {
+			description = newDescription;
+		} else {
+			description = oldTask.getDescription();
+		}
+
+		if (newPriority != 0) {
+			priority = newPriority;
+		} else {
+			priority = oldTask.getPriority();
+		}
+
+		if (oldTask instanceof TimedTask) {
+			if (newStartTime != null) {
+				startTime = newStartTime;
+			} else {
+				startTime = ((TimedTask) oldTask).getStartTime();
 			}
-			feedback = Constants.MSG_UPDATE_SUCCESSFUL;
+
+			if (newEndTime != null) {
+				endTime = newEndTime;
+			} else {
+				endTime = ((TimedTask) oldTask).getEndTime();
+			}
+
+			newTask = new TimedTask(description, startTime, endTime, priority);
+		} else if (oldTask instanceof DeadlinedTask) {
+			if (newStartTime != null) {
+				startTime = newStartTime;
+				if (newEndTime != null) {
+					endTime = newEndTime;
+				} else {
+					endTime = ((DeadlinedTask) oldTask).getEndTime();
+				}
+
+				newTask = new TimedTask(description, startTime, endTime,
+						priority);
+			} else if (newDeadline != null) {
+				deadline = newDeadline;
+				newTask = new DeadlinedTask(description, deadline, priority);
+			} else {
+				deadline = ((DeadlinedTask) oldTask).getEndTime();
+				newTask = new DeadlinedTask(description, deadline, priority);
+			}
+		} else {
+			if (newDeadline != null) {
+				deadline = newDeadline;
+				newTask = new DeadlinedTask(description, deadline, priority);
+			} else if (newStartTime != null && newEndTime != null) {
+				startTime = newStartTime;
+				endTime = newEndTime;
+				newTask = new TimedTask(description, startTime, endTime,
+						priority);
+			} else {
+				newTask = new FloatingTask(description, priority);
+			}
+		}
+
+		Status oldTaskStatus = oldTask.getStatus();
+		newTask.setStatus(oldTaskStatus);
+
+		return newTask;
+	}
+
+	public void undo() {
+		try {
 			aimTasks.add(oldTask);
-			aimTasks.add(updatedTask);
+			aimTasks.remove(newTask);
+			toDoService.deleteTask(newTask);
+			toDoService.createTask(oldTask);
+			feedback = Constants.MSG_UPDATE_SUCCESSFUL;
 		} catch (TaskNotExistException | IOException e) {
 			logger.error(LogMessages.ERROR_UPDATE_UNDO_FAILED);
 			feedback = Constants.MSG_UNDO_UPDATE_FAILED;
 		}
 	}
-
 }

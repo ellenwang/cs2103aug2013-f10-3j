@@ -33,6 +33,9 @@ public class CommandParseMap {
 		//undo
 		commandmap.put(Constants.CMD_UNDO, Constants.PARSER_CLA_NAME_UNDO);
 		commandmap.put(Constants.CMD_SHORTCUT_UNDO, Constants.PARSER_CLA_NAME_UNDO);
+		//redo
+		commandmap.put(Constants.CMD_REDO, Constants.PARSER_CLA_NAME_REDO);
+		commandmap.put(Constants.CMD_SHORTCUT_REDO, Constants.PARSER_CLA_NAME_UNDO);
 		//view
 		commandmap.put(Constants.CMD_VIEW, Constants.PARSER_CLA_NAME_VIEW);
 		commandmap.put(Constants.CMD_SHORTCUT_VIEW, Constants.PARSER_CLA_NAME_VIEW);

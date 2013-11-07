@@ -105,7 +105,7 @@ abstract public class TaskItem implements Cloneable {
 					if (result == 0) {
 						String thisDescription = thisTask.getDescription();
 						String otherDescription = otherTask.getDescription();
-						result = thisDescription.compareTo(otherDescription);
+						result = otherDescription.compareTo(thisDescription);
 					}
 				}
 			}

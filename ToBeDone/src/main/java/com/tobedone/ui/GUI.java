@@ -18,6 +18,8 @@ import javax.swing.table.DefaultTableModel;
 import org.apache.log4j.BasicConfigurator;
 
 import com.tobedone.logic.CommandExecuteResult;
+import com.tobedone.logic.ToDoList;
+import com.tobedone.logic.ToDoListImp;
 import com.tobedone.taskitem.*;
 import com.tobedone.taskitem.TaskItem.Status;
 import com.tobedone.utils.Constants;
@@ -71,9 +73,12 @@ public class GUI extends JFrame {
 		// tasks.add(taskItem2);
 		// tasks.add(taskItem3);
 		//
-		// CommandExecuteResult result = new CommandExecuteResult(tasks,
-		// Constants.INFO_ALL_TASKS);
-		// GUI.setExecuteResult(result);
+		ToDoList toDoService = new ToDoListImp();
+		Vector<TaskItem> tasks = toDoService.getAllTasks();
+		CommandExecuteResult result = new CommandExecuteResult(tasks,
+		Constants.INFO_ALL_TASKS);
+		
+		setExecuteResult(result);
 		BasicConfigurator.configure();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -128,7 +133,6 @@ public class GUI extends JFrame {
 					TextUI.executeCommands();
 
 					display(TextUI.getCommandExecuteResult());
-
 				}
 
 				inputTips.setText(autoSetTips(inputString));
@@ -172,8 +176,8 @@ public class GUI extends JFrame {
 		tasksList.getColumnModel().getColumn(4).setMinWidth(127);
 		tasksList.getColumnModel().getColumn(4).setMaxWidth(127);
 		tasksList.setRowHeight(30);
-		//
-		// display(executeResult);
+		
+		display(executeResult);
 	}
 
 	protected void display(CommandExecuteResult result) {

@@ -34,7 +34,7 @@ public abstract class ToDoList {
 	
 	abstract public boolean createTask(TaskItem task) throws IOException;
 
-	abstract public boolean updateTask(int index, TaskItem newTask)
+	abstract public TaskItem updateTask(int index, TaskItem newTask)
 			throws TaskNotExistException, IOException;
 
 	abstract public TaskItem deleteTaskById(int index)

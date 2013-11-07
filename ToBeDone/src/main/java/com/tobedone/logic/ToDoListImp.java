@@ -33,27 +33,30 @@ public class ToDoListImp extends ToDoList {
 	}
 
 	@Override
-	public boolean updateTask (int index, TaskItem updatedTask)
+	public TaskItem updateTask(int index, TaskItem updatedTask)
 			throws TaskNotExistException, IOException {
 		logger.info(LogMessages.INFO_UPDATE_TASK);
-		TaskItem oldTask = allTasks.get(index);
+		TaskItem oldTask = matchingTasks.get(index);
 		setLastUpdatedTask(oldTask);
-		boolean flag = true;
-		allTasks.remove(oldTask);
-		flag = allTasks.add(updatedTask);
+		boolean flag;
+		matchingTasks.remove(oldTask);
+		boolean deletionSuccessful = deleteTask(oldTask);
+		if (deletionSuccessful) {
+			createTask(updatedTask);
+		}
 		setLastCreatedTask(updatedTask);
-		storage.store(allTasks);
-		return flag;
+		return oldTask;
 	}
 
 	@Override
-	public TaskItem deleteTaskById (int index) throws TaskNotExistException, IOException {
+	public TaskItem deleteTaskById(int index) throws TaskNotExistException,
+			IOException {
 		logger.info(LogMessages.INFO_DELETE_TASK_BYID);
 		TaskItem task = matchingTasks.remove(index);
 		deleteTask(task);
 		return task;
 	}
-	
+
 	public boolean deleteTask(TaskItem task) {
 		logger.info(LogMessages.INFO_DELETE_TASK);
 		boolean flag = allTasks.remove(task);

@@ -9,20 +9,18 @@ import com.tobedone.utils.Constants;
 import com.tobedone.utils.LogMessages;
 
 public class FinishCommand extends Command {
-	private int index;
 	private TaskItem finishedTask;
 
 	public FinishCommand(int index) {
 		isUndoable = true;
-		this.index = index;
-		finishedTask = null;
+		finishedTask = toDoService.getMatchingTasks().get(index);
 	}
 
 	// @author A0105682H
 	@Override
 	public void executeCommand() throws IOException, TaskNotExistException {
-		toDoService.completeTask(index);
-		finishedTask = toDoService.getMatchingTasks().get(index);
+		finishedTask.setStatus(Status.FINISHED);
+		aimTasks.clear();
 		aimTasks.add(finishedTask);
 	}
 
