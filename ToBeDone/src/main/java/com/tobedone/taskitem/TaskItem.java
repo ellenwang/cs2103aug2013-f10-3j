@@ -130,11 +130,11 @@ abstract public class TaskItem implements Cloneable {
 			} else if (task2 instanceof DeadlinedTask) {
 				Date endTime1 = ((DeadlinedTask) task1).getEndTime();
 				Date endTime2 = ((DeadlinedTask) task2).getEndTime();
-				return endTime1.compareTo(endTime2);
+				return endTime2.compareTo(endTime1);
 			} else {
 				Date endTime1 = ((DeadlinedTask) task1).getEndTime();
 				Date endTime2 = ((TimedTask) task2).getEndTime();
-				return endTime1.compareTo(endTime2);
+				return endTime2.compareTo(endTime1);
 			}
 		} else {
 			if (task2 instanceof FloatingTask) {
@@ -142,11 +142,11 @@ abstract public class TaskItem implements Cloneable {
 			} else if (task2 instanceof DeadlinedTask) {
 				Date endTime1 = ((TimedTask) task1).getEndTime();
 				Date endTime2 = ((DeadlinedTask) task2).getEndTime();
-				return endTime1.compareTo(endTime2);
+				return endTime2.compareTo(endTime1);
 			} else {
 				Date endTime1 = ((TimedTask) task1).getEndTime();
 				Date endTime2 = ((TimedTask) task2).getEndTime();
-				return endTime1.compareTo(endTime2);
+				return endTime2.compareTo(endTime1);
 			}
 		}
 	}
