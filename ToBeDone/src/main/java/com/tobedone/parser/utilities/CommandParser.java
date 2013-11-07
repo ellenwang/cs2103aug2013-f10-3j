@@ -56,7 +56,7 @@ public class CommandParser {
 
 	
 	// @author A0117215R
-	protected int parsePriority(String priorityString) {
+	public int parsePriority(String priorityString) {
 		switch (priorityString) {
 		case Constants.STR_PRI_HIGH:
 			return Constants.INT_PRI_HIGH;

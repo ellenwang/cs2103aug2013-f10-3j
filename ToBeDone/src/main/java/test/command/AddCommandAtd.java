@@ -38,9 +38,9 @@ public class AddCommandAtd {
 	public void before() {
 		storage = Storage.getInstance();
 		storage.changeToTestFile();
+		storage.clear();
 		toDoList = new ToDoListImp();
 		commandParser = CommandParser.getInstance();
-		storage.clear();
 	}
 
 	@After
@@ -93,8 +93,8 @@ public class AddCommandAtd {
 		TaskItem task = tasks.get(0);
 		Date startTimeDate = commandParser.parseDate(startTime);
 		Date endTimeDate = commandParser.parseDate(endTime);
-		TaskItem expectedTask = new TimedTask(description, startTimeDate, endTimeDate,
-				Constants.DEFAULT_PRIORITY);
+		TaskItem expectedTask = new TimedTask(description, startTimeDate,
+				endTimeDate, Constants.DEFAULT_PRIORITY);
 		assertTrue(task.equals(expectedTask));
 	}
 }
