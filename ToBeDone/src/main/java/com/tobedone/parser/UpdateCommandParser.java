@@ -4,8 +4,8 @@ import java.util.Date;
 
 import com.tobedone.command.Command;
 import com.tobedone.command.UpdateCommand;
-import com.tobedone.parser.utilities.CommandParser;
-import com.tobedone.utilities.Constants;
+import com.tobedone.parser.utils.CommandParser;
+import com.tobedone.utils.Constants;
 
 public class UpdateCommandParser extends CommandParser {
 	int index;

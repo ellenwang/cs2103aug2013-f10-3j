@@ -4,7 +4,7 @@ import java.util.Vector;
 
 import com.tobedone.logic.CommandExecuteResult;
 import com.tobedone.taskitem.TaskItem;
-import com.tobedone.utilities.Constants;
+import com.tobedone.utils.Constants;
 
 public class ListCommand extends Command {
 

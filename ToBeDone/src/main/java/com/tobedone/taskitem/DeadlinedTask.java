@@ -2,7 +2,7 @@ package com.tobedone.taskitem;
 import java.util.Comparator;
 import java.util.Date;
 
-import com.tobedone.utilities.Constants;
+import com.tobedone.utils.Constants;
 
 public class DeadlinedTask extends TaskItem {
 private Date endTime;
@@ -59,7 +59,7 @@ private Date endTime;
 			Date thisTaskDate = thisTask.getEndTime();
 			Date otherTaskDate = otherTask.getEndTime();
 			if (thisTaskDate == null && otherTaskDate == null)
-				return com.tobedone.utilities.Constants.ZERO;
+				return com.tobedone.utils.Constants.ZERO;
 			else if (thisTaskDate != null && otherTaskDate == null) {
 				return Constants.SERVICE_OPERATION_FAILED_ID;
 			} else if (thisTaskDate == null && otherTaskDate != null) {

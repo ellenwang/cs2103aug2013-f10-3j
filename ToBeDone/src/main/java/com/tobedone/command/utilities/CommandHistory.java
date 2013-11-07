@@ -6,8 +6,8 @@ import java.util.Stack;
 
 import com.tobedone.command.Command;
 import com.tobedone.command.NotUndoableCommand;
-import com.tobedone.utilities.Constants;
-import com.tobedone.utilities.LogMessages;
+import com.tobedone.utils.Constants;
+import com.tobedone.utils.LogMessages;
 
 
 /**
