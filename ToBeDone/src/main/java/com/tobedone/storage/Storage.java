@@ -44,8 +44,6 @@ public class Storage {
 	// singleton storage object
 	private static Storage storage;
 
-	static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-			"HH:mm,dd/MM,yyyy");
 
 	/**
 	 * Singleton default constructor.
@@ -239,7 +237,7 @@ public class Storage {
 	private String formatDate(Date date) {
 		String formattedDate;
 		if (date != null) {
-			formattedDate = simpleDateFormat.format(date);
+			formattedDate = Constants.simpleDateFormat.format(date);
 		} else {
 			formattedDate = "";
 		}
@@ -258,7 +256,7 @@ public class Storage {
 		Date parsedDate = null;
 		if (!date.equals("")) {
 			try {
-				parsedDate = simpleDateFormat.parse(date);
+				parsedDate = Constants.simpleDateFormat.parse(date);
 			} catch (ParseException e) {
 				System.err.println(Constants.MESSAGE_FAILED_TO_PARSE_DATE);
 			}

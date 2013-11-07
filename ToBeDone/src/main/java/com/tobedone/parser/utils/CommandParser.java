@@ -1,4 +1,4 @@
-package com.tobedone.parser.utilities;
+package com.tobedone.parser.utils;
 
 import java.util.Date;
 import java.util.Calendar;
@@ -22,14 +22,16 @@ public class CommandParser {
 	private String currentYear;
 	private String currentDay;
 	private String currentMonth;
+	private int currentDayOfaWeek;
 
 	protected CommandParser() {
 		currentYear = (Calendar.getInstance()).get(Calendar.YEAR)
 				+ Constants.EMPTY_STRING;
 		currentMonth = (Calendar.getInstance()).get(Calendar.MONTH)
-				+ Constants.ONE+ Constants.EMPTY_STRING ;
+				+ Constants.ONE + Constants.EMPTY_STRING;
 		currentDay = (Calendar.getInstance()).get(Calendar.DAY_OF_MONTH)
 				+ Constants.EMPTY_STRING;
+		currentDayOfaWeek =  (Calendar.getInstance()).get(Calendar.DAY_OF_WEEK);
 		
 		commandmap = CommandParseMap.getInstance().getMap();
 	}
@@ -117,7 +119,7 @@ public class CommandParser {
 	 * @return the date object
 	 */
 	//
-	public Date parseDate(String datePartern) throws Exception {
+	protected Date parseDate(String datePartern) throws Exception {
 		String dayString = currentDay;
 		String yearString = currentYear;
 		String monthString = currentMonth;
@@ -126,7 +128,7 @@ public class CommandParser {
 		String dayPartern = null;
 		Date date = null;
 		String dateString = null;
-
+		
 		int indexOfday = datePartern.lastIndexOf(Constants.SPACE);
 		int indexOftime = datePartern.indexOf(Constants.SPACE);
 
@@ -175,21 +177,19 @@ public class CommandParser {
 			dayString = parseDay(datePartern);
 			dateString = time + Constants.COMMA + dayString;
 		}
-		// today
-		else if (datePartern.matches(Constants.REGEX_DATE_TODAY)) {
-			System.out.println("today");
-			if (datePartern.equals(Constants.REGEX_DATE_TODAY)) {
-				dateString = time + Constants.COMMA + dayString
+		// short of day
+		else if (datePartern.matches(Constants.REGEX_DATE_SHORT)) {
+			int futureday = getFutureDay(datePartern);
+			System.out.println(futureday);
+				dateString = time + Constants.COMMA + futureday
 						+ Constants.HYPHEN + monthString + Constants.HYPHEN
-						+ yearString;
-			}
+						+ yearString;	
 		}
 		// wrong date format
 		else {
 			throw new WrongDateFormatException(Constants.MSG_ERROR_WRONG_DATE);
 		}
-
-		System.out.println(dateString);
+		System.out.println("format date"+dateString);
 		try {
 			date = Constants.simpleDateFormat.parse(dateString);
 		} catch (Exception e) {
@@ -253,5 +253,57 @@ public class CommandParser {
 		System.out.println(datePartern);
 		return datePartern;
 	}
-
+	
+	private int getFutureDay(String dayofweek){
+		int currentday = Integer.parseInt(currentDay);
+		switch (dayofweek) {
+		case "today":
+			return currentday+0;
+		case "tomorrow":
+			return currentday+1;
+		case "sun" :
+			if(currentDayOfaWeek>Calendar.SUNDAY){
+				return currentday+Calendar.SUNDAY-currentDayOfaWeek + 7;
+			}else{
+				return currentday+Calendar.SUNDAY-currentDayOfaWeek;
+			}
+		case "mon" :
+			if(currentDayOfaWeek>Calendar.MONDAY){
+				return currentday+Calendar.MONDAY-currentDayOfaWeek + 7;
+			}else{
+				return currentday+Calendar.MONDAY-currentDayOfaWeek;
+			}
+		case "tues" :
+			if(currentDayOfaWeek>Calendar.TUESDAY){
+				return currentday+Calendar.TUESDAY-currentDayOfaWeek + 7;
+			}else{
+				return currentday+Calendar.TUESDAY-currentDayOfaWeek;
+			}
+		case "wed" :
+			if(currentDayOfaWeek>Calendar.WEDNESDAY){
+				return currentday+Calendar.WEDNESDAY-currentDayOfaWeek + 7;
+			}else{
+				return currentday+Calendar.WEDNESDAY-currentDayOfaWeek;
+			}
+		case "thur" :
+			if(currentDayOfaWeek>Calendar.THURSDAY){
+				return currentday+Calendar.THURSDAY-currentDayOfaWeek + 7;
+			}else{
+				return currentday+Calendar.THURSDAY-currentDayOfaWeek;
+			}
+		case "fri" :
+			if(currentDayOfaWeek>Calendar.FRIDAY){
+				return currentday+Calendar.FRIDAY-currentDayOfaWeek + 7;
+			}else{
+				return currentday+Calendar.FRIDAY-currentDayOfaWeek;
+			}
+		case "sat" :
+			if(currentDayOfaWeek>Calendar.SATURDAY){
+				return currentday+Calendar.SATURDAY-currentDayOfaWeek + 7;
+			}else{
+				return currentday+Calendar.SATURDAY-currentDayOfaWeek;
+			}		
+		}
+		return currentday;
+	}
 }

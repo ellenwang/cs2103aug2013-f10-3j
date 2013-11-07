@@ -136,6 +136,7 @@ public class Constants {
 	public static final int INT_PRI_WRONG = -1;
 	public static final int INT_PRI_NO_CHANGE = 0;
 
+	public static final String REGEX_DATE_SHORT = "(today)|(tomorrow)|(mon)|(tues)|(wed)|(thur)|(fri)|(sat)|(sun)";
 	public static final String REGEX_DATE_TODAY = "today";
 	public static final String REGEX_DATE_TOMORROW = "tomorrow";
 	public static final String REGEX_DATE_FROM_PREFIX = "from"; // from prefix
