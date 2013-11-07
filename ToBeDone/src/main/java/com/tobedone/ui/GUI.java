@@ -257,12 +257,14 @@ public class GUI extends JFrame {
 			return Constants.TIP_ADD;
 		} else if (input.startsWith("++")) {
 			return Constants.TIP_UPDATE;
-		} else if (input.startsWith("u")) {
+		} else if (input.startsWith("up")) {
 			return Constants.TIP_UPDATE;
-		} else if (input.startsWith("s")) {
+		} else if (input.startsWith("un")) {
+			return Constants.TIP_UNDO;
+		}else if (input.startsWith("s")) {
 			return Constants.TIP_SEARCH + Constants.TIP_SEPRETER
 					+ Constants.TIP_SYNC;
-		} else if (input.startsWith("l")) {
+		} else if (input.startsWith("li")) {
 			return Constants.TIP_LIST;
 		} else if (input.startsWith("h") || input.startsWith("?")) {
 			return Constants.TIP_HELP;
@@ -287,9 +289,11 @@ public class GUI extends JFrame {
 			return Constants.CMD_ADD;
 		} else if (input.equals("c")) {
 			return Constants.CMD_CLEAR;
-		} else if (input.equals("u")) {
+		} else if (input.equals("up")) {
 			return Constants.CMD_UPDATE;
-		} else if (input.equals("se")) {
+		} else if (input.equals("un")) {
+			return Constants.CMD_UNDO;
+		}else if (input.equals("se")) {
 			return Constants.CMD_SEARCH;
 		} else if (input.equals("sy")) {
 			return Constants.CMD_SYNC;
