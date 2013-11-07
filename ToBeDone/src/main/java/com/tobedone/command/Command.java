@@ -19,14 +19,16 @@ import com.tobedone.logic.ToDoListImp;
 public abstract class Command {
 	protected static Logger logger = Logger.getLogger(Command.class);
 	protected String feedback;
-	protected CommandExecuteResult result;
+	protected static CommandExecuteResult result;
 	protected boolean isUndoable = false;
 	protected boolean exitSystemStatus = false;
 	protected static ToDoList toDoService =  new ToDoListImp();
+	protected Vector<TaskItem> aimTasks;
 
 	// @author A0105682H
 	public Command() {
-		
+		aimTasks = new Vector<TaskItem>();
+		result = new CommandExecuteResult(aimTasks,feedback);
 	}
 
 	// @author A0105682H

@@ -37,7 +37,12 @@ public class RemoveCommand extends Command {
 		if (index<0 || index> allTasks.size()) {
 			feedback = "";
 		} else {
-			toDoService.deleteTaskById(index);
+			if (toDoService.deleteTaskById(index)){
+				feedback = Constants.MSG_DELETE_SUCCESSFUL;
+				aimTasks.add(toDoService.getLastDeletedTask());
+			} else {
+				feedback = Constants.MSG_DELETE_FAILED;
+			}
 		}
 	}
 
@@ -50,6 +55,7 @@ public class RemoveCommand extends Command {
 					TaskItem task = toDoService.getLastDeletedTask();
 					toDoService.createTask(task);
 						feedback = Constants.MSG_REMOVE_UNDO;
+						aimTasks.add(task);
 					} 
 				 catch (IOException e) {
 					logger.error(LogMessages.ERROR_PARSE);

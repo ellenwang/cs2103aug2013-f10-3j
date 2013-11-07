@@ -30,11 +30,10 @@ public class ClearCommand extends Command {
 			originalList = toDoService.getAllTasks();
 			toDoService.clear();
 			feedback = Constants.MSG_CLEAR;
-			result = new CommandExecuteResult(aimTasks, feedback);
+			aimTasks = originalList;
 		} catch (IOException e) {
 			logger.error(LogMessages.ERROR_PARSE);
 			feedback = Constants.MSG_CLEAR_FAILED;
-			result = new CommandExecuteResult(aimTasks, feedback);
 		}
 	}
 
@@ -45,6 +44,7 @@ public class ClearCommand extends Command {
 			for (TaskItem task : originalList) {
 				toDoService.createTask(task);
 				feedback = Constants.MSG_CLEAR_UNDO;
+				aimTasks = originalList;
 			}
 		} catch (IOException e) {
 			logger.error(LogMessages.ERROR_FILE);

@@ -17,24 +17,21 @@ public class LogMessages {
 	public static final String INFO_HELP = "Help.";
 	public static final String INFO_DISPLAY_PRIORITY = "Display task list sorted by priority.";
 	public static final String INFO_COMPLETE = "Complete a task.";
-	public static final String INFO_UPDATE = "Update a task.";
 	public static final String INFO_CREATE_TASK =  "Create a new task.";
+	public static final String INFO_UPDATE_TASK = "Update a task.";
+	public static final String INFO_DELETE_TASK_BYID = "Delete a task by ID.";
 	public static final String INFO_DELETE = "Delete a task by index.";
 	public static final String INFO_ADD = "Add a task.";
 	public static final String INFO_DELETE_TASK = "Delete a task.";
 	public static final String INFO_CREATE_UNDO = "Undo the create command.";
 	public static final String INFO_UNDO_ACTION = "Undo previous action";
 	public static final String INFO_REMOVE = "Remove a task.";
+	public static final String INFO_SEARCH_KEYWORD = "Search by keyword.";
 	// DEBUG
 	public static final String DEBUG_UNDO_NOTHING = "No available actions to undo";
 	public static final String DEBUG_SYNTAX = "Checking arguments of the command.";
 	public static final String DEBUG_NOT_REMOVED = "No task to be removed.";
 	public static final String DEBUG_NO_CONTENT = "Empty task content.";
-
-
 	
-
-
-
 
 }

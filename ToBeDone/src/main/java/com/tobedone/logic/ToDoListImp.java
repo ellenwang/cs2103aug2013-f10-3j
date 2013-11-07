@@ -24,10 +24,10 @@ public class ToDoListImp extends ToDoList {
 
 	// @author A0105682H
 	@Override
-	public boolean createTask(TaskItem task) {
+	public boolean createTask(TaskItem newTask) {
 		logger.info(LogMessages.INFO_CREATE_TASK);
-		boolean flag = allTasks.add(task);
-		setLastCreatedTask(task);
+		boolean flag = allTasks.add(newTask);
+		setLastCreatedTask(newTask);
 		storage.store(allTasks);
 		return flag;
 	}
@@ -35,7 +35,7 @@ public class ToDoListImp extends ToDoList {
 	@Override
 	public boolean updateTask (int index, TaskItem updatedTask)
 			throws TaskNotExistException, IOException {
-		logger.info(LogMessages.INFO_UPDATE);
+		logger.info(LogMessages.INFO_UPDATE_TASK);
 		TaskItem oldTask = allTasks.get(index);
 		setLastUpdatedTask(oldTask);
 		boolean flag = true;
@@ -48,7 +48,7 @@ public class ToDoListImp extends ToDoList {
 
 	@Override
 	public boolean deleteTaskById (int index) throws TaskNotExistException, IOException {
-		logger.info(LogMessages.INFO_DELETE);
+		logger.info(LogMessages.INFO_DELETE_TASK_BYID);
 		int before = allTasks.size();
 		setLastDeletedTask(allTasks.get(index));
 		allTasks.removeElementAt(index);
@@ -68,5 +68,4 @@ public class ToDoListImp extends ToDoList {
 		storage.store(allTasks);
 		return flag;
 	}
-
 }

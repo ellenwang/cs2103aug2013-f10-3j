@@ -20,7 +20,9 @@ public class FinishCommand extends Command{
 	@Override
 	public void executeCommand() throws IOException, TaskNotExistException {
 		toDoService.completeTask(index);
-		toDoService.setLastUpdatedTask(toDoService.getAllTasks().get(index));
+		TaskItem currentTask = toDoService.getAllTasks().get(index);
+		toDoService.setLastUpdatedTask(currentTask);
+		aimTasks.add(currentTask);
 	}
 	
 	public void undo(){
@@ -30,6 +32,8 @@ public class FinishCommand extends Command{
 			task.setStatus(status);
 			toDoService.deleteTask(task);
 			toDoService.createTask(task);
+			feedback = Constants.MSG_UNDO_SUCCESSFUL;
+			aimTasks.add(task);
 		} catch (TaskNotExistException e) {
 			logger.error(LogMessages.ERROR_TASK_NOTFOUND);
 		}  catch (IOException e) {

@@ -27,7 +27,8 @@ public class SearchCommand extends Command{
 			try {
 				logger.info(LogMessages.INFO_SEARCH);
 				Vector<TaskItem> taskList = toDoService.searchKeyword(keyword);
-				feedback = vectorToString(taskList);
+				feedback = Constants.MSG_ADDED_FAILED;
+				aimTasks = taskList;
 			} catch (TaskNotExistException e) {
 				logger.error(LogMessages.ERROR_TASK_NOTFOUND);
 				feedback = Constants.MSG_ERROR_NOT_FOUND;
