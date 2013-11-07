@@ -26,12 +26,12 @@ public class AddCommandParser extends CommandParser {
 		int indexofby = paraString.lastIndexOf(Constants.REGEX_DATE_BY_PREFIX);
 		int indexofpriority = Constants.NOT_FOUND_INDEX;
 
-		if (paraString.endsWith(Constants.STR_PRI_HIGH)
-				|| paraString.endsWith(Constants.STR_PRI_NORMAL)
-				|| paraString.endsWith(Constants.STR_PRI_LOW)
-				|| paraString.endsWith(Constants.STR_SHORT_PRI_HIGH)
-				|| paraString.endsWith(Constants.STR_SHORT_PRI_NORMAL)
-				|| paraString.endsWith(Constants.STR_SHORT_PRI_LOW)) {
+		if (paraString.endsWith(" " + Constants.STR_PRI_HIGH)
+				|| paraString.endsWith(" " + Constants.STR_PRI_NORMAL)
+				|| paraString.endsWith(" " + Constants.STR_PRI_LOW)
+				|| paraString.endsWith(" " + Constants.STR_SHORT_PRI_HIGH)
+				|| paraString.endsWith(" " + Constants.STR_SHORT_PRI_NORMAL)
+				|| paraString.endsWith(" " + Constants.STR_SHORT_PRI_LOW)) {
 			indexofpriority = paraString.lastIndexOf(Constants.SPACE)
 					+ Constants.ONE_LOOKAHEAD;
 		}

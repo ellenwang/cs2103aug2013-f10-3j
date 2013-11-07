@@ -119,7 +119,8 @@ public class GUI extends JFrame {
 				
 				if(keyCode==KeyEvent.VK_ENTER){
 					TextUI.readUserInput(inputString);
-					TextUI.executeCommands();		
+					TextUI.executeCommands();
+					
 					display(TextUI.getCommandExecuteResult());
 				}
 				
