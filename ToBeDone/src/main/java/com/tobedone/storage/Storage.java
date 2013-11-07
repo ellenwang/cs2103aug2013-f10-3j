@@ -254,7 +254,7 @@ public class Storage {
 	 */
 	private Date parseDate(String date) {
 		Date parsedDate = null;
-		if (!date.equals("")) {
+		if (!date.equals("null")) {
 			try {
 				parsedDate = Constants.simpleDateFormat.parse(date);
 			} catch (ParseException e) {
