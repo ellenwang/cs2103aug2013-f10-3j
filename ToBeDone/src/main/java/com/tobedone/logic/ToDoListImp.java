@@ -47,18 +47,11 @@ public class ToDoListImp extends ToDoList {
 	}
 
 	@Override
-	public boolean deleteTaskById (int index) throws TaskNotExistException, IOException {
+	public TaskItem deleteTaskById (int index) throws TaskNotExistException, IOException {
 		logger.info(LogMessages.INFO_DELETE_TASK_BYID);
-		int before = allTasks.size();
-		setLastDeletedTask(allTasks.get(index));
-		allTasks.removeElementAt(index);
-		int after = allTasks.size();
-		if (before-after == 1) {
-			return true;
-		} else {
-			logger.debug(LogMessages.DEBUG_NOT_REMOVED);
-			return false;
-		}
+		TaskItem task = matchingTasks.remove(index);
+		deleteTask(task);
+		return task;
 	}
 	
 	public boolean deleteTask(TaskItem task) {

@@ -19,6 +19,7 @@ import org.apache.log4j.BasicConfigurator;
 
 import com.tobedone.logic.CommandExecuteResult;
 import com.tobedone.taskitem.*;
+import com.tobedone.taskitem.TaskItem.Status;
 import com.tobedone.utils.Constants;
 
 import java.awt.event.KeyAdapter;
@@ -219,10 +220,10 @@ public class GUI extends JFrame {
 		String start;
 		String end;
 
-		if (task.getStatus().equals("finished")) {
-			status = "���";
+		if (task.getStatus().equals(Status.FINISHED)) {
+			status = "     √";
 		} else {
-			status = "-";
+			status = "     -";
 		}
 
 		if (task instanceof TimedTask) {
