@@ -89,6 +89,9 @@ public class GoogleParser {
 	 * @return int Get the priority from the color of google calendar task.
 	 */
 	private static int getPriority(Event e) {
+		if(e.getColorId() == null){
+			return 1;
+		}
 		if (e.getColorId().equals("10")) {
 			return 2;
 		} else if (e.getColorId().equals("11")) {
