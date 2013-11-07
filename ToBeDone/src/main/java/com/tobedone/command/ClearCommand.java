@@ -14,7 +14,6 @@ import com.tobedone.utils.LogMessages;
 public class ClearCommand extends Command {
 
 	private Vector<TaskItem> originalList;
-	private Vector<TaskItem> aimTasks = new Vector<TaskItem>();
 	
 	// @author A0105682H
 	public ClearCommand() {
@@ -28,12 +27,13 @@ public class ClearCommand extends Command {
 	public void executeCommand() {
 		try {
 			logger.info(LogMessages.INFO_CLEAR);
+			originalList.clear();
 			for (TaskItem task : toDoService.getAllTasks()) {
 				originalList.add(task);
 			}
 			toDoService.clear();
 			feedback = Constants.MSG_CLEAR;
-			aimTasks = originalList;
+			aimTasks = new Vector<TaskItem>();
 		} catch (IOException e) {
 			logger.error(LogMessages.ERROR_PARSE);
 			feedback = Constants.MSG_CLEAR_FAILED;

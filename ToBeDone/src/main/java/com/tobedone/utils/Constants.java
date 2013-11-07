@@ -83,6 +83,7 @@ public class Constants {
 	public static final String CMD_FINISH = "finish";
 	public static final String CMD_HELP = "help";
 	public static final String CMD_UNDO = "undo";
+	public static final String CMD_REDO = "redo";
 	public static final String CMD_VIEW = "view";
 	public static final String CMD_LIST = "list";
 	public static final String CMD_SEARCH = "search";
@@ -97,6 +98,7 @@ public class Constants {
 	public static final String CMD_SHORTCUT_FINISH = "f";
 	public static final String CMD_SHORTCUT_HELP = "?";
 	public static final String CMD_SHORTCUT_UNDO = "u";
+	public static final String CMD_SHORTCUT_REDO = "red";
 	public static final String CMD_SHORTCUT_VIEW = "v";
 	public static final String CMD_SHORTCUT_LIST_FINISHED = "lsf";
 	public static final String CMD_SHORTCUT_LIST_UNFINISHED = "lsu";
@@ -113,6 +115,7 @@ public class Constants {
 	public static final String PARSER_CLA_NAME_VIEW = "ViewCommandParser";
 	public static final String PARSER_CLA_NAME_SEARCH = "SearchCommandParser";
 	public static final String PARSER_CLA_NAME_UNDO = "UndoCommandParser";
+	public static final String PARSER_CLA_NAME_REDO = "RedoCommandParser";
 	public static final String PARSER_CLA_NAME_LIST = "ListCommandParser";
 	public static final String PARSER_CLA_NAME_CLEAR = "ClearCommandParser";
 	public static final String PARSER_CLA_NAME_SYNC = "SyncCommandParser";

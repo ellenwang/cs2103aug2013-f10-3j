@@ -21,6 +21,7 @@ import com.tobedone.utils.LogMessages;
 public class RemoveCommand extends Command {
 	private int index;
 	private Vector<TaskItem> matchingTasks;
+	private TaskItem taskToDelete;
 
 	// @author A0105682H
 	public RemoveCommand(int index) {
@@ -28,22 +29,24 @@ public class RemoveCommand extends Command {
 		this.index = index;
 		this.matchingTasks = toDoService.getMatchingTasks();
 		isUndoable = true;
+		taskToDelete = matchingTasks.get(index);
 	}
 
 	// @author A0105682H
 	@Override
 	protected void executeCommand() throws TaskNotExistException, IOException {
 		logger.info(LogMessages.INFO_REMOVE);
+		aimTasks.clear();
 		for (TaskItem task : matchingTasks) {
 			aimTasks.add(task);
 		}
 		if (index < 0 || index > matchingTasks.size()) {
 			feedback = "";
 		} else {
-			TaskItem deletedTask = toDoService.deleteTaskById(index);
-			if (deletedTask != null) {
+			boolean deleteSuccessful = toDoService.deleteTask(taskToDelete);
+			if (deleteSuccessful) {
 				feedback = Constants.MSG_DELETE_SUCCESSFUL;
-				aimTasks.remove(deletedTask);
+				aimTasks.remove(taskToDelete);
 			} else {
 				feedback = Constants.MSG_DELETE_FAILED;
 			}
@@ -53,19 +56,13 @@ public class RemoveCommand extends Command {
 	// @author A0105682H
 	@Override
 	public void undo() {
-		if (matchingTasks.size() > Constants.ZERO) {
-			logger.info(LogMessages.INFO_UNDO_ACTION);
-			try {
-				TaskItem task = toDoService.getLastDeletedTask();
-				toDoService.createTask(task);
-				feedback = Constants.MSG_REMOVE_UNDO;
-				aimTasks.add(task);
-			} catch (IOException e) {
-				logger.error(LogMessages.ERROR_PARSE);
-				feedback = Constants.MSG_UNDO_FAILED;
-			}
-
-		} else {
+		logger.info(LogMessages.INFO_UNDO_ACTION);
+		try {
+			toDoService.createTask(taskToDelete);
+			feedback = Constants.MSG_REMOVE_UNDO;
+			aimTasks.add(taskToDelete);
+		} catch (IOException e) {
+			logger.error(LogMessages.ERROR_PARSE);
 			feedback = Constants.MSG_UNDO_FAILED;
 		}
 	}

@@ -19,12 +19,14 @@ import com.tobedone.utils.LogMessages;
  */
 public class CommandHistory {
 	private static CommandHistory singleton = null;
-	private static Stack<Command> commandlist;
+	private static Stack<Command> commandList;
+	private static Stack<Command> undoneList;
 	protected static Logger logger = Logger.getLogger(CommandHistory.class);
 
 	// @author A0105682H
 	private CommandHistory() {
-		commandlist = new Stack<Command>();
+		commandList = new Stack<Command>();
+		undoneList = new Stack<Command>();
 	}
 
 	// @author A0105682H
@@ -41,7 +43,7 @@ public class CommandHistory {
 	// @author A0105682H
 	public void push(Command cmd) {
 		logger.info(LogMessages.INFO_PUSH_COMMAND);
-		commandlist.push(cmd);
+		commandList.push(cmd);
 	}
 
 	/**
@@ -50,7 +52,15 @@ public class CommandHistory {
 	// @author A0105682H
 	public Command pop() {
 		logger.info(LogMessages.INFO_POP_COMMAND);
-		Command lastCommand = commandlist.pop();
+		Command lastCommand = commandList.pop();
+		undoneList.push(lastCommand);
 		return lastCommand;
+	}
+	
+	public Command popUndone() {
+		Command lastUndone = undoneList.pop();
+		commandList.push(lastUndone);
+		return lastUndone;
+		
 	}
 }
