@@ -19,7 +19,7 @@ import org.apache.log4j.BasicConfigurator;
 
 import com.tobedone.logic.CommandExecuteResult;
 import com.tobedone.taskitem.*;
-import com.tobedone.utilities.Constants;
+import com.tobedone.utils.Constants;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -273,6 +273,7 @@ public class GUI extends JFrame {
 	 */
 	// @author A0117215R
 	private String autoSetInput(String input){
+		
 		if(input.equals("")){
 			return Constants.TIP_BEGIN;
 		}else if(input.equals("a")){

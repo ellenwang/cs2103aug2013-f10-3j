@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.Calendar;
 import java.util.Map;
 
-import com.tobedone.utilities.Constants;
+import com.tobedone.utils.Constants;
 import com.tobedone.command.Command;
 import com.tobedone.exception.*;
 

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.TimeZone;
 import java.util.Vector;
+
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
@@ -38,7 +39,7 @@ import com.google.api.services.calendar.model.Events;
 import com.tobedone.exception.ServiceNotAvailableException;
 import com.tobedone.storage.Storage;
 import com.tobedone.taskitem.TaskItem;
-import com.tobedone.utilities.Constants;
+import com.tobedone.utils.Constants;
 
 
 

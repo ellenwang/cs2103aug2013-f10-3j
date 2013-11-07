@@ -6,7 +6,7 @@ import com.tobedone.command.AddCommand;
 import com.tobedone.command.Command;
 import com.tobedone.exception.CommandWrongArgsException;
 import com.tobedone.parser.utilities.CommandParser;
-import com.tobedone.utilities.Constants;
+import com.tobedone.utils.Constants;
 
 public class AddCommandParser extends CommandParser {
 	Date startTime;

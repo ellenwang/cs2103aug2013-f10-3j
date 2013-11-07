@@ -2,7 +2,7 @@ package com.tobedone.ui;
 
 import com.tobedone.logic.CommandExecuteResult;
 import com.tobedone.logic.CommandExecutor;
-import com.tobedone.utilities.Constants;
+import com.tobedone.utils.Constants;
 
 /**
  * @author Tian Xing

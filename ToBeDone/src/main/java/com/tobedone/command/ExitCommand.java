@@ -2,8 +2,8 @@ package com.tobedone.command;
 
 import java.io.IOException;
 
-import com.tobedone.utilities.Constants;
-import com.tobedone.utilities.LogMessages;
+import com.tobedone.utils.Constants;
+import com.tobedone.utils.LogMessages;
 
 
 

@@ -3,7 +3,7 @@ package com.tobedone.parser.utilities;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.tobedone.utilities.Constants;
+import com.tobedone.utils.Constants;
 
 public class CommandParseMap {
 	private static CommandParseMap commandParseMap;

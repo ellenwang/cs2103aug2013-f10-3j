@@ -4,7 +4,7 @@ import java.util.logging.Logger;
 
 import com.tobedone.command.*;
 import com.tobedone.parser.utilities.CommandParser;
-import com.tobedone.utilities.Constants;
+import com.tobedone.utils.Constants;
 
 public class Parser {
 	

@@ -12,7 +12,7 @@ import com.tobedone.exception.TaskNotExistException;
 import com.tobedone.taskitem.DeadlinedTask;
 import com.tobedone.taskitem.TaskItem;
 import com.tobedone.taskitem.TimedTask;
-import com.tobedone.utilities.LogMessages;
+import com.tobedone.utils.LogMessages;
 
 public class ToDoListImp extends ToDoList {
 
