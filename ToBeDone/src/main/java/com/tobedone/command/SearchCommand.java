@@ -9,17 +9,15 @@ import com.tobedone.taskitem.TaskItem;
 import com.tobedone.utils.Constants;
 import com.tobedone.utils.LogMessages;
 
-
-
-public class SearchCommand extends Command{	
+public class SearchCommand extends Command {
 	private String keyword = null;
-	
-	public SearchCommand(String keyword){
+
+	public SearchCommand(String keyword) {
 		super();
 		isUndoable = false;
 		this.keyword = keyword;
 	}
-	
+
 	@Override
 	protected void executeCommand() {
 		// TODO Auto-generated method stub
@@ -28,7 +26,9 @@ public class SearchCommand extends Command{
 				logger.info(LogMessages.INFO_SEARCH);
 				Vector<TaskItem> taskList = toDoService.searchKeyword(keyword);
 				feedback = Constants.MSG_ADDED_FAILED;
-				aimTasks = taskList;
+				for (TaskItem task : taskList) {
+					aimTasks.add(task);
+				}
 			} catch (TaskNotExistException e) {
 				logger.error(LogMessages.ERROR_TASK_NOTFOUND);
 				feedback = Constants.MSG_ERROR_NOT_FOUND;
@@ -36,7 +36,7 @@ public class SearchCommand extends Command{
 		} else {
 			logger.debug(LogMessages.DEBUG_SYNTAX);
 			feedback = Constants.MSG_CHECK_SEARCH_SYNTAX;
-		}		
+		}
 	}
-	 
+
 }

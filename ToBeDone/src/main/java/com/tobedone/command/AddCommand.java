@@ -50,6 +50,7 @@ public class AddCommand extends Command {
 				boolean isAdded = toDoService.createTask(newTask);
 				if (isAdded) {
 					feedback = Constants.INFO_ADD;
+					aimTasks.clear();
 					for (TaskItem task : toDoService.getAllTasks()) {
 						aimTasks.add(task);
 					}
