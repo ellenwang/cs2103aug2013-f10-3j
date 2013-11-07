@@ -56,6 +56,10 @@ public abstract class Command {
 	public String getFeedback() {
 		return this.feedback;
 	}
+	
+	public Vector<TaskItem> getAimTasks() {
+		return this.aimTasks;
+	}
 
 	/**
 	 * Put this command object into the window queue
