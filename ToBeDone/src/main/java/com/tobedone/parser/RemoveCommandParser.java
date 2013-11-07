@@ -14,7 +14,6 @@ public class RemoveCommandParser extends CommandParser{
 	
 	public Command parse(String paraString) throws Exception{
 			index = parseIndex(paraString.length(), paraString);
-			System.out.println("Index: " + index);
 			return new RemoveCommand(index);
 		} 
 	}

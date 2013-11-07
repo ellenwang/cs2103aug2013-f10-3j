@@ -87,7 +87,7 @@ public class Constants {
 	public static final String CMD_LIST = "list";
 	public static final String CMD_SEARCH = "search";
 	public static final String CMD_SYNC = "sync";
-	public static final String CMD_CLEAR = "delete all";
+	public static final String CMD_CLEAR = "clear";
 
 	// SHORTCUT COMMANDS
 	// Tian Xing A0117215R

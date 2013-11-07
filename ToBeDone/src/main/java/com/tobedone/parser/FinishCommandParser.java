@@ -2,6 +2,7 @@ package com.tobedone.parser;
 
 import com.tobedone.command.Command;
 import com.tobedone.command.FinishCommand;
+import com.tobedone.command.RemoveCommand;
 import com.tobedone.parser.utils.CommandParser;
 import com.tobedone.utils.Constants;
 
@@ -13,9 +14,7 @@ public class FinishCommandParser extends CommandParser{
 	}
 	
 	public Command parse(String paraString) throws Exception{
-			int indexofindex = paraString.indexOf(Constants.SPACE);
-			index = parseIndex(indexofindex, paraString);
-			
-			return new FinishCommand(index);
+		index = parseIndex(paraString.length(), paraString);
+		return new RemoveCommand(index);
 	}
 }
