@@ -10,48 +10,47 @@ public class ListCommand extends Command {
 
 	Vector<TaskItem> allTasks;
 	TaskItem.Status status;
-	String scope ="";
-	Vector<TaskItem> aimTasks;
+	String scope = "";
 
-	public ListCommand (String scope){
-		aimTasks = new Vector<TaskItem>();
+	public ListCommand(String scope) {
 		allTasks = toDoService.getAllTasks();
 		this.scope = scope;
 	}
-	
+
 	protected void executeCommand() {
 		// TODO Auto-generated method stub
-		if (scope.equals("all")){
-			aimTasks = allTasks;
+		if (scope.equals("all")) {
+			for (TaskItem task : allTasks) {
+				aimTasks.add(task);
+			}
 			feedback = "all list";
-			result = new CommandExecuteResult(aimTasks, feedback);
 		} else if (scope.equals("unfinished")) {
 			status = TaskItem.Status.UNFINISHED;
-			for(int i=0; i<allTasks.size(); i++){
+			for (int i = 0; i < allTasks.size(); i++) {
 				TaskItem currentTask = allTasks.get(i);
-				
+
 				if (currentTask.getStatus().equals(status)) {
 					aimTasks.add(currentTask);
-				} 
+				}
 			}
-		} else if(scope.equals("finished")) {
+		} else if (scope.equals("finished")) {
 			status = TaskItem.Status.FINISHED;
-			for(int i=0; i<allTasks.size(); i++){
+			for (int i = 0; i < allTasks.size(); i++) {
 				TaskItem currentTask = allTasks.get(i);
-				
+
 				if (currentTask.getStatus().equals(status)) {
 					aimTasks.add(currentTask);
-				} 
+				}
 			}
 		}
-		
-		if (aimTasks.size() > 0){
+
+		if (aimTasks.size() > 0) {
 			feedback = Constants.MSG_EMPTY_SEARCH;
 		} else {
 			feedback = "Tasks are listed below: ";
 		}
-	}	
-	
+	}
+
 	public String vectorToString(Vector<TaskItem> list) {
 		String result = "";
 		for (int i = 0; i < list.size(); i++) {

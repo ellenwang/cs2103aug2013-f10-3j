@@ -15,6 +15,6 @@ public class FinishCommandParser extends CommandParser{
 	
 	public Command parse(String paraString) throws Exception{
 		index = parseIndex(paraString.length(), paraString);
-		return new RemoveCommand(index);
+		return new FinishCommand(index);
 	}
 }

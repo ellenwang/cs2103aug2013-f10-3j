@@ -2,6 +2,7 @@ package com.tobedone.command;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Collections;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
@@ -15,20 +16,19 @@ import com.tobedone.logic.CommandExecuteResult;
 import com.tobedone.logic.ToDoList;
 import com.tobedone.logic.ToDoListImp;
 
-
 public abstract class Command {
 	protected static Logger logger = Logger.getLogger(Command.class);
 	protected String feedback;
 	protected static CommandExecuteResult result;
 	protected boolean isUndoable = false;
 	protected boolean exitSystemStatus = false;
-	protected static ToDoList toDoService =  new ToDoListImp();
+	protected static ToDoList toDoService = new ToDoListImp();
 	protected Vector<TaskItem> aimTasks;
 
 	// @author A0105682H
 	public Command() {
 		aimTasks = new Vector<TaskItem>();
-		result = new CommandExecuteResult(aimTasks,feedback);
+		result = new CommandExecuteResult(aimTasks, feedback);
 	}
 
 	// @author A0105682H
@@ -36,14 +36,18 @@ public abstract class Command {
 		return exitSystemStatus;
 	}
 
+	// @author A0105682H
+	protected abstract void executeCommand() throws IOException,
+			TaskNotExistException;
 
 	// @author A0105682H
-	protected abstract void executeCommand() throws IOException, TaskNotExistException ;
-
-	// @author A0105682H
-	public CommandExecuteResult execute() throws IOException, TaskNotExistException {
+	public CommandExecuteResult execute() throws IOException,
+			TaskNotExistException {
 		this.executeCommand();
 		this.addHistory();
+		Collections.sort(result.getAimTasks(),
+				Collections.reverseOrder(TaskItem.TaskItemComparator));
+		toDoService.setMatchingTasks(result.getAimTasks());
 		return result;
 	}
 
@@ -56,7 +60,7 @@ public abstract class Command {
 	public String getFeedback() {
 		return this.feedback;
 	}
-	
+
 	public Vector<TaskItem> getAimTasks() {
 		return this.aimTasks;
 	}
@@ -75,7 +79,7 @@ public abstract class Command {
 		}
 		return false;
 	}
-	
+
 	public String vectorToString(Vector<TaskItem> list) {
 		String result = "";
 		for (int i = 0; i < list.size(); i++) {

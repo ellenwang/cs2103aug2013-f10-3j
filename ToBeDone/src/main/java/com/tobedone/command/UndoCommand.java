@@ -24,7 +24,7 @@ public class UndoCommand extends Command {
 		logger.info(LogMessages.INFO_UNDO_ACTION);
 		lastCommand = history.pop();
 		lastCommand.undo();
-		for (TaskItem task : toDoService.getAllTasks()) {
+		for (TaskItem task : lastCommand.getAimTasks()) {
 			aimTasks.add(task);
 		}
 		feedback = lastCommand.getFeedback();

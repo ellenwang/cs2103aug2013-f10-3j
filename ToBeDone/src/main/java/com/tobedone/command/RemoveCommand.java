@@ -10,7 +10,6 @@ import com.tobedone.taskitem.TaskItem;
 import com.tobedone.utils.Constants;
 import com.tobedone.utils.LogMessages;
 
-
 /**
  * @author A0105682H
  * @version 0.5
@@ -21,12 +20,13 @@ import com.tobedone.utils.LogMessages;
  */
 public class RemoveCommand extends Command {
 	private int index;
-	private Vector<TaskItem> allTasks;
+	private Vector<TaskItem> matchingTasks;
+
 	// @author A0105682H
 	public RemoveCommand(int index) {
 		super();
 		this.index = index;
-		this.allTasks = toDoService.getAllTasks();
+		this.matchingTasks = toDoService.getMatchingTasks();
 		isUndoable = true;
 	}
 
@@ -34,12 +34,16 @@ public class RemoveCommand extends Command {
 	@Override
 	protected void executeCommand() throws TaskNotExistException, IOException {
 		logger.info(LogMessages.INFO_REMOVE);
-		if (index<0 || index> allTasks.size()) {
+		for (TaskItem task : matchingTasks) {
+			aimTasks.add(task);
+		}
+		if (index < 0 || index > matchingTasks.size()) {
 			feedback = "";
 		} else {
-			if (toDoService.deleteTaskById(index)){
+			TaskItem deletedTask = toDoService.deleteTaskById(index);
+			if (deletedTask != null) {
 				feedback = Constants.MSG_DELETE_SUCCESSFUL;
-				aimTasks.add(toDoService.getLastDeletedTask());
+				aimTasks.remove(deletedTask);
 			} else {
 				feedback = Constants.MSG_DELETE_FAILED;
 			}
@@ -49,19 +53,18 @@ public class RemoveCommand extends Command {
 	// @author A0105682H
 	@Override
 	public void undo() {
-		if (allTasks.size() > Constants.ZERO) {
+		if (matchingTasks.size() > Constants.ZERO) {
 			logger.info(LogMessages.INFO_UNDO_ACTION);
-				try {
-					TaskItem task = toDoService.getLastDeletedTask();
-					toDoService.createTask(task);
-						feedback = Constants.MSG_REMOVE_UNDO;
-						aimTasks.add(task);
-					} 
-				 catch (IOException e) {
-					logger.error(LogMessages.ERROR_PARSE);
-					feedback = Constants.MSG_UNDO_FAILED;
-				}
-			
+			try {
+				TaskItem task = toDoService.getLastDeletedTask();
+				toDoService.createTask(task);
+				feedback = Constants.MSG_REMOVE_UNDO;
+				aimTasks.add(task);
+			} catch (IOException e) {
+				logger.error(LogMessages.ERROR_PARSE);
+				feedback = Constants.MSG_UNDO_FAILED;
+			}
+
 		} else {
 			feedback = Constants.MSG_UNDO_FAILED;
 		}

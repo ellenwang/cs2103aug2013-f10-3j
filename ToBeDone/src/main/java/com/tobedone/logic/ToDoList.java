@@ -19,11 +19,11 @@ public abstract class ToDoList {
 	private static Logger logger = Logger.getLogger(ToDoList.class);
 	
 	protected Storage storage;
-	protected static Vector<TaskItem> allTasks = new Vector<TaskItem>();
-	private static Vector<TaskItem> matchingTasks;
-	private static TaskItem lastCreatedTask ;
-	private static TaskItem lastDeletedTask ;
-	private static TaskItem lastUpdatedTask ;
+	protected Vector<TaskItem> allTasks = new Vector<TaskItem>();
+	protected Vector<TaskItem> matchingTasks;
+	private TaskItem lastCreatedTask ;
+	private TaskItem lastDeletedTask ;
+	private TaskItem lastUpdatedTask ;
 	
 
 	public ToDoList() {
@@ -37,7 +37,7 @@ public abstract class ToDoList {
 	abstract public boolean updateTask(int index, TaskItem newTask)
 			throws TaskNotExistException, IOException;
 
-	abstract public boolean deleteTaskById(int index)
+	abstract public TaskItem deleteTaskById(int index)
 			throws TaskNotExistException, IOException;
 	
 	abstract public boolean deleteTask(TaskItem task) 
@@ -82,7 +82,7 @@ public abstract class ToDoList {
 	public boolean completeTask(int index) throws IOException,TaskNotExistException {
 		
 		logger.info(LogMessages.INFO_COMPLETE);
-		TaskItem finishedTaskItem = allTasks.get(index);
+		TaskItem finishedTaskItem = matchingTasks.get(index);
 		setLastUpdatedTask(finishedTaskItem);
 		finishedTaskItem.setStatus(TaskItem.Status.FINISHED);
 		storage.store(allTasks);
@@ -95,16 +95,16 @@ public abstract class ToDoList {
 		System.exit(0);
 	}
 
-	public static void setAllTasks(Vector<TaskItem> allTasks) {
-		ToDoList.allTasks = allTasks;
+	public void setAllTasks(Vector<TaskItem> allTasks) {
+		this.allTasks = allTasks;
 	}
-	public static TaskItem getLastUpdatedTask() {
+	public TaskItem getLastUpdatedTask() {
 		return lastUpdatedTask;
 	}
-	public static TaskItem getLastCreatedTask() {
+	public TaskItem getLastCreatedTask() {
 		return lastCreatedTask;
 	}
-	public static TaskItem getLastDeletedTask() {
+	public TaskItem getLastDeletedTask() {
 		return lastDeletedTask;
 	}
 	public void setLastCreatedTask(TaskItem task){
@@ -117,11 +117,11 @@ public abstract class ToDoList {
 		lastDeletedTask = task;
 	}
 
-	public static Vector<TaskItem> getMatchingTasks() {
+	public Vector<TaskItem> getMatchingTasks() {
 		return matchingTasks;
 	}
 
-	public static void setMatchingTasks(Vector<TaskItem> matchingTasks) {
-		ToDoList.matchingTasks = matchingTasks;
+	public void setMatchingTasks(Vector<TaskItem> matchingTasks) {
+		this.matchingTasks = matchingTasks;
 	}
 }

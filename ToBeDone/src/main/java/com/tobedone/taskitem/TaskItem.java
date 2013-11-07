@@ -76,20 +76,6 @@ abstract public class TaskItem implements Cloneable {
 		this.priority = priority;
 	}
 
-//	// @author A0105682H
-//	private static int getEnumPri(TaskItem task) {
-//		switch (task.getPriority()) {
-//		case Constants.PRIORITY_HIGH:
-//			return Priority.HIGH;
-//		case Constants.PRIORITY_MEDIUM:
-//			return Priority.MEDIUM;
-//		case Constants.PRIORITY_LOW:
-//			return Priority.LOW;
-//		default:
-//			return Priority.MEDIUM;
-//		}
-//	}
-
 	/**
 	 * Comparator for priority of two tasks object
 	 */
@@ -101,6 +87,69 @@ abstract public class TaskItem implements Cloneable {
 			return thisTaskPri.compareTo(otherTaskPri);			
 		}
 	};
+	
+	/**
+	 * Comparator TaskItem
+	 */
+	public static Comparator<TaskItem> TaskItemComparator = new Comparator<TaskItem>() {
+		public int compare(TaskItem thisTask, TaskItem otherTask) {
+			Status thisStatus = thisTask.getStatus();
+			Status otherStatus = otherTask.getStatus();
+			int result = thisStatus.compareTo(otherStatus);
+			if (result == 0) {
+				Integer thisPriority = thisTask.getPriority();
+				Integer otherPriority = otherTask.getPriority();
+				result = thisPriority.compareTo(otherPriority);
+				if (result == 0) {
+					result = compareEndTimes(thisTask, otherTask);
+					if (result == 0) {
+						String thisDescription = thisTask.getDescription();
+						String otherDescription = otherTask.getDescription();
+						result = thisDescription.compareTo(otherDescription);
+					}
+				}
+			}
+			
+			return result;
+		}
+	};
+	
+	/**
+	 * Compare end times of two tasks.
+	 */
+	private static int compareEndTimes(TaskItem task1, TaskItem task2) {
+		if (task1 instanceof FloatingTask) {
+			if (task2 instanceof FloatingTask) {
+				return 0;
+			} else {
+				return -1;
+			}
+		} else if (task1 instanceof DeadlinedTask) {
+			if (task2 instanceof FloatingTask) {
+				return 1;
+			} else if (task2 instanceof DeadlinedTask) {
+				Date endTime1 = ((DeadlinedTask) task1).getEndTime();
+				Date endTime2 = ((DeadlinedTask) task2).getEndTime();
+				return endTime1.compareTo(endTime2);
+			} else {
+				Date endTime1 = ((DeadlinedTask) task1).getEndTime();
+				Date endTime2 = ((TimedTask) task2).getEndTime();
+				return endTime1.compareTo(endTime2);
+			}
+		} else {
+			if (task2 instanceof FloatingTask) {
+				return 1;
+			} else if (task2 instanceof DeadlinedTask) {
+				Date endTime1 = ((TimedTask) task1).getEndTime();
+				Date endTime2 = ((DeadlinedTask) task2).getEndTime();
+				return endTime1.compareTo(endTime2);
+			} else {
+				Date endTime1 = ((TimedTask) task1).getEndTime();
+				Date endTime2 = ((TimedTask) task2).getEndTime();
+				return endTime1.compareTo(endTime2);
+			}
+		}
+	}
 	
 	public String toString() {
 		String result = "";

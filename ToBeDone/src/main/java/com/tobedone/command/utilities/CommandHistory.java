@@ -1,12 +1,10 @@
 package com.tobedone.command.utilities;
 
-import org.apache.log4j.Logger;
-
 import java.util.Stack;
 
+import org.apache.log4j.Logger;
+
 import com.tobedone.command.Command;
-import com.tobedone.command.NotUndoableCommand;
-import com.tobedone.utils.Constants;
 import com.tobedone.utils.LogMessages;
 
 

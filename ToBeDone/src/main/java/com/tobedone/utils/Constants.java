@@ -208,6 +208,8 @@ public class Constants {
 	public static final String ERROR_CODE_FOR_TEST = "asdfgh";
 	public final static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
 			"HH:mm,dd-MM-yyyy");
+	
+	public static final String MESSAGE_TASK_ILLEGAL_INSTANCE_OF = "Task not instance of any of the instantiable subclasses of TaskItem";
 
 	// GoogleSync
 	public static final String MESSAGE_SYNC_SUCCESS = "Successfully synchronized.";
