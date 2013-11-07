@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import com.tobedone.command.utilities.CommandHistory;
 import com.tobedone.exception.TaskNotExistException;
-import com.tobedone.utilities.LogMessages;
+import com.tobedone.utils.LogMessages;
 
 public class UndoCommand extends Command {
 

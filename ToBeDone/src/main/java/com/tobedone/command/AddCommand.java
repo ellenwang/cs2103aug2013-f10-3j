@@ -10,8 +10,8 @@ import com.tobedone.taskitem.DeadlinedTask;
 import com.tobedone.taskitem.FloatingTask;
 import com.tobedone.taskitem.TaskItem;
 import com.tobedone.taskitem.TimedTask;
-import com.tobedone.utilities.Constants;
-import com.tobedone.utilities.LogMessages;
+import com.tobedone.utils.Constants;
+import com.tobedone.utils.LogMessages;
 
 
 public class AddCommand extends Command {
@@ -23,7 +23,6 @@ public class AddCommand extends Command {
 	private int priority = 2;
 	private Vector<TaskItem> allTasks ;
 	private Date currentTime = new Date();
-	private Vector<TaskItem> aimTasks = new Vector<TaskItem>();
 
 	
 	public AddCommand (String description, Date startTime, Date endTime, Date deadline,  int priority){

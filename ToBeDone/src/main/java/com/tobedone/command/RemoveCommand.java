@@ -7,8 +7,8 @@ import java.util.Vector;
 
 import com.tobedone.exception.TaskNotExistException;
 import com.tobedone.taskitem.TaskItem;
-import com.tobedone.utilities.Constants;
-import com.tobedone.utilities.LogMessages;
+import com.tobedone.utils.Constants;
+import com.tobedone.utils.LogMessages;
 
 
 /**

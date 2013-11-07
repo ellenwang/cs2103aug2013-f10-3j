@@ -3,7 +3,7 @@ package com.tobedone.taskitem;
 import java.util.Date;
 import java.util.Comparator;
 
-import com.tobedone.utilities.Constants;
+import com.tobedone.utils.Constants;
 
 /**
  * @author A0105682H
@@ -89,7 +89,7 @@ public class TimedTask extends TaskItem {
 			Date thisTaskDate = thisTask.getStartTime();
 			Date otherTaskDate = otherTask.getStartTime();
 			if (thisTaskDate == null && otherTaskDate == null)
-				return com.tobedone.utilities.Constants.ZERO;
+				return com.tobedone.utils.Constants.ZERO;
 			else if (thisTaskDate != null && otherTaskDate == null) {
 				return Constants.SERVICE_OPERATION_FAILED_ID;
 			} else if (thisTaskDate == null && otherTaskDate != null) {

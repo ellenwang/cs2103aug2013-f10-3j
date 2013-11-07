@@ -15,7 +15,7 @@ import org.junit.Test;
 import com.tobedone.storage.Storage;
 import com.tobedone.taskitem.TaskItem;
 import com.tobedone.taskitem.TimedTask;
-import com.tobedone.utilities.Constants;
+import com.tobedone.utils.Constants;
 
 /**
  * @author A0118441M

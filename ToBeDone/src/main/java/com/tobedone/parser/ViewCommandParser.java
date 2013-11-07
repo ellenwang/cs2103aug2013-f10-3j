@@ -3,7 +3,7 @@ package com.tobedone.parser;
 import com.tobedone.command.Command;
 import com.tobedone.command.ViewCommand;
 import com.tobedone.parser.utilities.CommandParser;
-import com.tobedone.utilities.Constants;
+import com.tobedone.utils.Constants;
 
 public class ViewCommandParser extends CommandParser{
 	int index;

@@ -10,7 +10,7 @@ import com.tobedone.command.utilities.CommandHistory;
 import com.tobedone.exception.TaskNotExistException;
 import com.tobedone.logic.ToDoListImp;
 import com.tobedone.taskitem.TaskItem;
-import com.tobedone.utilities.Constants;
+import com.tobedone.utils.Constants;
 import com.tobedone.logic.CommandExecuteResult;
 import com.tobedone.logic.ToDoList;
 import com.tobedone.logic.ToDoListImp;
