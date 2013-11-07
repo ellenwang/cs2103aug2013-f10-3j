@@ -47,10 +47,8 @@ public class ListCommand extends Command {
 		
 		if (aimTasks.size() > 0){
 			feedback = Constants.MSG_EMPTY_SEARCH;
-			result = new CommandExecuteResult (aimTasks,feedback);
 		} else {
 			feedback = "Tasks are listed below: ";
-			result = new CommandExecuteResult (aimTasks,feedback);
 		}
 	}	
 	

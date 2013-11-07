@@ -38,6 +38,8 @@ public class UpdateCommand extends Command {
 	public void executeCommand() throws TaskNotExistException, IOException {
 		TaskItem newTask = setParams();
 		toDoService.updateTask(index, newTask);
+		feedback = Constants.MSG_UPDATE_SUCCESSFUL;
+		aimTasks.add(newTask);
 	}
 	
 	public TaskItem setParams(){
@@ -87,8 +89,9 @@ public class UpdateCommand extends Command {
 				toDoService.deleteTask(updatedTask);
 				toDoService.createTask(oldTask);
 			}
-			feedback = String.format(Constants.MSG_UPDATE_SUCCESSFUL,
-					oldTask, updatedTask);
+			feedback = Constants.MSG_UPDATE_SUCCESSFUL;
+			aimTasks.add(oldTask);
+			aimTasks.add(updatedTask);
 		} catch (TaskNotExistException | IOException e) {
 			logger.error(LogMessages.ERROR_UPDATE_UNDO_FAILED);
 			feedback = Constants.MSG_UNDO_UPDATE_FAILED;

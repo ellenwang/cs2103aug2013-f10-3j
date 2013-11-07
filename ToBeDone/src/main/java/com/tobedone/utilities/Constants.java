@@ -37,6 +37,8 @@ public class Constants {
 	public static final String MSG_FINISH_SUCCESSFUL = "Finished task: \"%1$s\".";
 	public static final String MSG_EMPTY_SEARCH = "No matching task to show.";
 	public static final String MSG_CREATE_SUCCESSFUL = "Created task: %1$s";
+	public static final String MSG_DELETE_FAILED = "Failed to remove the task.";
+	public static final String MSG_UNDO_SUCCESSFUL = "Successfully undo the action.";
 
 	public static final String MSG_ADDED_FAILED = "Add operation failed!";
 	public static final String MSG_UNDO_FAILED = "Undo failed! ";
@@ -218,5 +220,7 @@ public class Constants {
 	public static final String MESSAGE_STORE_SUCCESSFUL = "Successfully stored tasks.";
 	public static final String MESSAGE_TASK_LIST_NULL = "Store aborted, list of tasks is null";
 	public static final String MESSAGE_FILE_NOT_FOUND = "File not found.";
+	
+
 
 }

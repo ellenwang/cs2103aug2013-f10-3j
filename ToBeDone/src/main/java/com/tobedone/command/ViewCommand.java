@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import com.tobedone.exception.TaskNotExistException;
 import com.tobedone.taskitem.TaskItem;
+import com.tobedone.utilities.Constants;
 
 public class ViewCommand extends Command {
 	private int index = 0;
@@ -20,6 +21,7 @@ public class ViewCommand extends Command {
 	protected void executeCommand() throws IOException, TaskNotExistException {
 		// TODO Auto-generated method stub
 		TaskItem task = allTasks.get(index);
-		feedback = task.toString();
+		feedback = Constants.CMD_VIEW;
+		aimTasks.add(task);
 	}
 }

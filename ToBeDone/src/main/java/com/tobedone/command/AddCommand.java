@@ -52,15 +52,12 @@ public class AddCommand extends Command {
 				if (isAdded) {
 					feedback = Constants.INFO_ADD;
 					aimTasks.add(newTask);
-					result = new CommandExecuteResult(aimTasks, feedback);
 				} else {
 					feedback = Constants.MSG_ADDED_FAILED;
-					result = new CommandExecuteResult(aimTasks, feedback);
 				}
 			} catch (IOException e) {
 				logger.error(LogMessages.ERROR_FILE);
 				feedback = Constants.MSG_ADDED_FAILED;
-				result = new CommandExecuteResult(aimTasks, feedback);
 			}
 		}
 	}
@@ -72,8 +69,8 @@ public class AddCommand extends Command {
 			logger.info (LogMessages.INFO_UNDO_ACTION);
 			TaskItem currentTask = toDoService.getLastCreatedTask();
 			if (toDoService.deleteTask(currentTask)) {
-				feedback = String
-						.format(Constants.MSG_DELETE_SUCCESSFUL, currentTask);
+				feedback = Constants.MSG_DELETE_SUCCESSFUL;
+				aimTasks.add(currentTask);
 			} else {
 				feedback = Constants.EMPTY_STRING;
 			}

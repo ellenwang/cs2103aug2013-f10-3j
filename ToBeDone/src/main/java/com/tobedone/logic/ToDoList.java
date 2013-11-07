@@ -17,12 +17,13 @@ import com.tobedone.logic.ToDoList;
 
 public abstract class ToDoList {
 	private static Logger logger = Logger.getLogger(ToDoList.class);
+	
 	protected Storage storage;
 	protected static Vector<TaskItem> allTasks = new Vector<TaskItem>();
 	private static Vector<TaskItem> matchingTasks;
-	private static TaskItem lastUpdatedTask ;
 	private static TaskItem lastCreatedTask ;
 	private static TaskItem lastDeletedTask ;
+	private static TaskItem lastUpdatedTask ;
 	
 
 	public ToDoList() {
@@ -38,19 +39,18 @@ public abstract class ToDoList {
 
 	abstract public boolean deleteTaskById(int index)
 			throws TaskNotExistException, IOException;
+	
 	abstract public boolean deleteTask(TaskItem task) 
 			throws TaskNotExistException, IOException;
 
 	public Vector<TaskItem> getAllTasks() {
 		Vector<TaskItem> result = allTasks;
-
 		logger.info(LogMessages.INFO_DISPLAY_PRIORITY);
 		Collections.sort(result, TaskItem.TaskPriorityComparator);
-
 		return result;
 	}
 
-	public void storeAllTask(Vector<TaskItem> newTasks){
+	public void storeAllTask (Vector<TaskItem> newTasks) {
 		allTasks.clear();
 		for(TaskItem t : newTasks){
 			allTasks.add(t);
@@ -60,9 +60,10 @@ public abstract class ToDoList {
 	
 	public Vector<TaskItem> searchKeyword (String keyword)
 			throws TaskNotExistException {
+		logger.debug(LogMessages.INFO_SEARCH_KEYWORD);
 		Vector<TaskItem> matchingTasks = new Vector<TaskItem>();
 		for (int i = 0; i < allTasks.size(); i++) {
-			String taskInfo = allTasks.get(i).toString();
+			String taskInfo = allTasks.get(i).getDescription();
 			TaskItem currentItem = allTasks.get(i);
 			if (taskInfo.contains(keyword)) {
 				matchingTasks.add(currentItem);
@@ -78,7 +79,7 @@ public abstract class ToDoList {
 		storage.store(allTasks);
 	}
 	
-	public String completeTask(int index) throws IOException,TaskNotExistException {
+	public boolean completeTask(int index) throws IOException,TaskNotExistException {
 		
 		logger.info(LogMessages.INFO_COMPLETE);
 		TaskItem finishedTaskItem = allTasks.get(index);
@@ -86,8 +87,7 @@ public abstract class ToDoList {
 		finishedTaskItem.setStatus(TaskItem.Status.FINISHED);
 		storage.store(allTasks);
 
-		return String.format(Constants.MSG_FINISH_SUCCESSFUL,
-				finishedTaskItem.getDescription());
+		return true;
 	}
 	
 	public void exit() throws IOException {
