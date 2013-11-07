@@ -16,7 +16,7 @@ import com.tobedone.command.Command;
 import com.tobedone.logic.ToDoList;
 import com.tobedone.logic.ToDoListImp;
 import com.tobedone.parser.Parser;
-import com.tobedone.parser.utilities.CommandParser;
+import com.tobedone.parser.utils.CommandParser;
 import com.tobedone.storage.Storage;
 import com.tobedone.taskitem.DeadlinedTask;
 import com.tobedone.taskitem.FloatingTask;

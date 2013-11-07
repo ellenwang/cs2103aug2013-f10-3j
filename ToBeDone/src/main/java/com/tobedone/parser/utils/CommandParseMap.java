@@ -1,4 +1,4 @@
-package com.tobedone.parser.utilities;
+package com.tobedone.parser.utils;
 
 import java.util.HashMap;
 import java.util.Map;
