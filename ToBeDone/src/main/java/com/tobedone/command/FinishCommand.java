@@ -5,8 +5,8 @@ import java.text.ParseException;
 
 import com.tobedone.exception.TaskNotExistException;
 import com.tobedone.taskitem.TaskItem;
-import com.tobedone.utilities.Constants;
-import com.tobedone.utilities.LogMessages;
+import com.tobedone.utils.Constants;
+import com.tobedone.utils.LogMessages;
 
 public class FinishCommand extends Command{
 	private int index;

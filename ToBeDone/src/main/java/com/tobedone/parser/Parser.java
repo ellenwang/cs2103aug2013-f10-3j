@@ -3,8 +3,8 @@ package com.tobedone.parser;
 import java.util.logging.Logger;
 
 import com.tobedone.command.*;
-import com.tobedone.parser.utilities.CommandParser;
-import com.tobedone.utilities.Constants;
+import com.tobedone.parser.utils.CommandParser;
+import com.tobedone.utils.Constants;
 
 public class Parser {
 	

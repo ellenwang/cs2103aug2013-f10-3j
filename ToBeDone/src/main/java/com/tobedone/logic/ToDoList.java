@@ -10,8 +10,8 @@ import org.apache.log4j.Logger;
 
 import com.tobedone.storage.Storage;
 import com.tobedone.taskitem.TaskItem;
-import com.tobedone.utilities.Constants;
-import com.tobedone.utilities.LogMessages;
+import com.tobedone.utils.Constants;
+import com.tobedone.utils.LogMessages;
 import com.tobedone.exception.TaskNotExistException;
 import com.tobedone.logic.ToDoList;
 

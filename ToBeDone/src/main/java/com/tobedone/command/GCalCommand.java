@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Vector;
 
 
+
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.CalendarList;
 import com.google.api.services.calendar.model.CalendarListEntry;
@@ -15,7 +16,7 @@ import com.tobedone.logic.ToDoList;
 import com.tobedone.logic.ToDoListImp;
 import com.tobedone.storage.Storage;
 import com.tobedone.taskitem.TaskItem;
-import com.tobedone.utilities.Constants;
+import com.tobedone.utils.Constants;
 
 
 /**
