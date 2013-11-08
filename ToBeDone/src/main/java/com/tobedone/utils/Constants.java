@@ -140,21 +140,53 @@ public class Constants {
 	public static final int INT_PRI_WRONG = -1;
 	public static final int INT_PRI_NO_CHANGE = 0;
 
-	public static final String REGEX_DATE_SHORT = "(today)|(tomorrow)|(mon)|(tues)|(wed)|(thur)|(fri)|(sat)|(sun)";
-	public static final String REGEX_DATE_TODAY = "today";
-	public static final String REGEX_DATE_TOMORROW = "tomorrow";
-	public static final String REGEX_DATE_FROM_PREFIX = "from"; // from prefix
-	public static final String REGEX_DATE_BY_PREFIX = "by"; // by prefix
-	public static final String REGEX_DATE_TO_PREFIX = "to"; // to prefix
+  // Tian Xing regex for date parsing
 	// HH:mm
-	public static final String REGEX_DATE_TIME = "(((?:(?:[0-1][0-9])|(?:[2][0-3])|(?:[0-9])):(?:[0-5][0-9])(?::[0-5][0-9])?(?:(?:am|AM|pm|PM))?))|(((?:[1][0-2])|(?:[0-9]))((PM)|(pm)|(AM)|(am)))"; // HourMinuteSec
-	public static final String REGEX_DATE_SPACE = "(\\s+)"; // White Space
+	public static final String REGEX_DATE_TIME = "((((?:(?:[0-1][0-9])|(?:[2][0-3])|(?:[0-9])):(?:[0-5][0-9])(?::[0-5][0-9])?(?:(?:am|AM|pm|PM))?))|(((?:[1][0-2])|(?:[0-9]))((PM)|(pm)|(AM)|(am))))"; // HourMinuteSec
+	public static final String REGEX_DATE_SPACE = "(\\s*)"; // White Space
 	// dd-mm-yyyy
 	public static final String REGEX_DATE_DATE = "((?:(?:[0-2]?\\d{1})|(?:[3][01]{1}))[-:\\/.](?:[0]?[1-9]|[1][012])[-:\\/.](?:(?:[1]{1}\\d{1}\\d{1}\\d{1})|(?:[2]{1}\\d{3})))(?![\\d])"; // DDMMYYYY
 	// dd-mm
-	public static final String REGEX_DATE_DAY = "((?:(?:[0-2]?\\d{1})|(?:[3][01]{1}))[-:\\/.](?:[0]?[1-9]|[1][012]))(?![\\d])";
-
-	// packages name
+	public static final String REGEX_DATE_DAY = "((?:(?:[0-2]?\\d{1})|(?:[3][01]{1}))[-:\\/.](?:[0]?[1-9]|[1][012])(?![\\d]))";	
+	
+	public static final String DAY_OF_A_WEEK = "(monday|mon|tuesday|tues|wednesday|wed|thursday|thur"
+			+ "|friday|fri|saturday|sat|sunday|sun)";
+	public static final String THIS_NEXT = "(this|next)";
+	public static final String DAY_OF_TWO_WEEK = THIS_NEXT+REGEX_DATE_SPACE+DAY_OF_A_WEEK;
+	
+	//short_of_day
+	public static final String REGEX_SHORT_DAY = "(today|tomorrow)"+"|"+"("
+			+DAY_OF_TWO_WEEK+")";
+	//HH:mm dd-mm
+	public static final String DATE_TDM = REGEX_DATE_TIME + REGEX_DATE_SPACE + REGEX_DATE_DAY;
+	//HH:mm dd-mm-yyyy
+	public static final String DATE_TDMY = REGEX_DATE_TIME + REGEX_DATE_SPACE + REGEX_DATE_DATE;
+			
+	public static final String REGEX_DATE_PREFIX = "(from|to|by)";
+	public static final String REGEX_FROM_PREFIX = "from";
+	public static final String REGEX_TO_PREFIX = "to";
+	public static final String REGEX_BY_PREFIX = "by";
+			
+	public static final String REGEX_ONE_DATE = REGEX_SHORT_DAY+"|"+DATE_TDMY+"|"+DATE_TDM
+					+"|"+REGEX_DATE_TIME+"|"+REGEX_DATE_DATE + "|" + REGEX_DATE_DAY;
+			
+	public static final String DATE = REGEX_DATE_PREFIX  +REGEX_DATE_SPACE + "("+ REGEX_ONE_DATE+")";
+	public static final String FROM_DATE = REGEX_FROM_PREFIX  +REGEX_DATE_SPACE + "("+ REGEX_ONE_DATE+")"+ REGEX_DATE_SPACE;
+	public static final String TO_DATE = REGEX_TO_PREFIX  +REGEX_DATE_SPACE + "("+ REGEX_ONE_DATE+")"+ REGEX_DATE_SPACE;
+	public static final String BY_DATE = REGEX_BY_PREFIX  +REGEX_DATE_SPACE + "("+ REGEX_ONE_DATE+")" + REGEX_DATE_SPACE;
+	public static final String FROM_TO_DATE = "("+FROM_DATE+")" + REGEX_DATE_SPACE + "("+TO_DATE+")"+REGEX_DATE_SPACE; 
+	
+	public static final Pattern FROM_PATTERN = Pattern.compile(FROM_DATE);
+	public static final Pattern TO_PATTERN = Pattern.compile(TO_DATE);
+	public static final Pattern BY_PATTERN = Pattern.compile(BY_DATE);
+	public static final Pattern FROM_TO_PATTERN = Pattern.compile(FROM_TO_DATE);
+	public static final Pattern ONE_DATE_PATTERN = Pattern.compile(REGEX_ONE_DATE);
+	public static final Pattern TIME_PATTERN = Pattern.compile(REGEX_DATE_TIME);
+	public static final Pattern DAY_PATTERN = Pattern.compile(REGEX_DATE_DAY);
+	public static final Pattern DATE_PATTERN = Pattern.compile(REGEX_DATE_DATE);
+	public static final Pattern SHORT_DAY_PATTERN = Pattern.compile(DAY_OF_A_WEEK);
+	
+   // packages name
 	public static final String PACK_PARSER = "com.tobedone.parser.";
 	public static final String PACK_EXCEPTION = "com.tobedone.exception.";
 
