@@ -17,6 +17,10 @@ public class TextUI {
 	private static CommandExecuteResult commandExecuteResult;
 	private static CommandExecutor executor;
 	
+	protected static void setCommandString(String command) {
+		commandString = command;
+	}
+	
 	protected static void executeCommands() {
 		if((!commandString.equals(Constants.EXIT_TOBEDONE))) {
 			try {
