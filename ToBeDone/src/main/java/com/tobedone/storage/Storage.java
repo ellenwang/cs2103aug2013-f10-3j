@@ -2,12 +2,9 @@ package com.tobedone.storage;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 import java.util.Vector;
@@ -26,10 +23,6 @@ import com.tobedone.utils.Constants;
  * 
  */
 public class Storage {
-	// name of file
-	private static final String FILE_NAME = "ToBeDone.txt";
-	private static final String TEST_FILE_NAME = "test.txt";
-
 	// logger
 	private static Logger logger = Logger.getLogger("logger");
 
@@ -39,7 +32,7 @@ public class Storage {
 	}
 
 	// file written to and read from
-	private static File file = new File(FILE_NAME);
+	private File file;
 
 	// singleton storage object
 	private static Storage storage;
@@ -50,7 +43,7 @@ public class Storage {
 	 * 
 	 */
 	private Storage() {
-
+		file = new File(Constants.FILE_NAME);
 	}
 
 	/**
@@ -70,30 +63,14 @@ public class Storage {
 	 * Change the file written to and read from to a test file.
 	 */
 	public void changeToTestFile() {
-		file = new File(TEST_FILE_NAME);
+		file = new File(Constants.TEST_FILE_NAME);
 	}
 	
 	/**
 	 * Change the file written to and read from to the main file.
 	 */
 	public void changeToMainFile() {
-		file = new File(FILE_NAME);
-	}
-
-	/**
-	 * Clears the file of all content.
-	 * 
-	 */
-	public void clear() {
-		try {
-			FileOutputStream writer = new FileOutputStream(file);
-			writer.write((new String()).getBytes());
-			writer.close();
-		} catch (FileNotFoundException e) {
-			System.err.println(Constants.MESSAGE_FILE_NOT_FOUND);
-		} catch (IOException e) {
-			System.err.println(Constants.MESSAGE_FAILED_TO_WRITE_TO_FILE);
-		}
+		file = new File(Constants.FILE_NAME);
 	}
 	
 	/**

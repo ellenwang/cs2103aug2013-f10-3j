@@ -291,6 +291,8 @@ public class Constants {
 	public static final String MESSAGE_STORE_SUCCESSFUL = "Successfully stored tasks.";
 	public static final String MESSAGE_TASK_LIST_NULL = "Store aborted, list of tasks is null";
 	public static final String MESSAGE_FILE_NOT_FOUND = "File not found.";
+	public static final String FILE_NAME = "ToBeDone.txt";
+	public static final String TEST_FILE_NAME = "test.txt";
 	
 
 

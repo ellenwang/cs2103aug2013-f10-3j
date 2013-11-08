@@ -32,18 +32,18 @@ public class RemoveCommandAtd {
 	public void before() {
 		storage = Storage.getInstance();
 		storage.changeToTestFile();
-		storage.clear();
+		storage.store(new Vector<TaskItem>());
 		toDoList = new ToDoListImp();
 	}
 
 	@After
 	public void after() {
-		storage.clear();
+		storage.store(new Vector<TaskItem>());
 		storage.changeToMainFile();
 	}
 	
 	@Test
-	public void removeFirstTask() throws IOException, TaskNotExistException {
+	public void removeFirstTaskInListOfSingleItem() throws IOException, TaskNotExistException {
 		// add a task
 		String description = "test floating task";
 		Date startTime = null;
