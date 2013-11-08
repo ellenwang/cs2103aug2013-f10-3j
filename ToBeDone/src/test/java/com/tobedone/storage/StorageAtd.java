@@ -33,12 +33,12 @@ public class StorageAtd {
 	public void before() {
 		storage = Storage.getInstance();
 		storage.changeToTestFile();
-		storage.clear();
+		storage.store(new Vector<TaskItem>());
 	}
 	
 	@After
 	public void after() {
-		storage.clear();
+		storage.store(new Vector<TaskItem>());
 		storage.changeToMainFile();
 	}
 

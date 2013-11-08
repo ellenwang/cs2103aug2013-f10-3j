@@ -31,13 +31,13 @@ public class AddCommandAtd {
 	public void before() {
 		storage = Storage.getInstance();
 		storage.changeToTestFile();
-		storage.clear();
+		storage.store(new Vector<TaskItem>());
 		toDoList = new ToDoListImp();
 	}
 
 	@After
 	public void after() {
-		storage.clear();
+		storage.store(new Vector<TaskItem>());
 		storage.changeToMainFile();
 	}
 
