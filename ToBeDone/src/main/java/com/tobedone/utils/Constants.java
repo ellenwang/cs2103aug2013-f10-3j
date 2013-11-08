@@ -2,8 +2,8 @@ package com.tobedone.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.regex.Pattern;
 
-//@author A0105682H
 public class Constants {
 	// Error Message
 	public static final String MSG_ERROR = "Error occured.";
@@ -12,6 +12,77 @@ public class Constants {
 	public static final String MSG_CLEAR = "Tasks cleared.";
 	public static final String MSG_CLEAR_UNDO = "Undo clear command.";
 
+	
+	//@author A0117215R
+	//command name
+	public static final String CMD_ADD = "add";
+	public static final String CMD_REMOVE = "remove";
+	public static final String CMD_UPDATE = "update";
+	public static final String CMD_FINISH = "finish";
+	public static final String CMD_HELP = "help";
+	public static final String CMD_UNDO = "undo";
+	public static final String CMD_REDO = "redo";
+	public static final String CMD_VIEW = "view";
+	public static final String CMD_LIST = "list";
+	public static final String CMD_SEARCH = "search";
+	public static final String CMD_SYNC = "sync";
+	public static final String CMD_CLEAR = "clear";
+
+	
+	//@author A0117215R
+	//command short name
+	public static final String CMD_SHORTCUT_ADD = "+";
+	public static final String CMD_SHORTCUT_REMOVE = "-";
+	public static final String CMD_SHORTCUT_UPDATE = "++";
+	public static final String CMD_SHORTCUT_FINISH = "f";
+	public static final String CMD_SHORTCUT_HELP = "?";
+	public static final String CMD_SHORTCUT_UNDO = "u";
+	public static final String CMD_SHORTCUT_REDO = "red";
+	public static final String CMD_SHORTCUT_VIEW = "v";
+	public static final String CMD_SHORTCUT_LIST_FINISHED = "lsf";
+	public static final String CMD_SHORTCUT_LIST_UNFINISHED = "lsu";
+	public static final String CMD_SHORTCUT_LIST_ALL = "ls";
+	public static final String CMD_SHORTCUT_SEARCH = "s";
+	public static final String CMD_SHORTCUT_CLEAR = "cl";
+	public static final String CMD_SHORTCUT_SYNC = "g";
+
+	
+	//@author A0117215R
+	//commandparser class name
+	public static final String PARSER_CLA_NAME_ADD = "AddCommandParser";
+	public static final String PARSER_CLA_NAME_REMOVE = "RemoveCommandParser";
+	public static final String PARSER_CLA_NAME_UPDATE = "UpdateCommandParser";
+	public static final String PARSER_CLA_NAME_VIEW = "ViewCommandParser";
+	public static final String PARSER_CLA_NAME_SEARCH = "SearchCommandParser";
+	public static final String PARSER_CLA_NAME_UNDO = "UndoCommandParser";
+	public static final String PARSER_CLA_NAME_REDO = "RedoCommandParser";
+	public static final String PARSER_CLA_NAME_LIST = "ListCommandParser";
+	public static final String PARSER_CLA_NAME_CLEAR = "ClearCommandParser";
+	public static final String PARSER_CLA_NAME_SYNC = "SyncCommandParser";
+	public static final String PARSER_CLA_NAME_HELP = "HelpCommandParser";
+	public static final String PARSER_CLA_NAME_FINISH = "FinishCommandParser";
+	public static final String PARSER_CLA_NAME_LSA = "ListAllCommandParser";
+	public static final String PARSER_CLA_NAME_LSF = "ListFinishedCommandParser";
+	public static final String PARSER_CLA_NAME_LSU = "ListUnfinishedCommandParser";
+
+	
+	//@author A0117215R
+	//priority
+	public static final String STR_PRI_HIGH = "high";
+	public static final String STR_PRI_NORMAL = "normal";
+	public static final String STR_PRI_LOW = "low";
+	public static final String STR_SHORT_PRI_HIGH = "h";
+	public static final String STR_SHORT_PRI_NORMAL = "n";
+	public static final String STR_SHORT_PRI_LOW = "l";
+	public static final int INT_PRI_HIGH = 3;
+	public static final int INT_PRI_NORMAL = 2;
+	public static final int INT_PRI_LOW = 1;
+	public static final int INT_PRI_WRONG = -1;
+	public static final int INT_PRI_NO_CHANGE = 0;
+
+	
+	//@author A0117215R
+	//Tips for each command.
 	public static final String TIP_ADD = "add/+ [description] [...]";
 	public static final String TIP_UPDATE = "update/++ [index] [...]";
 	public static final String TIP_REMOVE = "remove/- [index]";
@@ -26,11 +97,88 @@ public class Constants {
 	public static final String TIP_BEGIN = "Input command above";
 	public static final int INPUT_EMPTY = -1;
 
+	//@author A0117215R
 	// Priority
 	public static final int PRIORITY_HIGH = 3;
 	public static final int PRIORITY_MEDIUM = 2;
 	public static final int PRIORITY_LOW = 1;
 	public static final int DEFAULT_PRIORITY = 2;
+	
+	//@author A0117215R
+	// task list info in GUI
+	public static final String INFO_UNFINISHED_TASKS = "Below are expiring tasks, finish them as soon as possible :)";
+	public static final String INFO_SEARCH = "Below are search result";
+	public static final String INFO_ALL_TASKS = "Below are all of your tasks";
+	public static final String INFO_FINISHED_TASKS = "Below are your finished tasks";
+	public static final String INFO_ADD = "Below task has been added";
+	public static final String INFO_REMOVE = "Below task has been removed";
+	public static final String INFO_UPDATE = "Task 1 has been changed into Task 2";
+	public static final String INFO_SYNC = "Below are tasks added from your google calander";
+	
+	
+	//@author A0117215R
+	//Exception msg for parser
+	public static final String MSG_ERROR_INVALID_TASK_NUMBER = "Please check task number.";
+	public static final String MSG_ERROR_WRONG_DATE = "Wrong date format";
+	public static final String MSG_ERROR_EMPTY_DESCRIPTION = "No description found";
+	public static final String MSG_ERROR_EMPTY_ARGUMENT_INDEX = "No index found";
+	public static final String MSG_ERROR_EMPTY_ARGUMENT = "No argument found";
+	
+	
+	//@author A0117215R
+	//parameter for List command
+	public static final String PARAMETER_LIST_ALL = "all";
+	public static final String PARAMETER_LIST_FINISHED = "finished";
+	public static final String PARAMETER_LIST_UNFINISHED = "unfinished";
+	
+	
+	//@author A0117215R
+	//below are regular expression for date parsing
+	// HH:mm
+	public static final String REGEX_DATE_TIME = "((((?:(?:[0-1][0-9])|(?:[2][0-3])|(?:[0-9])):(?:[0-5][0-9])(?::[0-5][0-9])?(?:(?:am|AM|pm|PM))?))|(((?:[1][0-2])|(?:[0-9]))((PM)|(pm)|(AM)|(am))))"; // HourMinuteSec
+	public static final String REGEX_DATE_SPACE = "(\\s*)"; // White Space
+	// dd-mm-yyyy
+	public static final String REGEX_DATE_DATE = "((?:(?:[0-2]?\\d{1})|(?:[3][01]{1}))[-:\\/.](?:[0]?[1-9]|[1][012])[-:\\/.](?:(?:[1]{1}\\d{1}\\d{1}\\d{1})|(?:[2]{1}\\d{3})))(?![\\d])"; // DDMMYYYY
+	// dd-mm
+	public static final String REGEX_DATE_DAY = "((?:(?:[0-2]?\\d{1})|(?:[3][01]{1}))[-:\\/.](?:[0]?[1-9]|[1][012])(?![\\d]))";	
+			
+	public static final String DAY_OF_A_WEEK = "(monday|mon|tuesday|tues|wednesday|wed|thursday|thur"
+					+ "|friday|fri|saturday|sat|sunday|sun)";
+	public static final String THIS_NEXT = "(this|next)";
+	public static final String DAY_OF_TWO_WEEK = THIS_NEXT+REGEX_DATE_SPACE+DAY_OF_A_WEEK;
+			
+	//short_of_day
+	public static final String REGEX_SHORT_DAY = "(today|tomorrow)"+"|"+"("
+					+DAY_OF_TWO_WEEK+")"+"|"+DAY_OF_A_WEEK;
+	//HH:mm dd-mm
+	public static final String DATE_TDM = REGEX_DATE_TIME + REGEX_DATE_SPACE + REGEX_DATE_DAY;
+	//HH:mm dd-mm-yyyy
+	public static final String DATE_TDMY = REGEX_DATE_TIME + REGEX_DATE_SPACE + REGEX_DATE_DATE;
+					
+	public static final String REGEX_DATE_PREFIX = "(from|to|by)";
+	public static final String REGEX_FROM_PREFIX = "from";
+	public static final String REGEX_TO_PREFIX = "to";
+	public static final String REGEX_BY_PREFIX = "by";
+					
+	public static final String REGEX_ONE_DATE = REGEX_SHORT_DAY+"|"+DATE_TDMY+"|"+DATE_TDM
+							+"|"+REGEX_DATE_TIME+"|"+REGEX_DATE_DATE + "|" + REGEX_DATE_DAY;
+					
+	public static final String DATE = REGEX_DATE_PREFIX  +REGEX_DATE_SPACE + "("+ REGEX_ONE_DATE+")";
+	public static final String FROM_DATE = REGEX_FROM_PREFIX  +REGEX_DATE_SPACE + "("+ REGEX_ONE_DATE+")"+ REGEX_DATE_SPACE;
+	public static final String TO_DATE = REGEX_TO_PREFIX  +REGEX_DATE_SPACE + "("+ REGEX_ONE_DATE+")"+ REGEX_DATE_SPACE;
+	public static final String BY_DATE = REGEX_BY_PREFIX  +REGEX_DATE_SPACE + "("+ REGEX_ONE_DATE+")" + REGEX_DATE_SPACE;
+	public static final String FROM_TO_DATE = "("+FROM_DATE+")" + REGEX_DATE_SPACE + "("+TO_DATE+")"+REGEX_DATE_SPACE; 
+			
+	public static final Pattern FROM_PATTERN = Pattern.compile(FROM_DATE);
+	public static final Pattern TO_PATTERN = Pattern.compile(TO_DATE);
+	public static final Pattern BY_PATTERN = Pattern.compile(BY_DATE);
+	public static final Pattern FROM_TO_PATTERN = Pattern.compile(FROM_TO_DATE);
+	public static final Pattern ONE_DATE_PATTERN = Pattern.compile(REGEX_ONE_DATE);
+	public static final Pattern TIME_PATTERN = Pattern.compile(REGEX_DATE_TIME);
+	public static final Pattern DAY_PATTERN = Pattern.compile(REGEX_DATE_DAY);
+	public static final Pattern DATE_PATTERN = Pattern.compile(REGEX_DATE_DATE);
+	public static final Pattern SHORT_DAY_PATTERN = Pattern.compile(DAY_OF_A_WEEK);
+	
 	// Feedback
 	public static final String MSG_NO_UNDO = "Unable to undo actions.";
 	public static final String MSG_CHECK_SEARCH_SYNTAX = "Please check search syntax.";
@@ -48,15 +196,7 @@ public class Constants {
 	public static final String MSG_UNDO_UPDATE_FAILED = "Failed to undo update.";
 	public static final String MSG_UPDATE_SUCCESSFUL = "Old task:\t%1$s\nUpdated task:\t%2$s";
 
-	// task list info for GUI
-	public static final String INFO_UNFINISHED_TASKS = "Below are expiring tasks, finish them as soon as possible :)";
-	public static final String INFO_SEARCH = "Below are search result";
-	public static final String INFO_ALL_TASKS = "Below are all of your tasks";
-	public static final String INFO_FINISHED_TASKS = "Below are your finished tasks";
-	public static final String INFO_ADD = "Below task has been added";
-	public static final String INFO_REMOVE = "Below task has been removed";
-	public static final String INFO_UPDATE = "Task 1 has been changed into Task 2";
-	public static final String INFO_SYNC = "Below are tasks added from your google calander";
+	
 
 	// List tasks switch options
 	public static final int LIST_TASK_DATE_SORTED = 1;
@@ -76,117 +216,9 @@ public class Constants {
 	public static final String currentDay = (Calendar.getInstance())
 			.get(Calendar.DAY_OF_MONTH) + Constants.EMPTY_STRING;
 
-	// Commands
-	// Tian Xing A0117215R
-	public static final String CMD_ADD = "add";
-	public static final String CMD_REMOVE = "remove";
-	public static final String CMD_UPDATE = "update";
-	public static final String CMD_FINISH = "finish";
-	public static final String CMD_HELP = "help";
-	public static final String CMD_UNDO = "undo";
-	public static final String CMD_REDO = "redo";
-	public static final String CMD_VIEW = "view";
-	public static final String CMD_LIST = "list";
-	public static final String CMD_SEARCH = "search";
-	public static final String CMD_SYNC = "sync";
-	public static final String CMD_CLEAR = "clear";
 
-	// SHORTCUT COMMANDS
-	// Tian Xing A0117215R
-	public static final String CMD_SHORTCUT_ADD = "+";
-	public static final String CMD_SHORTCUT_REMOVE = "-";
-	public static final String CMD_SHORTCUT_UPDATE = "++";
-	public static final String CMD_SHORTCUT_FINISH = "f";
-	public static final String CMD_SHORTCUT_HELP = "?";
-	public static final String CMD_SHORTCUT_UNDO = "u";
-	public static final String CMD_SHORTCUT_REDO = "red";
-	public static final String CMD_SHORTCUT_VIEW = "v";
-	public static final String CMD_SHORTCUT_LIST_FINISHED = "lsf";
-	public static final String CMD_SHORTCUT_LIST_UNFINISHED = "lsu";
-	public static final String CMD_SHORTCUT_LIST_ALL = "ls";
-	public static final String CMD_SHORTCUT_SEARCH = "s";
-	public static final String CMD_SHORTCUT_CLEAR = "cl";
-	public static final String CMD_SHORTCUT_SYNC = "g";
-
-	// commandClass name
-	// Tian Xing A0117215R
-	public static final String PARSER_CLA_NAME_ADD = "AddCommandParser";
-	public static final String PARSER_CLA_NAME_REMOVE = "RemoveCommandParser";
-	public static final String PARSER_CLA_NAME_UPDATE = "UpdateCommandParser";
-	public static final String PARSER_CLA_NAME_VIEW = "ViewCommandParser";
-	public static final String PARSER_CLA_NAME_SEARCH = "SearchCommandParser";
-	public static final String PARSER_CLA_NAME_UNDO = "UndoCommandParser";
-	public static final String PARSER_CLA_NAME_REDO = "RedoCommandParser";
-	public static final String PARSER_CLA_NAME_LIST = "ListCommandParser";
-	public static final String PARSER_CLA_NAME_CLEAR = "ClearCommandParser";
-	public static final String PARSER_CLA_NAME_SYNC = "SyncCommandParser";
-	public static final String PARSER_CLA_NAME_HELP = "HelpCommandParser";
-	public static final String PARSER_CLA_NAME_FINISH = "FinishCommandParser";
-	public static final String PARSER_CLA_NAME_LSA = "ListAllCommandParser";
-	public static final String PARSER_CLA_NAME_LSF = "ListFinishedCommandParser";
-	public static final String PARSER_CLA_NAME_LSU = "ListUnfinishedCommandParser";
-
-	// Priority
-	// Tian Xing A0117215R
-	public static final String STR_PRI_HIGH = "high";
-	public static final String STR_PRI_NORMAL = "normal";
-	public static final String STR_PRI_LOW = "low";
-	public static final String STR_SHORT_PRI_HIGH = "h";
-	public static final String STR_SHORT_PRI_NORMAL = "n";
-	public static final String STR_SHORT_PRI_LOW = "l";
-	public static final int INT_PRI_HIGH = 3;
-	public static final int INT_PRI_NORMAL = 2;
-	public static final int INT_PRI_LOW = 1;
-	public static final int INT_PRI_WRONG = -1;
-	public static final int INT_PRI_NO_CHANGE = 0;
-
-  // Tian Xing regex for date parsing
-	// HH:mm
-	public static final String REGEX_DATE_TIME = "((((?:(?:[0-1][0-9])|(?:[2][0-3])|(?:[0-9])):(?:[0-5][0-9])(?::[0-5][0-9])?(?:(?:am|AM|pm|PM))?))|(((?:[1][0-2])|(?:[0-9]))((PM)|(pm)|(AM)|(am))))"; // HourMinuteSec
-	public static final String REGEX_DATE_SPACE = "(\\s*)"; // White Space
-	// dd-mm-yyyy
-	public static final String REGEX_DATE_DATE = "((?:(?:[0-2]?\\d{1})|(?:[3][01]{1}))[-:\\/.](?:[0]?[1-9]|[1][012])[-:\\/.](?:(?:[1]{1}\\d{1}\\d{1}\\d{1})|(?:[2]{1}\\d{3})))(?![\\d])"; // DDMMYYYY
-	// dd-mm
-	public static final String REGEX_DATE_DAY = "((?:(?:[0-2]?\\d{1})|(?:[3][01]{1}))[-:\\/.](?:[0]?[1-9]|[1][012])(?![\\d]))";	
-	
-	public static final String DAY_OF_A_WEEK = "(monday|mon|tuesday|tues|wednesday|wed|thursday|thur"
-			+ "|friday|fri|saturday|sat|sunday|sun)";
-	public static final String THIS_NEXT = "(this|next)";
-	public static final String DAY_OF_TWO_WEEK = THIS_NEXT+REGEX_DATE_SPACE+DAY_OF_A_WEEK;
-	
-	//short_of_day
-	public static final String REGEX_SHORT_DAY = "(today|tomorrow)"+"|"+"("
-			+DAY_OF_TWO_WEEK+")";
-	//HH:mm dd-mm
-	public static final String DATE_TDM = REGEX_DATE_TIME + REGEX_DATE_SPACE + REGEX_DATE_DAY;
-	//HH:mm dd-mm-yyyy
-	public static final String DATE_TDMY = REGEX_DATE_TIME + REGEX_DATE_SPACE + REGEX_DATE_DATE;
-			
-	public static final String REGEX_DATE_PREFIX = "(from|to|by)";
-	public static final String REGEX_FROM_PREFIX = "from";
-	public static final String REGEX_TO_PREFIX = "to";
-	public static final String REGEX_BY_PREFIX = "by";
-			
-	public static final String REGEX_ONE_DATE = REGEX_SHORT_DAY+"|"+DATE_TDMY+"|"+DATE_TDM
-					+"|"+REGEX_DATE_TIME+"|"+REGEX_DATE_DATE + "|" + REGEX_DATE_DAY;
-			
-	public static final String DATE = REGEX_DATE_PREFIX  +REGEX_DATE_SPACE + "("+ REGEX_ONE_DATE+")";
-	public static final String FROM_DATE = REGEX_FROM_PREFIX  +REGEX_DATE_SPACE + "("+ REGEX_ONE_DATE+")"+ REGEX_DATE_SPACE;
-	public static final String TO_DATE = REGEX_TO_PREFIX  +REGEX_DATE_SPACE + "("+ REGEX_ONE_DATE+")"+ REGEX_DATE_SPACE;
-	public static final String BY_DATE = REGEX_BY_PREFIX  +REGEX_DATE_SPACE + "("+ REGEX_ONE_DATE+")" + REGEX_DATE_SPACE;
-	public static final String FROM_TO_DATE = "("+FROM_DATE+")" + REGEX_DATE_SPACE + "("+TO_DATE+")"+REGEX_DATE_SPACE; 
-	
-	public static final Pattern FROM_PATTERN = Pattern.compile(FROM_DATE);
-	public static final Pattern TO_PATTERN = Pattern.compile(TO_DATE);
-	public static final Pattern BY_PATTERN = Pattern.compile(BY_DATE);
-	public static final Pattern FROM_TO_PATTERN = Pattern.compile(FROM_TO_DATE);
-	public static final Pattern ONE_DATE_PATTERN = Pattern.compile(REGEX_ONE_DATE);
-	public static final Pattern TIME_PATTERN = Pattern.compile(REGEX_DATE_TIME);
-	public static final Pattern DAY_PATTERN = Pattern.compile(REGEX_DATE_DAY);
-	public static final Pattern DATE_PATTERN = Pattern.compile(REGEX_DATE_DATE);
-	public static final Pattern SHORT_DAY_PATTERN = Pattern.compile(DAY_OF_A_WEEK);
-	
-   // packages name
+		
+	// packages name
 	public static final String PACK_PARSER = "com.tobedone.parser.";
 	public static final String PACK_EXCEPTION = "com.tobedone.exception.";
 
@@ -195,13 +227,12 @@ public class Constants {
 	public static final String MSG_ERROR_INVALID = "Invalid command.";
 	public static final String MSG_ERROR_INVALID_ARGUMENT = "Invalid argument.";
 	public static final String MSG_ERROR_INVALID_ARGUMENT_INDEX = "Invalid index.";
-	public static final String MSG_ERROR_EMPTY_ARGUMENT_INDEX = "Index not found.";
+	
 	public static final String MSG_ERROR_INPUT_A_FUTURE_DATE_AND_TIME = "Please input a future date and time.";
 	public static final String MSG_ERROR_MISSING_QUOTES = "Please check content syntax.";
 	public static final String MSG_ERROR_NO_TASK_CONTENT = "There is no task content.";
 	public static final String MSG_ERROR_NO_ARG_EXPECTED = "Please check syntax: no argument is expected.";
-	public static final String MSG_ERROR_INVALID_TASK_NUMBER = "Please check task number.";
-	public static final String MSG_ERROR_WRONG_DATE = "Wrong date format";
+
 
 	// Others
 
@@ -218,9 +249,10 @@ public class Constants {
 	public static final int TIME_INTERVAL = 15;
 	public static final int NUM_OF_DAYS_TO_POSTPONE = 4;
 
+	public static final int DAYS_OF_A_WEEK = 7;
 	public static final int TWO = 2;
 	public static final int ONE_LOOKAHEAD = 1;
-	public static final int TWEVEL = 12;
+	public static final int HOURS_OF_A_DAY = 12;
 	public static final int NOT_FOUND_INDEX = -1;
 
 	public static final String COMMA = ",";
