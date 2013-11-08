@@ -1,6 +1,7 @@
 package com.tobedone.parser;
 
 import java.util.Date;
+import java.util.regex.Matcher;
 
 import com.tobedone.command.AddCommand;
 import com.tobedone.command.Command;
@@ -8,6 +9,14 @@ import com.tobedone.exception.CommandWrongArgsException;
 import com.tobedone.parser.utils.CommandParser;
 import com.tobedone.utils.Constants;
 
+/**
+ * @author A0117215R
+ * @version 0.5
+ * @since 01-09-2013
+ * 
+ *        This class will generate an add command by parsing input command string It
+ *        will throws exception when the description is empty
+ */
 public class AddCommandParser extends CommandParser {
 	Date startTime;
 	Date endTime;
@@ -19,73 +28,100 @@ public class AddCommandParser extends CommandParser {
 		priority = Constants.INT_PRI_NORMAL;
 	}
 
+	// @author A0117215R
 	public Command parse(String paraString) throws Exception {
-		int indexoffrom = paraString
-				.lastIndexOf(Constants.REGEX_DATE_FROM_PREFIX);
-		int indexofto = paraString.lastIndexOf(Constants.REGEX_DATE_TO_PREFIX);
-		int indexofby = paraString.lastIndexOf(Constants.REGEX_DATE_BY_PREFIX);
-		int indexofpriority = Constants.NOT_FOUND_INDEX;
+		try {
+			String startTimeString = null;
+			String endTimeString = null;
+			String deadlineString = null;
+			int endOfDescription;
 
-		if (paraString.endsWith(" " + Constants.STR_PRI_HIGH)
-				|| paraString.endsWith(" " + Constants.STR_PRI_NORMAL)
-				|| paraString.endsWith(" " + Constants.STR_PRI_LOW)
-				|| paraString.endsWith(" " + Constants.STR_SHORT_PRI_HIGH)
-				|| paraString.endsWith(" " + Constants.STR_SHORT_PRI_NORMAL)
-				|| paraString.endsWith(" " + Constants.STR_SHORT_PRI_LOW)) {
-			indexofpriority = paraString.lastIndexOf(Constants.SPACE)
-					+ Constants.ONE_LOOKAHEAD;
-		}
+			Matcher matcher;
+			int indexofpriority = Constants.NOT_FOUND_INDEX;
+			int indexfromto = Constants.NOT_FOUND_INDEX;
+			String fromtoString = null;
+			int indexby = Constants.NOT_FOUND_INDEX;
+			String byString = null;
 
-		if (indexoffrom != Constants.NOT_FOUND_INDEX
-				&& indexofto != Constants.NOT_FOUND_INDEX
-				&& indexofby == Constants.NOT_FOUND_INDEX) {
-			description = paraString.substring(0, indexoffrom - 1);
-			String endTimeString;
-
-			String startTimeString = paraString.substring(indexoffrom + 5,
-					indexofto - Constants.ONE_LOOKAHEAD);
-			startTime = parseDate(startTimeString);
-
-			if (indexofpriority != Constants.NOT_FOUND_INDEX) {
-				endTimeString = paraString.substring(indexofto + 3,
-						indexofpriority - 1);
-			} else {
-				endTimeString = paraString.substring(indexofto + 3);
+			// extract priority from the paraString (if has)
+			if (paraString.endsWith(Constants.SPACE + Constants.STR_PRI_HIGH)
+					|| paraString.endsWith(Constants.SPACE
+							+ Constants.STR_PRI_NORMAL)
+					|| paraString.endsWith(Constants.SPACE
+							+ Constants.STR_PRI_LOW)
+					|| paraString.endsWith(Constants.SPACE
+							+ Constants.STR_SHORT_PRI_HIGH)
+					|| paraString.endsWith(Constants.SPACE
+							+ Constants.STR_SHORT_PRI_NORMAL)
+					|| paraString.endsWith(Constants.SPACE
+							+ Constants.STR_SHORT_PRI_LOW)) {
+				indexofpriority = paraString.lastIndexOf(Constants.SPACE)
+						+ Constants.ONE_LOOKAHEAD;
 			}
-			endTime = parseDate(endTimeString);
-		} else if (indexofby != Constants.NOT_FOUND_INDEX) {
-
-			description = paraString.substring(0, indexofby - 1);
-			String deadlineSting;
-
 			if (indexofpriority != Constants.NOT_FOUND_INDEX) {
-				deadlineSting = paraString.substring(indexofby + 3,
-						indexofpriority - 1);
-			} else {
-				deadlineSting = paraString.substring(indexofby + 3);
+				String priorityString = paraString.substring(indexofpriority);
+				priority = parsePriority(priorityString);
+				paraString = paraString.substring(0, indexofpriority);
+				System.out.println("paraString remove priority: " + paraString);
 			}
-			deadline = parseDate(deadlineSting);
-			System.out.println(deadline);
-		} else {
-			if (indexofpriority != Constants.NOT_FOUND_INDEX) {
-				description = paraString.substring(0, indexofpriority - 1);
-			} else {
-				description = paraString;
+
+			// find the last "from Date1 to Date2" string
+			matcher = Constants.FROM_TO_PATTERN.matcher(paraString);
+			while (matcher.find()) {
+				fromtoString = matcher.group(0);
+				indexfromto = matcher.start();
 			}
-		}
 
-		if (indexofpriority != Constants.NOT_FOUND_INDEX) {
-			String priorityString = paraString.substring(indexofpriority);
-			priority = parsePriority(priorityString);
-		}
+			// find the last "by Date" string
+			matcher = Constants.BY_PATTERN.matcher(paraString);
+			while (matcher.find()) {
+				byString = matcher.group(0);
+				indexby = matcher.start();
+			}
 
-		if (description == null || priority == Constants.INT_PRI_WRONG) {
-			throw new CommandWrongArgsException(
-					Constants.MSG_ERROR_INVALID_ARGUMENT);
-		}
+			// case1: XXXXX from Date1 to Date2
+			if (indexfromto > indexby && paraString.endsWith(fromtoString)) {
+				matcher = Constants.FROM_PATTERN.matcher(paraString);
+				while (matcher.find()) {
+					startTimeString = matcher.group(0);
+				}
+				startTime = parseDate(startTimeString, true);
 
-		return new AddCommand(description, startTime, endTime, deadline,
-				priority);
+				endOfDescription = indexfromto;
+
+				matcher = Constants.TO_PATTERN.matcher(paraString);
+				while (matcher.find()) {
+					endTimeString = matcher.group(0);
+				}
+				endTime = parseDate(endTimeString, false);
+			}
+			// case2: XXXXXX by Date
+			else if (indexby > indexfromto && paraString.endsWith(byString)) {
+				matcher = Constants.BY_PATTERN.matcher(paraString);
+				while (matcher.find()) {
+					deadlineString = matcher.group(0);
+				}
+				deadline = parseDate(deadlineString, false);
+
+				endOfDescription = indexby;
+			}
+			// case3: XXXXXX
+			else {
+				endOfDescription = paraString.length();
+			}
+
+			// Wrong: the description is null!
+			if (endOfDescription > 0) {
+				description = paraString.substring(0, endOfDescription);
+			} else {
+				throw new CommandWrongArgsException(
+						Constants.MSG_ERROR_EMPTY_DESCRIPTION);
+			}
+
+			return new AddCommand(description, startTime, endTime, deadline,
+					priority);
+		} catch (Exception e) {
+			throw e;
+		}
 	}
-
 }
