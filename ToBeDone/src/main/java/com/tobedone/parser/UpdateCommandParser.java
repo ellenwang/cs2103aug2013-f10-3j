@@ -1,12 +1,21 @@
 package com.tobedone.parser;
 
 import java.util.Date;
+import java.util.regex.Matcher;
 
 import com.tobedone.command.Command;
 import com.tobedone.command.UpdateCommand;
 import com.tobedone.parser.utils.CommandParser;
 import com.tobedone.utils.Constants;
 
+/**
+ * @author A0117215R
+ * @version 0.5
+ * @since 01-09-2013
+ * 
+ *        This class will generate an update command by parsing input command string It
+ *        will throws exception when the index is wrong
+ */
 public class UpdateCommandParser extends CommandParser {
 	int index;
 	Date newstartTime;
@@ -18,98 +27,138 @@ public class UpdateCommandParser extends CommandParser {
 	public UpdateCommandParser() {
 		newpriority = Constants.INT_PRI_NO_CHANGE;
 	}
-	
-	public Command parse(String paraString) throws Exception{
-		int indexofindex = paraString.indexOf(Constants.SPACE);
-		int indexoffrom = paraString.lastIndexOf(Constants.REGEX_DATE_FROM_PREFIX);
-		int indexofto = paraString.lastIndexOf(Constants.REGEX_DATE_TO_PREFIX);
-		int indexofby = paraString.lastIndexOf(Constants.REGEX_DATE_BY_PREFIX);
+
+	//@author A0117215R
+	public Command parse(String paraString) throws Exception {
+		String startTimeString = null;
+		String endTimeString = null;
+		String deadlineString = null;
+		int endOfDescription = Constants.NOT_FOUND_INDEX;
+		int indexofindex = Constants.NOT_FOUND_INDEX;
 		int indexofpriority = Constants.NOT_FOUND_INDEX;
+
+		Matcher matcher;
 		
+		int beginfromto = Constants.NOT_FOUND_INDEX;
+		int endfromto = Constants.NOT_FOUND_INDEX;
+		String fromtoString = null;
+		
+		int beginfrom = Constants.NOT_FOUND_INDEX;
+		String fromString = null;
+		
+		int beginto = Constants.NOT_FOUND_INDEX;
+		String toString = null;
+		
+		int beginby = Constants.NOT_FOUND_INDEX;
+		String byString = null;
+
+		// extract index from paraString and then remove it from paraString
+		indexofindex = paraString.indexOf(Constants.SPACE);
 		index = parseIndex(indexofindex, paraString);
-		
-		int indexofdescription = indexofindex + ((Integer) index).toString().length();
-		
-		if(paraString.endsWith(Constants.STR_PRI_HIGH)
-				||paraString.endsWith(Constants.STR_PRI_NORMAL)
-				||paraString.endsWith(Constants.STR_PRI_LOW)){
-			indexofpriority = paraString.lastIndexOf(Constants.SPACE)+Constants.ONE_LOOKAHEAD;
+		paraString = paraString.substring(indexofindex + 1);
+
+		// extract priority from paraString and then remove it from paraString
+		if (paraString.endsWith(Constants.SPACE + Constants.STR_PRI_HIGH)
+				|| paraString.endsWith(Constants.SPACE
+						+ Constants.STR_PRI_NORMAL)
+				|| paraString.endsWith(Constants.SPACE + Constants.STR_PRI_LOW)
+				|| paraString.endsWith(Constants.SPACE
+						+ Constants.STR_SHORT_PRI_HIGH)
+				|| paraString.endsWith(Constants.SPACE
+						+ Constants.STR_SHORT_PRI_NORMAL)
+				|| paraString.endsWith(Constants.SPACE
+						+ Constants.STR_SHORT_PRI_LOW)) {
+			indexofpriority = paraString.lastIndexOf(Constants.SPACE)
+					+ Constants.ONE_LOOKAHEAD;
 		}
-		
-		if(indexoffrom!= Constants.NOT_FOUND_INDEX 
-				&& indexofby == Constants.NOT_FOUND_INDEX){
-			if (indexofindex + 1 < indexoffrom - 1) {
-				newdescription = paraString.substring(indexofdescription,
-						indexoffrom - 1);
-			}
-			String endTimeString;
-			String startTimeString;
-					
-			if (indexofto != Constants.NOT_FOUND_INDEX) {
-				startTimeString = paraString.substring(indexoffrom+5,indexofto-Constants.ONE_LOOKAHEAD);
-				newstartTime = parseDate(startTimeString);
-				if (indexofpriority != Constants.NOT_FOUND_INDEX) {
-					endTimeString = paraString.substring(indexofto + 3,
-							indexofpriority - 1);
-				} else {
-					endTimeString = paraString.substring(indexofto + 3);
-				}
-				newendTime = parseDate(endTimeString);
-			}else{
-				if (indexofpriority != Constants.NOT_FOUND_INDEX) {
-					startTimeString = paraString.substring(indexoffrom + 5,
-							indexofpriority - 1);
-				} else {
-					startTimeString = paraString.substring(indexoffrom + 5);
-				}
-				newstartTime = parseDate(startTimeString);
-			}
-		}else if (indexofto != Constants.NOT_FOUND_INDEX
-				&&indexofby == Constants.NOT_FOUND_INDEX) {
-			if (indexofindex + 1 < indexofto - 1) {
-				newdescription = paraString.substring(indexofdescription,
-						indexofto - 1);
-			}
-			
-			String endTimeString;
-			if (indexofpriority != Constants.NOT_FOUND_INDEX) {
-				endTimeString = paraString.substring(indexofto + 3,
-						indexofpriority - 1);
-			} else {
-				endTimeString = paraString.substring(indexofto + 3);
-			}
-			System.out.println(endTimeString);
-			newendTime = parseDate(endTimeString);
-			
-		}else if(indexofby != Constants.NOT_FOUND_INDEX){
-			if (indexofindex + 1 < indexofby - 1) {
-				newdescription = paraString.substring(indexofdescription,
-						indexofby - 1);
-			}
-			String deadlineSting;
-			
-			if(indexofpriority != Constants.NOT_FOUND_INDEX){
-				deadlineSting = paraString.substring(indexofby+3,indexofpriority-1);
-			}else{
-				deadlineSting = paraString.substring(indexofby+3);
-			}
-			newdeadline = parseDate(deadlineSting);
-			System.out.println(newdeadline);
-		}else{
-			if(indexofpriority!=Constants.NOT_FOUND_INDEX){
-				if(indexofindex+1<indexofpriority-1){
-					newdescription = paraString.substring(indexofdescription,indexofpriority-1);
-				}	
-			}else{
-				newdescription = paraString.substring(indexofdescription);
-			}
+		if (indexofpriority != Constants.NOT_FOUND_INDEX) {
+			String priorityString = paraString.substring(indexofpriority);
+			newpriority = parsePriority(priorityString);
+			paraString = paraString.substring(0, indexofpriority);
 		}
 
+		// find the last "from to" string
+		matcher = Constants.FROM_TO_PATTERN.matcher(paraString);
+		while (matcher.find()) {
+			beginfromto = matcher.start();
+			endfromto = matcher.end();
+			fromtoString = matcher.group(0);
+		}
+
+		// find the last "from Date" string
+		matcher = Constants.FROM_PATTERN.matcher(paraString);
+		while (matcher.find()) {
+			beginfrom = matcher.start();
+			fromString = matcher.group(0);
+		}
+
+		// find the last "from Date" string
+		matcher = Constants.TO_PATTERN.matcher(paraString);
+		while (matcher.find()) {
+			beginto = matcher.start();
+			toString = matcher.group(0);
+		}
+
+		// find the last "from Date" string
+		matcher = Constants.BY_PATTERN.matcher(paraString);
+		while (matcher.find()) {
+			beginby = matcher.start();
+			byString = matcher.group(0);
+		}
+
+		int maxindex = Math.max(Math.max(beginby, beginfromto),
+				Math.max(beginfrom, beginto));
 		
-	if (indexofpriority != Constants.NOT_FOUND_INDEX) {
-		String priorityString = paraString.substring(indexofpriority);
-		newpriority = parsePriority(priorityString);
-	}
-		return new UpdateCommand(index, newdescription, newstartTime, newendTime,newdeadline ,newpriority);
+		//case1: XXXXXXX by newDate
+		if (beginby == maxindex && paraString.endsWith(byString)) {
+			deadlineString = byString;
+			newdeadline = parseDate(deadlineString, false);
+
+			endOfDescription = beginby;
+		} 
+		//case2: XXXXXX from newDate1 to newDate2
+		else if (endfromto > maxindex && paraString.endsWith(fromtoString)) {
+			matcher = Constants.FROM_PATTERN.matcher(fromtoString);
+			if (matcher.find()) {
+				startTimeString = matcher.group(0);
+			}
+			newstartTime = parseDate(startTimeString, true);
+
+			endOfDescription = matcher.start();
+
+			matcher = Constants.TO_PATTERN.matcher(fromtoString);
+			if (matcher.find()) {
+				endTimeString = matcher.group(0);
+			}
+			newendTime = parseDate(endTimeString, false);
+
+			endOfDescription = beginfromto;
+		} 
+		//case3: XXXXX from newDate
+		else if (beginfrom == maxindex && paraString.endsWith(fromString)) {
+			startTimeString = fromString;
+			newstartTime = parseDate(startTimeString, true);
+
+			endOfDescription = beginfrom;
+		} 
+		//case4: XXXXXX to newDate
+		else if (beginto == maxindex && paraString.endsWith(toString)
+				&& beginto > endfromto) {
+			endTimeString = toString;
+			newendTime = parseDate(endTimeString, false);
+
+			endOfDescription = beginto;
+		} 
+		//case newDescription
+		else {
+			endOfDescription = paraString.length();
+		}
+		
+		if (endOfDescription > 0) {
+			newdescription = paraString.substring(0, endOfDescription);
+		}
+
+		return new UpdateCommand(index, newdescription, newstartTime,
+				newendTime, newdeadline, newpriority);
 	}
 }
