@@ -18,6 +18,7 @@ public class Constants {
 	public static final String TIP_SEARCH = "search/s [...]";
 	public static final String TIP_LIST = "lsa/lsu/luf";
 	public static final String TIP_SYNC = "sync/g";
+	public static final String TIP_UNDO = "undo/u";
 	public static final String TIP_HELP = "help/?";
 	public static final String TIP_CLEAR = "clear/cl";
 	public static final String TIP_WRONG = "No such command";

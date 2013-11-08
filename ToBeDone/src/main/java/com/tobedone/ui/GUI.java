@@ -73,12 +73,12 @@ public class GUI extends JFrame {
 		// tasks.add(taskItem2);
 		// tasks.add(taskItem3);
 		//
-		ToDoList toDoService = new ToDoListImp();
-		Vector<TaskItem> tasks = toDoService.getAllTasks();
-		CommandExecuteResult result = new CommandExecuteResult(tasks,
-		Constants.INFO_ALL_TASKS);
+		//ToDoList toDoService = new ToDoListImp();
+		//Vector<TaskItem> tasks = toDoService.getAllTasks();
+		//CommandExecuteResult result = new CommandExecuteResult(tasks,
+		//Constants.INFO_ALL_TASKS);
+		//setExecuteResult(result);
 		
-		setExecuteResult(result);
 		BasicConfigurator.configure();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -177,7 +177,11 @@ public class GUI extends JFrame {
 		tasksList.getColumnModel().getColumn(4).setMaxWidth(127);
 		tasksList.setRowHeight(30);
 		
-		display(executeResult);
+		TextUI.setCommandString("list all");
+		TextUI.executeCommands();
+		display(TextUI.getCommandExecuteResult());
+		
+		//display(executeResult);
 	}
 
 	protected void display(CommandExecuteResult result) {
