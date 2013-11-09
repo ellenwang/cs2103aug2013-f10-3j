@@ -58,27 +58,7 @@ public class GUI extends JFrame {
 	 * 
 	 * @throws ParseException
 	 */
-	public static void main(String[] args) throws ParseException {
-		// Date date1 = Constants.simpleDateFormat.parse("10:00,12-11-2013");
-		// Date date2 = Constants.simpleDateFormat.parse("11:00,12-11-2013");
-		// TaskItem taskItem1 =new TaskItem("attend se tutorial",
-		// "finished",date1, date2, 1);
-		// TaskItem taskItem2 =new TaskItem("call mom", "unfinished", null,
-		// date2, 3);
-		// TaskItem taskItem3 =new TaskItem("call mom", "unfinished", null,
-		// null, 2);
-		//
-		// Vector<TaskItem> tasks = new Vector<TaskItem>();
-		// tasks.add(taskItem1);
-		// tasks.add(taskItem2);
-		// tasks.add(taskItem3);
-		//
-		//ToDoList toDoService = new ToDoListImp();
-		//Vector<TaskItem> tasks = toDoService.getAllTasks();
-		//CommandExecuteResult result = new CommandExecuteResult(tasks,
-		//Constants.INFO_ALL_TASKS);
-		//setExecuteResult(result);
-		
+	public static void main(String[] args) throws ParseException {		
 		BasicConfigurator.configure();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -97,7 +77,8 @@ public class GUI extends JFrame {
 	 */
 	public GUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 650, 400);
+		setBounds(100, 100, 620, 380);
+		setResizable(false);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -128,11 +109,15 @@ public class GUI extends JFrame {
 				String inputString = textField.getText();
 
 				if (keyCode == KeyEvent.VK_ENTER) {
-					textField.setText("");
-					TextUI.readUserInput(inputString);
-					TextUI.executeCommands();
+					if (inputString.equals("help")) {
+						new HelpFrame();
+					} else {
+						textField.setText("");
+						TextUI.readUserInput(inputString);
+						TextUI.executeCommands();
 
-					display(TextUI.getCommandExecuteResult());
+						display(TextUI.getCommandExecuteResult());
+					}
 				}
 
 				inputTips.setText(autoSetTips(inputString));
@@ -148,7 +133,7 @@ public class GUI extends JFrame {
 		textField.setColumns(10);
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 108, 595, 240);
+		scrollPane.setBounds(10, 108, 600, 240);
 		contentPane.add(scrollPane);
 
 		tasksList = new JTable();
@@ -222,16 +207,16 @@ public class GUI extends JFrame {
 	}
 
 	private String[] getAttributes(TaskItem task, int index) {
-		String indexString = index + Constants.EMPTY_STRING;
+		String indexString = "   "+index + Constants.EMPTY_STRING;
 		String description = task.getDescription();
 		String status;
 		String start;
 		String end;
 
 		if (task.getStatus().equals(Status.FINISHED)) {
-			status = "     √";
+			status = "    √";
 		} else {
-			status = "     -";
+			status = "    -";
 		}
 
 		if (task instanceof TimedTask) {
