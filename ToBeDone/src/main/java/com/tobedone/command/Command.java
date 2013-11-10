@@ -34,6 +34,7 @@ public abstract class Command {
 	protected boolean isUndoable = false;
 	protected boolean exitSystemStatus = false;
 	protected static ToDoList toDoService = new ToDoListImp();
+	protected boolean executionSuccessful = false;
 
 	// @author A0105682H
 	public Command() {
@@ -54,7 +55,9 @@ public abstract class Command {
 	public CommandExecuteResult execute() throws IOException,
 			TaskNotExistException {
 		this.executeCommand();
-		this.addHistory();
+		if (executionSuccessful) {
+			this.addHistory();
+		}
 		Collections.sort(result.getAimTasks(),
 				Collections.reverseOrder(TaskItem.TaskItemComparator));
 		toDoService.setMatchingTasks(result.getAimTasks());

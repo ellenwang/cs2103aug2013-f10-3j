@@ -30,6 +30,7 @@ public class RemoveCommand extends Command {
 		this.matchingTasks = toDoService.getMatchingTasks();
 		isUndoable = true;
 		taskToDelete = matchingTasks.get(index);
+		executionSuccessful = false;
 	}
 
 	// @author A0105682H
@@ -47,6 +48,7 @@ public class RemoveCommand extends Command {
 			if (deleteSuccessful) {
 				feedback = Constants.MSG_DELETE_SUCCESSFUL;
 				aimTasks.remove(taskToDelete);
+				executionSuccessful = true;
 			} else {
 				feedback = Constants.MSG_DELETE_FAILED;
 			}

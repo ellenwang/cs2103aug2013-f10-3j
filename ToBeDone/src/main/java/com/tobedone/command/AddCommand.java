@@ -41,11 +41,11 @@ public class AddCommand extends Command {
 		this.priority = priority;
 		this.allTasks = toDoService.getAllTasks();
 		isUndoable = true;
+		executionSuccessful = false;
 	}
 
 	@Override
 	public void executeCommand() throws IOException {
-		// TODO Auto-generated method stub
 		logger.info(LogMessages.INFO_ADD);
 		TaskItem newTask = this.getNewTaskWithParams();
 		if (newTask == null) {
@@ -64,6 +64,7 @@ public class AddCommand extends Command {
 					for (TaskItem task : toDoService.getAllTasks()) {
 						aimTasks.add(task);
 					}
+					executionSuccessful = true;
 				} else {
 					feedback = Constants.MSG_ADDED_FAILED;
 				}

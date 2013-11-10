@@ -24,6 +24,7 @@ public class LogMessages {
 	public static final String INFO_ADD = "Add a new task.";
 	public static final String INFO_DELETE_TASK = "Delete a task.";
 	public static final String INFO_UNDO_ACTION = "Undo previous action";
+	public static final String INFO_FINISH = "Finish a task.";
 	public static final String INFO_REMOVE = "Remove a task.";
 	public static final String INFO_SEARCH_KEYWORD = "Search by keyword.";
 	// DEBUG

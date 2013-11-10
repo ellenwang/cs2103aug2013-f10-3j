@@ -37,6 +37,7 @@ public class UpdateCommand extends Command {
 		isUndoable = true;
 		this.matchingTasks = toDoService.getMatchingTasks();
 		oldTask = matchingTasks.get(index);
+		executionSuccessful = false;
 	}
 
 	public void executeCommand() throws TaskNotExistException, IOException {
@@ -51,7 +52,8 @@ public class UpdateCommand extends Command {
 		aimTasks.remove(oldTask);
 		aimTasks.add(newTask);
 
-		feedback = Constants.MSG_UPDATE_SUCCESSFUL;
+		feedback = String.format(Constants.MSG_UPDATE_SUCCESSFUL, oldTask, newTask);
+		executionSuccessful = true;
 	}
 
 	public TaskItem setParams() {

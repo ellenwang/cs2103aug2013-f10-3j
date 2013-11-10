@@ -20,6 +20,7 @@ public class ClearCommand extends Command {
 		super();
 		originalList = new Vector<TaskItem>();
 		isUndoable = true;
+		executionSuccessful = false;
 	}
 
 	// @author A0105682H
@@ -33,6 +34,7 @@ public class ClearCommand extends Command {
 			}
 			toDoService.clear();
 			feedback = Constants.MSG_CLEAR;
+			executionSuccessful = true;
 			aimTasks = new Vector<TaskItem>();
 		} catch (IOException e) {
 			logger.error(LogMessages.ERROR_PARSE);
