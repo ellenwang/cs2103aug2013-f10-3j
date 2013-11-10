@@ -203,6 +203,7 @@ public class Constants {
 	public static final String MSG_CHECK_SEARCH_SYNTAX = "Please check search syntax.";
 	public static final String MSG_EXIT = "Thank you for using ToBeDone.";
 	public static final String MSG_FINISH_SUCCESSFUL = "Finished task: \"%1$s\".";
+	public static final String MSG_ALREADY_FINISHED = "Already finished task: \"%1$s\".";
 	public static final String MSG_NO_MATCHING_TASK = "No matching task to show.";
 	public static final String MSG_CREATE_SUCCESSFUL = "Created task: %1$s";
 	public static final String MSG_DELETE_FAILED = "Failed to remove the task.";

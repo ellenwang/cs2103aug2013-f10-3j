@@ -17,18 +17,28 @@ public class FinishCommand extends Command {
 		isUndoable = true;
 		this.matchingTasks = toDoService.getMatchingTasks();
 		finishedTask = matchingTasks.get(index);
+		executionSuccessful = false;
 	}
 
 	// @author A0118441M
 	@Override
 	public void executeCommand() throws IOException, TaskNotExistException {
+		logger.info(LogMessages.INFO_FINISH);
 		aimTasks.clear();
 		for (TaskItem task : matchingTasks) {
 			aimTasks.add(task);
 		}
-		toDoService.deleteTask(finishedTask);
-		finishedTask.setStatus(Status.FINISHED);
-		toDoService.createTask(finishedTask);
+		if (!finishedTask.getStatus().equals(Status.FINISHED)) {
+			toDoService.deleteTask(finishedTask);
+			finishedTask.setStatus(Status.FINISHED);
+			toDoService.createTask(finishedTask);
+			feedback = String.format(Constants.MSG_FINISH_SUCCESSFUL,
+					finishedTask);
+			executionSuccessful = true;
+		} else {
+			feedback = String.format(Constants.MSG_ALREADY_FINISHED,
+					finishedTask);
+		}
 	}
 
 	// @author A0118441M
