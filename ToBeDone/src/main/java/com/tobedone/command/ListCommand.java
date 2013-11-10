@@ -10,7 +10,7 @@ public class ListCommand extends Command {
 
 	Vector<TaskItem> allTasks;
 	TaskItem.Status status;
-	String scope = "";
+	String scope = Constants.EMPTY_STRING;
 
 	public ListCommand(String scope) {
 		allTasks = toDoService.getAllTasks();
@@ -18,12 +18,12 @@ public class ListCommand extends Command {
 	}
 
 	protected void executeCommand() {
-		if (scope.equals("all")) {
+		if (scope.equals(Constants.ALL_SCOPE)) {
 			for (TaskItem task : allTasks) {
 				aimTasks.add(task);
 			}
-			feedback = "all list";
-		} else if (scope.equals("unfinished")) {
+			
+		} else if (scope.equals(Constants.UNFINISHED_SCOPE)) {
 			status = TaskItem.Status.UNFINISHED;
 			for (int i = 0; i < allTasks.size(); i++) {
 				TaskItem currentTask = allTasks.get(i);
@@ -32,7 +32,7 @@ public class ListCommand extends Command {
 					aimTasks.add(currentTask);
 				}
 			}
-		} else if (scope.equals("finished")) {
+		} else if (scope.equals(Constants.FINISHED_SCOPE)) {
 			status = TaskItem.Status.FINISHED;
 			for (int i = 0; i < allTasks.size(); i++) {
 				TaskItem currentTask = allTasks.get(i);
@@ -44,18 +44,22 @@ public class ListCommand extends Command {
 		}
 
 		if (aimTasks.size() > 0) {
-			feedback = Constants.MSG_EMPTY_SEARCH;
+			if(aimTasks.size() == allTasks.size()){
+				feedback = Constants.MSG_ALLTASK_LIST;
+			} else {
+				feedback = Constants.MSG_MATCHINGTASK_LIST;
+			}
 		} else {
-			feedback = "Tasks are listed below: ";
+			feedback = Constants.MSG_NO_MATCHING_TASK;
 		}
 	}
 
 	public String vectorToString(Vector<TaskItem> list) {
-		String result = "";
+		String result = Constants.EMPTY_STRING;
 		for (int i = 0; i < list.size(); i++) {
-			result += (i + 1) + ". " + list.get(i) + '\n';
+			result += (i + 1) + ". " + list.get(i) + Constants.NEWLINE;
 		}
-		if (!result.equals("")) {
+		if (!result.equals(Constants.EMPTY_STRING)) {
 			result = result.substring(0, result.length() - 1);
 		}
 		return result;

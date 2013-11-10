@@ -31,4 +31,11 @@ public class CommandExecuteResult {
 	public String getFeedback() {
 		return feedback;
 	}	
+	public void setFeedback(String feedback) {
+		this.feedback = feedback;
+	}
+
+	public void setAimTasks(Vector<TaskItem> aimTasks) {
+		this.aimTasks = aimTasks;
+	}
 }

@@ -122,9 +122,10 @@ public class CommandParser {
 	// @author A0117215R
 	protected Date parseDate(String datePattern, Boolean isFromTime)
 			throws Exception {
+		datePattern = datePattern.toLowerCase();
 		String dayString = currentDay;
-		String yearString = currentYear;
-		String monthString = currentMonth;
+//		String yearString = currentYear;
+//		String monthString = currentMonth;
 		String time;
 
 		if (isFromTime) {
@@ -167,6 +168,7 @@ public class CommandParser {
 		if (matcher.find()) {
 			indexOfday = matcher.start();
 			dayPartern = datePattern.substring(indexOfday);
+			System.out.println(dayPartern);
 		}
 
 		// match HH:mm dd-mm
@@ -174,6 +176,7 @@ public class CommandParser {
 				&& indexOfday != Constants.NOT_FOUND_INDEX
 				&& timePartern.matches(Constants.REGEX_DATE_TIME)
 				&& dayPartern.matches(Constants.REGEX_DATE_DAY)) {
+			System.out.println("hhhhhh");
 			time = parseTime(timePartern);
 			dayString = parseDay(dayPartern);
 			dateString = time + Constants.COMMA + dayString + Constants.HYPHEN
@@ -207,12 +210,12 @@ public class CommandParser {
 			dayString = parseDay(datePattern);
 			dateString = time + Constants.COMMA + dayString;
 		}
-		// match short of day
-		else if (datePattern.matches(Constants.REGEX_SHORT_DAY)) {
-			int futureday = getFutureDay(datePattern);
-			dateString = time + Constants.COMMA + futureday + Constants.HYPHEN
-					+ monthString + Constants.HYPHEN + yearString;
-		}
+//		// match short of day
+//		else if (datePattern.matches(Constants.REGEX_SHORT_DAY)) {
+//			int futureday = getFutureDay(datePattern);
+//			dateString = time + Constants.COMMA + futureday + Constants.HYPHEN
+//					+ monthString + Constants.HYPHEN + yearString;
+//		}
 		// wrong date format
 		else {
 			throw new WrongDateFormatException(Constants.MSG_ERROR_WRONG_DATE);
@@ -288,15 +291,21 @@ public class CommandParser {
 
 		return indexofpriority;
 	}
+	
 
 	// @author A0117215R
-	private String parseDay(String datePartern) {
-		datePartern = datePartern.replace('.', '-');
-		datePartern = datePartern.replace('\\', '-');
-		datePartern = datePartern.replace('/', '-');
-		datePartern = datePartern.replace(':', '-');
+	private String parseDay(String datePattern) {
+		if (datePattern.matches(Constants.REGEX_SHORT_DAY)) {
+			int futureday = getFutureDay(datePattern);
+			datePattern = futureday + Constants.HYPHEN
+					+ currentMonth;
+		}
+		datePattern = datePattern.replace('.', '-');
+		datePattern = datePattern.replace('\\', '-');
+		datePattern = datePattern.replace('/', '-');
+		datePattern = datePattern.replace(':', '-');
 
-		return datePartern;
+		return datePattern;
 	}
 
 	

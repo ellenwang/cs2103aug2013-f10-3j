@@ -2,6 +2,8 @@ package com.tobedone.ui;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Image;
+import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -20,6 +22,9 @@ public class HelpFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public HelpFrame() {
+		setTitle("2BeDone");
+		Image icon = Toolkit.getDefaultToolkit().getImage(".\\src\\main\\resources\\icon.jpg");   
+		setIconImage(icon);
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(710, 110, 582, 364);

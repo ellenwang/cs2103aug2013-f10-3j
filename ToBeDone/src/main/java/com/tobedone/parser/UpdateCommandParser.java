@@ -110,14 +110,18 @@ public class UpdateCommandParser extends CommandParser {
 				Math.max(beginfrom, beginto));
 		
 		//case1: XXXXXXX by newDate
-		if (beginby == maxindex && paraString.endsWith(byString)) {
+		if (beginby == maxindex 
+				&& byString!=null
+				&& paraString.endsWith(byString)) {
 			deadlineString = byString;
 			newdeadline = parseDate(deadlineString, false);
 
 			endOfDescription = beginby;
 		} 
 		//case2: XXXXXX from newDate1 to newDate2
-		else if (endfromto > maxindex && paraString.endsWith(fromtoString)) {
+		else if (endfromto > maxindex 
+				&& fromtoString != null
+				&& paraString.endsWith(fromtoString)) {
 			matcher = Constants.FROM_PATTERN.matcher(fromtoString);
 			if (matcher.find()) {
 				startTimeString = matcher.group(0);
@@ -135,14 +139,18 @@ public class UpdateCommandParser extends CommandParser {
 			endOfDescription = beginfromto;
 		} 
 		//case3: XXXXX from newDate
-		else if (beginfrom == maxindex && paraString.endsWith(fromString)) {
+		else if (beginfrom == maxindex 
+				&& fromString != null
+				&& paraString.endsWith(fromString)) {
 			startTimeString = fromString;
 			newstartTime = parseDate(startTimeString, true);
 
 			endOfDescription = beginfrom;
 		} 
 		//case4: XXXXXX to newDate
-		else if (beginto == maxindex && paraString.endsWith(toString)
+		else if (beginto == maxindex 
+				&& toString!= null
+				&& paraString.endsWith(toString)
 				&& beginto > endfromto) {
 			endTimeString = toString;
 			newendTime = parseDate(endTimeString, false);
