@@ -38,7 +38,11 @@ import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.Events;
 import com.tobedone.exception.ServiceNotAvailableException;
 import com.tobedone.storage.Storage;
+import com.tobedone.taskitem.DeadlinedTask;
+import com.tobedone.taskitem.FloatingTask;
 import com.tobedone.taskitem.TaskItem;
+import com.tobedone.taskitem.TaskItem.Status;
+import com.tobedone.taskitem.TimedTask;
 import com.tobedone.utils.Constants;
 
 
@@ -50,12 +54,9 @@ import com.tobedone.utils.Constants;
  */
 public class GoogleCalendar {
 	private static GoogleCalendar singleton = null;
-	private static Storage storage = null;
 	GoogleParser gParser = null;
 	private boolean isAuthorized;
-	private String feedback = null;
 	GoogleCalendar(){
-		storage = Storage.getInstance();
 		gParser = new GoogleParser();
 		isAuthorized = false;
 	}
@@ -135,60 +136,111 @@ public class GoogleCalendar {
 					.setApplicationName(APPLICATION_NAME).build();
 			this.isAuthorized = true;
 		} catch (Exception e) {
-			this.feedback = Constants.MSG_GCAL_NOT_AUTHORIZED;
 			this.isAuthorized = false;
 		}
 	}
 	public String chooseCalendar() throws IOException{
 		// CalendarList
-					CalendarList calendarList = client.calendarList().list().execute();
+		CalendarList calendarList = client.calendarList().list().execute();
 
 		// Show and select calendar
 		CalendarListEntry calendar = displayAndSelectCalendar(calendarList);
 		return calendar.getId();
 	}
-	public Vector<TaskItem> sync(Vector<TaskItem> allTasks, String calendarId) throws ServiceNotAvailableException{
-		Vector<TaskItem> tasksFromGoogle = null;
+	public Vector<TaskItem> updateLocal(Vector<TaskItem> allTasks, String calendarId) throws ServiceNotAvailableException{
+		Vector<TaskItem> newTasks = new Vector<TaskItem>();
 		try {
-			// download from google
-			//String calendarId = calendar.getId();
-			tasksFromGoogle = downloadFromCalendar(calendarId);
-			allTasks.addAll(tasksFromGoogle);
-			allTasks = gParser.removeDuplicate(allTasks);
-			
-			for (TaskItem task : allTasks) {
-				if(!gParser.isExisted(task, tasksFromGoogle)){
-					Event e = gParser.taskToEvent(task);
-					upload(calendarId, e);
+			Events events;
+			String pageToken = null;
+			do {
+				events = client.events().list(calendarId).setPageToken(pageToken)
+						.execute();
+				List<Event> items = events.getItems();
+				for (Event event : items) {			
+					boolean isUpdated = false;
+					boolean isFloating = false;
+					for( TaskItem task : allTasks){
+						if(task.getDescription().equals(event.getSummary())){
+							if( task instanceof TimedTask){
+								((TimedTask) task).setStartTime(gParser.toDate(event.getStart()));
+								((TimedTask) task).setEndTime(gParser.toDate(event.getEnd()));
+								if(((TimedTask) task).getEndTime().getTime() < new Date().getTime()){
+									((TimedTask) task).setStatus(Status.FINISHED);
+								}
+								isUpdated = true;
+								break;
+							}else if(task instanceof DeadlinedTask){
+								((DeadlinedTask) task).setEndTime(gParser.toDate(event.getEnd()));
+								if(((DeadlinedTask) task).getEndTime().getTime() < new Date().getTime()){
+									((DeadlinedTask) task).setStatus(Status.FINISHED);
+								}
+								isUpdated = true;
+								break;
+							}else{
+								isFloating = true;
+							}
+						}
+					}		
+					if(!isUpdated && !isFloating){
+						TaskItem newItem = gParser.eventToTask(event);
+						allTasks.add(newItem);
+						newTasks.add(newItem);
+					}
 				}
-			}
-			
+				pageToken = events.getNextPageToken();
+			} while (pageToken != null);
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 		} catch (Throwable t) {
 			t.printStackTrace();
 		} 
-		return allTasks;
-	}
-	
-	private  Vector<TaskItem> downloadFromCalendar(String CalendarID)
-			throws Exception {
-		Vector<TaskItem> newTasks = new Vector<TaskItem>();
-		Events events;
-		String pageToken = null;
-		do {
-			events = client.events().list(CalendarID).setPageToken(pageToken)
-					.execute();
-			List<Event> items = events.getItems();
-			for (Event event : items) {				
-				TaskItem newItem = gParser.eventToTask(event);
-				newTasks.add(newItem);
-			}
-			pageToken = events.getNextPageToken();
-		} while (pageToken != null);
 		return newTasks;
 	}
 	
+	
+	public void updateGcal(String calendarId, Vector<TaskItem>allTasks) {
+		Vector<TaskItem>tasksFromGoogle = new Vector<TaskItem>();
+		try{
+			Events events;
+			String pageToken = null;
+			do {
+				events = client.events().list(calendarId).setPageToken(pageToken).execute();
+				List<Event> items = events.getItems();
+				for (Event event : items) {
+					TaskItem taskToUpdate = null;
+					for(TaskItem task : allTasks){
+						if(task.getDescription().equals(event.getSummary())){
+							client.events().delete(calendarId, event.getId()).execute();
+							taskToUpdate = task;
+							break;
+						}
+					}
+					if(taskToUpdate != null){
+						upload(calendarId, gParser.taskToEvent(taskToUpdate));
+						tasksFromGoogle.add(taskToUpdate);
+					}else{
+						tasksFromGoogle.add(gParser.eventToTask(event));
+						client.events().delete(calendarId, event.getId()).execute();  //delete from google
+					}
+				}
+				pageToken = events.getNextPageToken();
+			} while (pageToken != null);
+			
+			for(TaskItem lTask : allTasks){
+				boolean isExisted = false;
+				for(TaskItem gTask : tasksFromGoogle){
+					if(gTask.getDescription().equals(lTask.getDescription())){
+						isExisted = true;
+					}
+				}
+				if(!isExisted){
+					upload(calendarId, gParser.taskToEvent(lTask));
+				}				
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}		
+	}
 	public String clearGoogle(Vector<TaskItem> tasks) {
 		String feedback = "";
 		try {

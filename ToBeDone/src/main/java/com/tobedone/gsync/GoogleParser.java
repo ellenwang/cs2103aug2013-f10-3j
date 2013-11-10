@@ -24,6 +24,8 @@ public class GoogleParser {
 	private static SimpleDateFormat simpleDateFormatOfGoogle = new SimpleDateFormat(
 			"yyyy-MM-dd");
 
+
+	
 	/**
 	 * @param TaskItem
 	 * @return Event Convert a local task to google calendar task.
@@ -34,28 +36,22 @@ public class GoogleParser {
 		
 		if (task instanceof TimedTask) {
 			Date startTime = ((TimedTask) task).getStartTime();
-			DateTime start = new DateTime(startTime, TimeZone.getDefault());
-			event.setStart(new EventDateTime().setDateTime(start));
-			Date endTime = ((TimedTask) task).getEndTime();
-			DateTime end = new DateTime(endTime, TimeZone.getDefault());
-			event.setEnd(new EventDateTime().setDateTime(end));
+			event.setStart(toEventDateTime(startTime));
 			
+			Date endTime = ((TimedTask) task).getEndTime();
+			event.setEnd(toEventDateTime(endTime));
 		}else if( task instanceof DeadlinedTask){
 			Date currentDate = new Date();
-			DateTime start = new DateTime(currentDate, TimeZone.getDefault());
-			event.setStart(new EventDateTime().setDateTime(start));
+			event.setStart(toEventDateTime(currentDate));
 			
 			Date endTime = ((DeadlinedTask) task).getEndTime();
-			DateTime end = new DateTime(endTime, TimeZone.getDefault());
-			event.setEnd(new EventDateTime().setDateTime(end));
+			event.setEnd(toEventDateTime(endTime));
 		}else{
 			Date currentDate = new Date();
-			DateTime start = new DateTime(currentDate, TimeZone.getDefault());
-			event.setStart(new EventDateTime().setDateTime(start));
+			event.setStart(toEventDateTime(currentDate));
 			
 			Date endDate = new Date(currentDate.getTime() + 24 * 7 * 3600000);
-			DateTime end = new DateTime(endDate, TimeZone.getDefault());
-			event.setEnd(new EventDateTime().setDateTime(end));
+			event.setEnd(toEventDateTime(endDate));
 
 		} 
 		event.setColorId(getColor(task));
@@ -123,7 +119,7 @@ public class GoogleParser {
 	 * @return Date Convert the date and time of a google calendar task to the
 	 *         date and time of a local task.
 	 */
-	private static Date toDate(EventDateTime e) throws ParseException {
+	public static Date toDate(EventDateTime e) throws ParseException {
 		long calendarTimeZoneOffset;
 		long thisTimeZoneOffset = TimeZone.getDefault().getRawOffset();
 
@@ -144,27 +140,10 @@ public class GoogleParser {
 		}
 		return res;
 	}
-
-	public Vector<TaskItem> removeDuplicate(Vector<TaskItem> tasks) {
-		Vector<TaskItem> noDuplicates = new Vector<TaskItem>();
-		for (TaskItem task : tasks) {
-//			if (!noDuplicates.contains(task)) {
-//				noDuplicates.add(task);
-//			}
-			if(!isExisted(task, noDuplicates)){
-				noDuplicates.add(task);
-			}
-		}
-		return noDuplicates;
+	
+	public EventDateTime toEventDateTime(Date e){
+		DateTime t = new DateTime(e, TimeZone.getDefault());
+		return new EventDateTime().setDateTime(t);
 	}
-
-	public boolean isExisted(TaskItem t, Vector<TaskItem> tasks) {
-		for(TaskItem e : tasks){
-			if(e.getDescription().equals(t.getDescription())){
-				return true;
-			}			
-		}
-		return false;
-		//return tasks.contains(t);
-	}
+	
 }

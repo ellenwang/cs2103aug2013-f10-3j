@@ -38,7 +38,6 @@ public class ToDoListImp extends ToDoList {
 		logger.info(LogMessages.INFO_UPDATE_TASK);
 		TaskItem oldTask = matchingTasks.get(index);
 		setLastUpdatedTask(oldTask);
-		boolean flag;
 		matchingTasks.remove(oldTask);
 		boolean deletionSuccessful = deleteTask(oldTask);
 		if (deletionSuccessful) {

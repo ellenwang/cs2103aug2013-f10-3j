@@ -40,6 +40,7 @@ public class UpdateCommand extends Command {
 	}
 
 	public void executeCommand() throws TaskNotExistException, IOException {
+		aimTasks.clear();
 		for (TaskItem task : matchingTasks) {
 			aimTasks.add(task);
 		}

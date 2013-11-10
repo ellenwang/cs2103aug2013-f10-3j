@@ -4,11 +4,11 @@ public class LogMessages {
 	// ERROR
 	public static final String ERROR_TASK_NOTFOUND = "Task not found.";
 	public static final String ERROR_PARSE = "Parsing exception.";
-	public static final String ERROR_FILE = "File exception.";
+	public static final String ERROR_FILE = "File IOException.";
 	public static final String ERROR_ADD_UNDO_FAILED = "Failed to undo create.";
 	public static final String ERROR_UPDATE_UNDO_FAILED = "Failed to undo update.";
 	// INFO
-	public static final String INFO_CREATE = "Create a task.";
+	public static final String INFO_ADD_UNDO = "Undo the create command.";
 	public static final String INFO_PUSH_COMMAND = "Push command into command stack.";
 	public static final String INFO_POP_COMMAND = "Pop command from command stack.";
 	public static final String INFO_SEARCH = "Executing search command.";
@@ -21,9 +21,8 @@ public class LogMessages {
 	public static final String INFO_UPDATE_TASK = "Update a task.";
 	public static final String INFO_DELETE_TASK_BYID = "Delete a task by ID.";
 	public static final String INFO_DELETE = "Delete a task by index.";
-	public static final String INFO_ADD = "Add a task.";
+	public static final String INFO_ADD = "Add a new task.";
 	public static final String INFO_DELETE_TASK = "Delete a task.";
-	public static final String INFO_CREATE_UNDO = "Undo the create command.";
 	public static final String INFO_UNDO_ACTION = "Undo previous action";
 	public static final String INFO_REMOVE = "Remove a task.";
 	public static final String INFO_SEARCH_KEYWORD = "Search by keyword.";

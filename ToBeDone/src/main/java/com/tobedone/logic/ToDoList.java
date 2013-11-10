@@ -19,8 +19,8 @@ public abstract class ToDoList {
 	private static Logger logger = Logger.getLogger(ToDoList.class);
 	
 	protected Storage storage;
-	protected Vector<TaskItem> allTasks = new Vector<TaskItem>();
-	protected Vector<TaskItem> matchingTasks;
+	protected static Vector<TaskItem> allTasks = new Vector<TaskItem>();
+	protected static Vector<TaskItem> matchingTasks;
 	private TaskItem lastCreatedTask ;
 	private TaskItem lastDeletedTask ;
 	private TaskItem lastUpdatedTask ;
@@ -51,10 +51,6 @@ public abstract class ToDoList {
 	}
 
 	public void storeAllTask (Vector<TaskItem> newTasks) {
-		allTasks.clear();
-		for(TaskItem t : newTasks){
-			allTasks.add(t);
-		}
 		storage.store(allTasks);
 	}
 	

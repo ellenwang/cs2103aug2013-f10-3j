@@ -1,7 +1,7 @@
+//@author A0105682H
 package com.tobedone.command;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.Collections;
 import java.util.Vector;
 
@@ -14,16 +14,26 @@ import com.tobedone.taskitem.TaskItem;
 import com.tobedone.utils.Constants;
 import com.tobedone.logic.CommandExecuteResult;
 import com.tobedone.logic.ToDoList;
-import com.tobedone.logic.ToDoListImp;
 
+/**
+ * @author A0105682H
+ * @version 0.5
+ * @since 01-10-2013
+ * 
+ *        This class is the super class of commands that handles the execute
+ *        result from each command and push the undoable command into
+ *        CommandHistory stack.
+ * 
+ */
 public abstract class Command {
 	protected static Logger logger = Logger.getLogger(Command.class);
+
 	protected String feedback;
+	protected Vector<TaskItem> aimTasks;
 	protected CommandExecuteResult result;
 	protected boolean isUndoable = false;
 	protected boolean exitSystemStatus = false;
 	protected static ToDoList toDoService = new ToDoListImp();
-	protected Vector<TaskItem> aimTasks;
 
 	// @author A0105682H
 	public Command() {
@@ -48,6 +58,10 @@ public abstract class Command {
 		Collections.sort(result.getAimTasks(),
 				Collections.reverseOrder(TaskItem.TaskItemComparator));
 		toDoService.setMatchingTasks(result.getAimTasks());
+		result.setAimTasks(aimTasks);
+		result.setFeedback(feedback);
+		System.out.println(result.getAimTasks().toString());
+		System.out.println(result.getFeedback());
 		return result;
 	}
 
@@ -61,12 +75,13 @@ public abstract class Command {
 		return this.feedback;
 	}
 
+	// @author A0105682H
 	public Vector<TaskItem> getAimTasks() {
 		return this.aimTasks;
 	}
 
 	/**
-	 * Put this command object into the window queue
+	 * Put this command object into the CommandHistory stack.
 	 * 
 	 * @return true if command is undo-able
 	 */
@@ -80,15 +95,35 @@ public abstract class Command {
 		return false;
 	}
 
+//	public void assignAimTasks(String scope) {
+//		aimTasks.clear();
+//		switch (scope) {
+//		case "all":	
+//			for (TaskItem task : toDoService.getAllTasks()) {
+//				aimTasks.add(task);
+//			}
+//			break;
+//		case "match":
+//			for (TaskItem task : toDoService.getMatchingTasks()) {
+//				aimTasks.add(task);
+//			}
+//			break;
+//		default: break;
+//		}
+//	}
+
+	//@author A0105682H
 	public String vectorToString(Vector<TaskItem> list) {
 		String result = "";
 		for (int i = 0; i < list.size(); i++) {
-			result += (i + 1) + ". " + list.get(i) + '\n';
+			result += (i + 1) + ". " + list.get(i) + Constants.NEWLINE;
 		}
-		if (!result.equals("")) {
+		if (!result.equals(Constants.EMPTY_STRING)) {
 			result = result.substring(0, result.length() - 1);
 		}
 		return result;
 	}
+
+
 
 }

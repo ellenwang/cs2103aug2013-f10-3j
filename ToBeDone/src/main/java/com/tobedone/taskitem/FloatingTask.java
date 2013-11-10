@@ -15,4 +15,21 @@ public class FloatingTask extends TaskItem {
 	public FloatingTask(String description, int priority) {
 		super(description, priority);
 	}
+	
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof FloatingTask)) {
+			return false;
+		}
+		
+		FloatingTask task = (FloatingTask) obj;
+
+		boolean equalDescription = this.description.equals(task.description);
+		boolean equalPriority = this.priority == task.priority;
+		boolean equalStatus = this.status.equals(task.status);
+		boolean equalTask = equalDescription && equalPriority && equalStatus;
+		return equalTask;
+	}
 }

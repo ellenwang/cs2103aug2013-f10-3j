@@ -21,13 +21,14 @@ public class TextUI {
 		commandString = command;
 	}
 	
-	protected static void executeCommands() {
+	protected static void executeCommands() throws Exception {
 		if((!commandString.equals(Constants.EXIT_TOBEDONE))) {
 			try {
 				executor = CommandExecutor.getInstance(commandString);
 				commandExecuteResult = executor.getExecuteResult();
+//				System.out.println(commandExecuteResult.getAimTasks());
 			} catch (Exception e) {
-				System.err.println(e.getMessage());
+				throw e;
 			}
 		} else {
 			System.exit(0);

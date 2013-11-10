@@ -107,8 +107,8 @@ public class RemoveCommandAtd {
 		assertEquals(tasks.size(), 1);
 		
 		// first task still remains in the list
-		TaskItem expectedTask = new TimedTask(description1, startTime1, endTime1,
-				priority1);
+		TaskItem expectedTask = new TimedTask(description2, startTime2, endTime2,
+				priority2);
 		assertTrue(expectedTask.equals(tasks.get(0)));
 	}
 }

@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Image;
+import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -23,7 +25,7 @@ import com.tobedone.logic.ToDoListImp;
 import com.tobedone.taskitem.*;
 import com.tobedone.taskitem.TaskItem.Status;
 import com.tobedone.utils.Constants;
-
+import com.tobedone.utils.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.text.ParseException;
@@ -76,6 +78,9 @@ public class GUI extends JFrame {
 	 * Create the frame.
 	 */
 	public GUI() {
+		setTitle("2BeDone");
+		Image icon = Toolkit.getDefaultToolkit().getImage(".\\src\\main\\resources\\icon.jpg");   
+		setIconImage(icon);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 620, 380);
 		setResizable(false);
@@ -93,7 +98,7 @@ public class GUI extends JFrame {
 		feedback.setForeground(new Color(0x102b6a));
 		feedback.setBounds(13, 90, 424, 15);
 		contentPane.add(feedback);
-
+		
 		textField = new JTextField();
 		textField.setForeground(Color.DARK_GRAY);
 		textField.addKeyListener(new KeyAdapter() {
@@ -112,11 +117,15 @@ public class GUI extends JFrame {
 					if (inputString.equals("help")) {
 						new HelpFrame();
 					} else {
+						inputString = inputString.trim();
 						textField.setText("");
 						TextUI.readUserInput(inputString);
-						TextUI.executeCommands();
-
-						display(TextUI.getCommandExecuteResult());
+						try {
+							TextUI.executeCommands();
+							display(TextUI.getCommandExecuteResult());
+						} catch (Exception e2) {
+							feedback.setText(e2.getMessage());
+						}		
 					}
 				}
 
@@ -163,10 +172,14 @@ public class GUI extends JFrame {
 		tasksList.setRowHeight(30);
 		
 		TextUI.setCommandString("list all");
-		TextUI.executeCommands();
+		try {
+			TextUI.executeCommands();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			feedback.setText(e1.toString());
+		}
 		display(TextUI.getCommandExecuteResult());
 		
-		//display(executeResult);
 	}
 
 	protected void display(CommandExecuteResult result) {
@@ -250,19 +263,22 @@ public class GUI extends JFrame {
 			return Constants.TIP_ADD;
 		} else if (input.startsWith("++")) {
 			return Constants.TIP_UPDATE;
-		} else if (input.startsWith("up")) {
+		} else if (input.startsWith("upd")) {
 			return Constants.TIP_UPDATE;
 		} else if (input.startsWith("un")) {
 			return Constants.TIP_UNDO;
 		}else if (input.startsWith("s")) {
-			return Constants.TIP_SEARCH + Constants.TIP_SEPRETER
-					+ Constants.TIP_SYNC;
-		} else if (input.startsWith("li")) {
+			return Constants.TIP_SEARCH ;
+		} else if(input.startsWith("upl")){
+			return Constants.TIP_UPLOAD;
+		}else if(input.startsWith("do")){
+			return Constants.TIP_DOWNLOAD;
+		}else if (input.startsWith("li")) {
 			return Constants.TIP_LIST;
 		} else if (input.startsWith("h") || input.startsWith("?")) {
 			return Constants.TIP_HELP;
 		} else if (input.startsWith("r")) {
-			return Constants.TIP_REMOVE;
+			return Constants.TIP_REMOVE + Constants.TIP_SEPRETER + Constants.TIP_REDO;
 		} else {
 			return Constants.TIP_WRONG;
 		}
@@ -282,19 +298,21 @@ public class GUI extends JFrame {
 			return Constants.CMD_ADD;
 		} else if (input.equals("c")) {
 			return Constants.CMD_CLEAR;
-		} else if (input.equals("up")) {
+		} else if (input.equals("upd")) {
 			return Constants.CMD_UPDATE;
 		} else if (input.equals("un")) {
 			return Constants.CMD_UNDO;
 		}else if (input.equals("se")) {
 			return Constants.CMD_SEARCH;
-		} else if (input.equals("sy")) {
-			return Constants.CMD_SYNC;
-		} else if (input.equals("l")) {
+		} else if(input.startsWith("upl")){
+			return Constants.CMD_UPLOAD;
+		}else if(input.startsWith("do")){
+			return Constants.CMD_DOWNLOAD;
+		}else if (input.equals("l")) {
 			return Constants.CMD_LIST;
 		} else if (input.equals("h")) {
 			return Constants.CMD_HELP;
-		} else if (input.equals("r")) {
+		} else if (input.equals("rem")) {
 			return Constants.CMD_REMOVE;
 		} else {
 			return input;

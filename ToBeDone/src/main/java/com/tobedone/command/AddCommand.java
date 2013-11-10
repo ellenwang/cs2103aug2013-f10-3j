@@ -1,12 +1,11 @@
+//@author A0105682H
 package com.tobedone.command;
 
 import java.io.IOException;
 import java.util.Date;
 import java.util.Vector;
 
-import com.tobedone.command.utilities.CommandHistory;
 import com.tobedone.exception.TaskNotExistException;
-import com.tobedone.logic.CommandExecuteResult;
 import com.tobedone.taskitem.DeadlinedTask;
 import com.tobedone.taskitem.FloatingTask;
 import com.tobedone.taskitem.TaskItem;
@@ -14,13 +13,22 @@ import com.tobedone.taskitem.TimedTask;
 import com.tobedone.utils.Constants;
 import com.tobedone.utils.LogMessages;
 
+/**
+ * @author A0105682H
+ * @version 0.5
+ * @since 01-10-2013
+ * 
+ *        This class extends Command class and handles the execute and undo
+ *        operation of add command.
+ * 
+ */
 public class AddCommand extends Command {
 
 	private String description = null;
 	private Date startTime = null;
 	private Date endTime = null;
 	private Date deadline = null;
-	private int priority = 2;
+	private int priority = 2; //the default priority is medium
 	private Vector<TaskItem> allTasks;
 	private Date currentTime = new Date();
 
@@ -30,9 +38,7 @@ public class AddCommand extends Command {
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.deadline = deadline;
-		if (priority != 2) {
-			this.priority = priority;
-		}
+		this.priority = priority;
 		this.allTasks = toDoService.getAllTasks();
 		isUndoable = true;
 	}
@@ -41,10 +47,14 @@ public class AddCommand extends Command {
 	public void executeCommand() throws IOException {
 		// TODO Auto-generated method stub
 		logger.info(LogMessages.INFO_ADD);
-		TaskItem newTask = getNewTaskWithParams();
+		TaskItem newTask = this.getNewTaskWithParams();
 		if (newTask == null) {
 			logger.debug(LogMessages.DEBUG_NO_CONTENT);
-			feedback = Constants.MSG_ERROR_NO_TASK_CONTENT;
+			aimTasks.clear();
+			for (TaskItem task : toDoService.getAllTasks()) {
+				aimTasks.add(task);
+			}
+			
 		} else {
 			try {
 				boolean isAdded = toDoService.createTask(newTask);
@@ -63,13 +73,13 @@ public class AddCommand extends Command {
 			}
 		}
 	}
-
+	
 	@Override
 	public void undo() throws TaskNotExistException, IOException {
-		logger.info(LogMessages.INFO_CREATE_UNDO);
+		logger.info(LogMessages.INFO_ADD_UNDO);
 		try {
 			logger.info(LogMessages.INFO_UNDO_ACTION);
-			TaskItem createdTask = getNewTaskWithParams();
+			TaskItem createdTask = this.getNewTaskWithParams();
 			if (toDoService.deleteTask(createdTask)) {
 				feedback = Constants.MSG_DELETE_SUCCESSFUL;
 				aimTasks.remove(createdTask);
@@ -84,13 +94,12 @@ public class AddCommand extends Command {
 
 	public TaskItem getNewTaskWithParams() {
 		TaskItem newTask = null;
-		if (description == null) {
-			newTask = null;
-		} else if (deadline != null && startTime == null && endTime == null) {
+		if (deadline != null && startTime == null && endTime == null) {
 			if (deadline.after(currentTime)) {
 				newTask = new DeadlinedTask(description, deadline, priority);
 			} else {
 				newTask = null;
+				feedback = Constants.MSG_INVALID_DEADLINE;
 			}
 		} else if (deadline == null && startTime != null && endTime != null) {
 			if (endTime.after(currentTime) && endTime.after(startTime))
@@ -98,10 +107,16 @@ public class AddCommand extends Command {
 						priority);
 			else
 				newTask = null;
+				if (endTime.before(currentTime)) {
+					feedback = Constants.MSG_INVALID_DEADLINE;
+				} else if (endTime.before(startTime)) {
+					feedback = Constants.MSG_INVALID_TIMEPERIOD;
+				}
 		} else if (deadline == null && startTime == null && endTime == null) {
 			newTask = new FloatingTask(description, priority);
 		} else {
 			newTask = null;
+			feedback = Constants.MSG_ADDED_FAILED;
 		}
 		return newTask;
 	}

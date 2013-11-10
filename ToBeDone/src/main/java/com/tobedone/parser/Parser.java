@@ -26,6 +26,7 @@ public class Parser {
 	// @author A0117215R
 	public Command parseCommand(String commandString) throws Exception {
 		String comType = extractCommandType(commandString);
+		comType = comType.toLowerCase();
 		String comParas = extractCommandParas(commandString) ;
 		Command command = null;
 		CommandParser correspondCmdParser;
