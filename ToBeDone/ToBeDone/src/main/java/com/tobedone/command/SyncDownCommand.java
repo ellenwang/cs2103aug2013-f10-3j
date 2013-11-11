@@ -46,7 +46,7 @@ public class SyncDownCommand extends Command {
 			// String chosenCalendarId = googleCal.chooseCalendar();
 			String chosenCalendarId = Constants.DEFAULT_CALENDAR;
 			aimTasks = googleCal.updateLocal(allTasks, chosenCalendarId);
-			toDoService.storeAllTask(allTasks);
+			toDoService.storeAllTask();
 			if(aimTasks.size()==Constants.ZERO){
 				feedback = Constants.MESSAGE_NO_UPDATE_TO_LOCAL;
 				aimTasks.addAll(allTasks);

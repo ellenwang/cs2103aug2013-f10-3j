@@ -7,22 +7,27 @@ public class LogMessages {
 	public static final String ERROR_FILE = "File IOException.";
 	public static final String ERROR_ADD_UNDO_FAILED = "Failed to undo create.";
 	public static final String ERROR_UPDATE_UNDO_FAILED = "Failed to undo update.";
-	// INFO
+	// INFO FROM LOGIC
 	public static final String INFO_ADD_UNDO = "Undo the create command.";
+	public static final String INFO_CLEAR = "Clear tasks.";
+	public static final String INFO_COMPLETE_TASK = "Complete a task.";
 	public static final String INFO_CREATE_TASK =  "Create a new task.";
 	public static final String INFO_DELETE_TASK = "Delete a task.";
 	public static final String INFO_DELETE_TASK_BY_ID = "Delete a task by ID.";
+	public static final String INFO_DISPLAY_DEFAULT_ORDER = "Display task list sorted by priority, deadline/endtime, start time, alphebatically.";
+	public static final Object INFO_EXIT = "Exit.";
+	public static final String INFO_HELP = "Help.";
 	public static final String INFO_POP_COMMAND = "Pop command from command stack.";
 	public static final String INFO_POP_UNDO_COMMAND = "Pop undone command from undo command stack.";
+	public static final String INFO_SEARCH = "Executing search command.";
 	public static final String INFO_PUSH_COMMAND = "Push command into command stack.";
 	public static final String INFO_UPDATE_TASK = "Update a task.";
 	
-	public static final String INFO_SEARCH = "Executing search command.";
-	public static final String INFO_CLEAR = "Clear tasks.";
-	public static final Object INFO_EXIT = "Exit.";
-	public static final String INFO_HELP = "Help.";
-	public static final String INFO_DISPLAY_PRIORITY = "Display task list sorted by priority.";
-	public static final String INFO_COMPLETE = "Complete a task.";
+	
+	
+	
+	
+	
 	
 	
 	
