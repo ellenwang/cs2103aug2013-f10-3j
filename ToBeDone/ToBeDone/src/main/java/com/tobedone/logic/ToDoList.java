@@ -1,4 +1,3 @@
-//@author A0105682H
 package com.tobedone.logic;
 
 import java.io.IOException;
@@ -16,16 +15,6 @@ import com.tobedone.utils.LogMessages;
 import com.tobedone.exception.TaskNotExistException;
 import com.tobedone.logic.ToDoList;
 
-/**
- * @author A0105682H
- * @version 0.5
- * @since 01-10-2013
- * 
- *        This class extends Command class and handles the execute and undo
- *        operation of add command.
- * 
- */
-
 public abstract class ToDoList {
 	private static Logger logger = Logger.getLogger(ToDoList.class);
 	
@@ -38,7 +27,7 @@ public abstract class ToDoList {
 	
 
 	public ToDoList() {
-		storage = Storage.getInstance();
+		storage = Storage.getInstance(); // getInstance(); singleton
 		allTasks = storage.retrieve();
 		matchingTasks = new Vector<TaskItem>();
 	}

@@ -64,8 +64,8 @@ public class GoogleParser {
 	 * @return TaskItem Convert a google calendar task to a local task.
 	 */
 	public TaskItem eventToTask(Event event) throws ParseException {
-		Date startTime = new Date(toDate(event.getStart(),false).getTime());
-		Date endTime = new Date(toDate(event.getEnd(),true).getTime());
+		Date startTime = new Date(toDate(event.getStart()).getTime());
+		Date endTime = new Date(toDate(event.getEnd()).getTime());
 
 		int priority = getPriority(event);
 
@@ -119,7 +119,7 @@ public class GoogleParser {
 	 * @return Date Convert the date and time of a google calendar task to the
 	 *         date and time of a local task.
 	 */
-	public static Date toDate(EventDateTime e, boolean st) throws ParseException {
+	public static Date toDate(EventDateTime e) throws ParseException {
 		long calendarTimeZoneOffset;
 		long thisTimeZoneOffset = TimeZone.getDefault().getRawOffset();
 
@@ -134,14 +134,9 @@ public class GoogleParser {
 		} else if (e.getDate() != null) {
 			calendarTimeZoneOffset = 1000 * 60 * e.getDate().getTimeZoneShift();
 			DateTime t = e.getDate();
-			//long offset = thisTimeZoneOffset - calendarTimeZoneOffset;
+			long offset = thisTimeZoneOffset - calendarTimeZoneOffset;
 			res = simpleDateFormatOfGoogle.parse(t.toString());
-			if(st == false){
-				res = new Date(res.getTime());
-			}else{
-				res = new Date(res.getTime());
-			}
-			
+			res = new Date(res.getTime() + offset);
 		}
 		return res;
 	}

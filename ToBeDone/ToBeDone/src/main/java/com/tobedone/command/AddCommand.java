@@ -53,7 +53,7 @@ public class AddCommand extends Command {
 			aimTasks.add(task);
 		}
 		if (newTask == null) {
-			logger.debug(LogMessages.DEBUG_NO_CONTENT);	
+			logger.debug(LogMessages.DEBUG_NO_CONTENT);
 		} else if (allTasks.contains(newTask)) {
 			feedback = Constants.MSG_TASK_ALREADY_EXISTS;
 		} else {

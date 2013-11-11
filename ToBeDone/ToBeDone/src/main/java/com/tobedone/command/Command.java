@@ -7,7 +7,7 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 
-import com.tobedone.command.utils.CommandHistory;
+import com.tobedone.command.utilities.CommandHistory;
 import com.tobedone.exception.TaskNotExistException;
 import com.tobedone.logic.ToDoListImp;
 import com.tobedone.taskitem.TaskItem;

@@ -2,7 +2,7 @@ package com.tobedone.command;
 
 import java.io.IOException;
 
-import com.tobedone.command.utils.CommandHistory;
+import com.tobedone.command.utilities.CommandHistory;
 import com.tobedone.exception.TaskNotExistException;
 import com.tobedone.taskitem.TaskItem;
 import com.tobedone.utils.Constants;
