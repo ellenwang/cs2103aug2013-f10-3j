@@ -40,7 +40,7 @@ public class ToDoListImp extends ToDoList {
 	 */
 	public boolean createTask(TaskItem newTask) {
 		logger.info(LogMessages.INFO_CREATE_TASK);
-		
+
 		allTasks.add(newTask);
 		return storage.store(allTasks);
 	}
@@ -52,15 +52,13 @@ public class ToDoListImp extends ToDoList {
 	public TaskItem updateTask(int index, TaskItem updatedTask)
 			throws TaskNotExistException, IOException {
 		logger.info(LogMessages.INFO_UPDATE_TASK);
-		
+
 		TaskItem oldTask = matchingTasks.get(index);
-		setLastUpdatedTask(oldTask);
 		matchingTasks.remove(oldTask);
 		boolean deletionSuccessful = deleteTask(oldTask);
 		if (deletionSuccessful) {
 			createTask(updatedTask);
 		}
-		setLastCreatedTask(updatedTask);
 		return oldTask;
 	}
 
@@ -71,7 +69,7 @@ public class ToDoListImp extends ToDoList {
 	public TaskItem deleteTaskById(int index) throws TaskNotExistException,
 			IOException {
 		logger.info(LogMessages.INFO_DELETE_TASK_BY_ID);
-		
+
 		TaskItem task = matchingTasks.remove(index);
 		deleteTask(task);
 		return task;
@@ -83,9 +81,8 @@ public class ToDoListImp extends ToDoList {
 	 */
 	public boolean deleteTask(TaskItem task) {
 		logger.info(LogMessages.INFO_DELETE_TASK);
-		
+
 		boolean removalSuccessful = allTasks.remove(task);
-		setLastDeletedTask(task);
 		storage.store(allTasks);
 		return removalSuccessful;
 	}
