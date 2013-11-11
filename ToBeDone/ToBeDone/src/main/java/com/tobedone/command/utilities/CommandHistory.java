@@ -16,21 +16,21 @@ import com.tobedone.utils.LogMessages;
  *        and redo purpose. Data structure used: Stack.
  * 
  */
+
 public class CommandHistory {
-	
+
 	protected static Logger logger = Logger.getLogger(CommandHistory.class);
-	
+
 	private static CommandHistory singleton = null;
 	private static Stack<Command> commandList;
 	private static Stack<Command> undoneList;
 	private String lastInvocation;
 
-	//Constructor
+	// Constructor
 	private CommandHistory() {
 		commandList = new Stack<Command>();
 		undoneList = new Stack<Command>();
 	}
-
 
 	/**
 	 * Gets an instance of the singleton CommandHistory object.
@@ -52,7 +52,7 @@ public class CommandHistory {
 	 */
 	public void push(Command cmd) {
 		logger.info(LogMessages.INFO_PUSH_COMMAND);
-		
+
 		commandList.push(cmd);
 		this.setLastInvocation(Constants.PUSH_OPERATION);
 	}
@@ -64,13 +64,13 @@ public class CommandHistory {
 	 */
 	public Command pop() {
 		logger.info(LogMessages.INFO_POP_COMMAND);
-		
+
 		Command lastCommand = commandList.pop();
 		undoneList.push(lastCommand);
 		this.setLastInvocation(Constants.POP_OPERATION);
 		return lastCommand;
 	}
-	
+
 	/**
 	 * Pop out the command from the undo command stack for redo operation.
 	 * 
@@ -78,7 +78,7 @@ public class CommandHistory {
 	 */
 	public Command popUndone() {
 		logger.info(LogMessages.INFO_POP_UNDO_COMMAND);
-		
+
 		Command lastUndone = undoneList.pop();
 		commandList.push(lastUndone);
 		this.setLastInvocation(Constants.POP_UNDONE_OPERATION);
