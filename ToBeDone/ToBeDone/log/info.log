@@ -174,3 +174,61 @@ INFO AWT-EventQueue-0 com.tobedone.logic.ToDoList - Display task list sorted by 
 INFO AWT-EventQueue-0 com.tobedone.command.Command - Remove a task.
 INFO AWT-EventQueue-0 com.tobedone.logic.ToDoListImp - Delete a task.
 INFO AWT-EventQueue-0 com.tobedone.command.utilities.CommandHistory - Push command into command stack.
+INFO main com.tobedone.logic.ToDoList - Display task list sorted by priority, deadline/endtime, start time, alphebatically.
+INFO main com.tobedone.command.Command - Add a new task.
+INFO main com.tobedone.logic.ToDoList - Display task list sorted by priority, deadline/endtime, start time, alphebatically.
+INFO main com.tobedone.logic.ToDoListImp - Create a new task.
+INFO main com.tobedone.command.utilities.CommandHistory - Push command into command stack.
+INFO main com.tobedone.logic.ToDoList - Display task list sorted by priority, deadline/endtime, start time, alphebatically.
+INFO main com.tobedone.logic.ToDoList - Display task list sorted by priority, deadline/endtime, start time, alphebatically.
+INFO main com.tobedone.command.Command - Add a new task.
+INFO main com.tobedone.logic.ToDoList - Display task list sorted by priority, deadline/endtime, start time, alphebatically.
+INFO main com.tobedone.logic.ToDoListImp - Create a new task.
+INFO main com.tobedone.command.utilities.CommandHistory - Push command into command stack.
+INFO main com.tobedone.logic.ToDoList - Display task list sorted by priority, deadline/endtime, start time, alphebatically.
+INFO main com.tobedone.logic.ToDoList - Display task list sorted by priority, deadline/endtime, start time, alphebatically.
+INFO main com.tobedone.command.Command - Add a new task.
+INFO main com.tobedone.logic.ToDoList - Display task list sorted by priority, deadline/endtime, start time, alphebatically.
+INFO main com.tobedone.logic.ToDoListImp - Create a new task.
+INFO main com.tobedone.command.utilities.CommandHistory - Push command into command stack.
+INFO main com.tobedone.logic.ToDoList - Display task list sorted by priority, deadline/endtime, start time, alphebatically.
+INFO main com.tobedone.logic.ToDoList - Display task list sorted by priority, deadline/endtime, start time, alphebatically.
+INFO main com.tobedone.command.Command - Add a new task.
+INFO main com.tobedone.logic.ToDoList - Display task list sorted by priority, deadline/endtime, start time, alphebatically.
+INFO main com.tobedone.logic.ToDoListImp - Create a new task.
+INFO main com.tobedone.command.utilities.CommandHistory - Push command into command stack.
+INFO main com.tobedone.logic.ToDoList - Display task list sorted by priority, deadline/endtime, start time, alphebatically.
+INFO main com.tobedone.logic.ToDoList - Display task list sorted by priority, deadline/endtime, start time, alphebatically.
+INFO main com.tobedone.command.Command - Add a new task.
+INFO main com.tobedone.logic.ToDoList - Display task list sorted by priority, deadline/endtime, start time, alphebatically.
+INFO main com.tobedone.logic.ToDoListImp - Create a new task.
+INFO main com.tobedone.command.utilities.CommandHistory - Push command into command stack.
+INFO main com.tobedone.logic.ToDoList - Display task list sorted by priority, deadline/endtime, start time, alphebatically.
+INFO main com.tobedone.command.Command - Add a new task.
+INFO main com.tobedone.logic.ToDoList - Display task list sorted by priority, deadline/endtime, start time, alphebatically.
+INFO main com.tobedone.logic.ToDoListImp - Create a new task.
+INFO main com.tobedone.command.utilities.CommandHistory - Push command into command stack.
+INFO main com.tobedone.logic.ToDoList - Display task list sorted by priority, deadline/endtime, start time, alphebatically.
+INFO main com.tobedone.logic.ToDoList - Display task list sorted by priority, deadline/endtime, start time, alphebatically.
+INFO main com.tobedone.command.Command - Add a new task.
+INFO main com.tobedone.logic.ToDoList - Display task list sorted by priority, deadline/endtime, start time, alphebatically.
+INFO main com.tobedone.logic.ToDoListImp - Create a new task.
+INFO main com.tobedone.command.utilities.CommandHistory - Push command into command stack.
+INFO main com.tobedone.logic.ToDoList - Display task list sorted by priority, deadline/endtime, start time, alphebatically.
+INFO main com.tobedone.command.Command - Remove a task.
+INFO main com.tobedone.logic.ToDoListImp - Delete a task.
+INFO main com.tobedone.command.utilities.CommandHistory - Push command into command stack.
+INFO main com.tobedone.logic.ToDoList - Display task list sorted by priority, deadline/endtime, start time, alphebatically.
+INFO main com.tobedone.command.Command - Add a new task.
+INFO main com.tobedone.logic.ToDoList - Display task list sorted by priority, deadline/endtime, start time, alphebatically.
+INFO main com.tobedone.logic.ToDoListImp - Create a new task.
+INFO main com.tobedone.command.utilities.CommandHistory - Push command into command stack.
+INFO main com.tobedone.logic.ToDoList - Display task list sorted by priority, deadline/endtime, start time, alphebatically.
+INFO main com.tobedone.command.Command - Add a new task.
+INFO main com.tobedone.logic.ToDoList - Display task list sorted by priority, deadline/endtime, start time, alphebatically.
+INFO main com.tobedone.logic.ToDoListImp - Create a new task.
+INFO main com.tobedone.command.utilities.CommandHistory - Push command into command stack.
+INFO main com.tobedone.logic.ToDoList - Display task list sorted by priority, deadline/endtime, start time, alphebatically.
+INFO main com.tobedone.command.Command - Remove a task.
+INFO main com.tobedone.logic.ToDoListImp - Delete a task.
+INFO main com.tobedone.command.utilities.CommandHistory - Push command into command stack.

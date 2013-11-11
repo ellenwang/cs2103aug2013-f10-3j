@@ -1,3 +1,4 @@
+//@author A0105682H
 package com.tobedone.taskitem;
 
 import java.text.SimpleDateFormat;
@@ -6,33 +7,32 @@ import java.util.Date;
 
 import com.tobedone.utils.Constants;
 
-
 /**
  * @author A0105682H
  * @version 0.5
  * @date 04-11-2013
  * 
- *        This is a super class of task items.
+ *       This is an super class of task items that contains the most general
+ *       information needed for task items.
  * 
  */
 
-abstract public class TaskItem implements Cloneable {
+public class TaskItem {
+
 	protected static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
 			"HH:mm,dd/MM,yyyy");
 
 	protected int taskID;
-	protected String description;
 	protected int priority;
+	protected String description;
 	protected Status status;
-
+	
+	// Only two types of status are supported, finished or unfinished.
 	public static enum Status {
-		FINISHED, UNFINISHED, EXPIRED
+		FINISHED, UNFINISHED
 	};
 
-	public static enum Priority {
-		HIGH, MEDIUM, LOW
-	};
-
+	//Constructors
 	public TaskItem() {
 
 	}
@@ -44,28 +44,14 @@ abstract public class TaskItem implements Cloneable {
 		status = Status.UNFINISHED;
 	}
 
-	public void setDescription(String taskDescription) {
-		this.description = taskDescription;
-	}
-
-	public void setTaskID(int taskID) {
-		this.taskID = taskID;
-	}
-
-	public Status getStatus() {
-		return status;
-	}
-
-	public void setStatus(Status status) {
-		this.status = status;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
+	
+	//Getters and setters for the attributes.
 	public int getTaskID() {
 		return taskID;
+	}
+	
+	public void setTaskID(int taskID) {
+		this.taskID = taskID;
 	}
 
 	public int getPriority() {
@@ -75,19 +61,35 @@ abstract public class TaskItem implements Cloneable {
 	public void setPriority(int priority) {
 		this.priority = priority;
 	}
+	
+	public String getDescription() {
+		return description;
+	}
+	
+	public void setDescription(String taskDescription) {
+		this.description = taskDescription;
+	}
+	
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
 
 	/**
 	 * Comparator for priority of two tasks object
 	 */
-	// @author A0105682H
 	public static Comparator<TaskItem> TaskPriorityComparator = new Comparator<TaskItem>() {
 		public int compare(TaskItem thisTask, TaskItem otherTask) {
 			Integer thisTaskPri = thisTask.getPriority();
 			Integer otherTaskPri = otherTask.getPriority();
-			return thisTaskPri.compareTo(otherTaskPri);			
+			return thisTaskPri.compareTo(otherTaskPri);
 		}
 	};
-	
+
 	/**
 	 * Comparator TaskItem
 	 */
@@ -109,11 +111,11 @@ abstract public class TaskItem implements Cloneable {
 					}
 				}
 			}
-			
+
 			return result;
 		}
 	};
-	
+
 	/**
 	 * Compare end times of two tasks.
 	 */
@@ -150,13 +152,15 @@ abstract public class TaskItem implements Cloneable {
 			}
 		}
 	}
-	
+
+	//toString method in general. Will be overridden.
 	public String toString() {
-		String result = "";
+		String result = Constants.EMPTY_STRING;
 		result = getDescription();
-		return result;	
+		return result;
 	}
 
+	//compare general task items. Will be overridden.
 	public boolean equals(Object obj) {
 		if (obj == this) {
 			return true;
@@ -165,21 +169,29 @@ abstract public class TaskItem implements Cloneable {
 			return false;
 		}
 		TaskItem task = (TaskItem) obj;
-		
+
 		boolean equalDescription = this.description.equals(task.description);
 		boolean equalPriority = this.priority == task.priority;
 		boolean equalStatus = this.status.equals(task.status);
 		boolean equalTask = equalDescription && equalPriority && equalStatus;
 		return equalTask;
 	}
-	
+
+	/**
+	 * Formats the date to our inner format.
+	 * @param date
+	 * 			The date to be formatted.
+	 * @return
+	 * 			The formatted date in our inner format.
+	 */
 	public String formatDate(Date date) {
 		String formattedDate;
 		if (date != null) {
 			formattedDate = simpleDateFormat.format(date);
-			formattedDate = formattedDate.substring(0, formattedDate.length() - 4);
+			formattedDate = formattedDate.substring(0,
+					formattedDate.length() - 4);
 		} else {
-			formattedDate = "";
+			formattedDate = Constants.EMPTY_STRING;
 		}
 		return formattedDate;
 	}

@@ -7,6 +7,7 @@ public class LogMessages {
 	public static final String ERROR_FILE = "File IOException.";
 	public static final String ERROR_ADD_UNDO_FAILED = "Failed to undo create.";
 	public static final String ERROR_UPDATE_UNDO_FAILED = "Failed to undo update.";
+	
 	// INFO FROM LOGIC
 	public static final String INFO_ADD_UNDO = "Undo the create command.";
 	public static final String INFO_CLEAR = "Clear tasks.";
