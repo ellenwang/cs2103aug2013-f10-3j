@@ -198,9 +198,12 @@ public class Constants {
 			DAY_OF_A_WEEK, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
 
 	// Feedback
+	public static final String MSG_EXIT = "Thank you for using ToBeDone.";
+	
+	
 	public static final String MSG_NO_UNDO = "Unable to undo command.";
 	public static final String MSG_CHECK_SEARCH_SYNTAX = "Please check search syntax.";
-	public static final String MSG_EXIT = "Thank you for using ToBeDone.";
+
 	public static final String MSG_FINISH_SUCCESSFUL = "Finished task: %1$s";
 	public static final String MSG_NO_MATCHING_TASK = "No matching task to show.";
 	public static final String MSG_ADD_SUCCESSFUL = "Added task: %1$s";
@@ -229,8 +232,14 @@ public class Constants {
 	public static final String HELP_PATH = "/help";
 
 	// others
-	public static final String EMPTY_STRING = "";
+	
 	public static final String DEADLINE_TASK_FORMAT = "\n\tdeadline: ";
+	public static final String DOT_FORMAT = ". ";
+	public static final String EMPTY_STRING = "";
+	public static final String TIMED_TASK_FORMAT_FROM = "\n\tfrom: ";
+	public static final String TIMED_TASK_FORMAT_TO = "\n\tto:   "
+			
+			;
 	public static final int SERVICE_OPERATION_FAILED_ID = -1;
 	public static final int ZERO = 0;
 	public static final int ONE = 1;

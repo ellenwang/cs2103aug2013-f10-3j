@@ -95,7 +95,10 @@ public class AddCommand extends Command {
 
 	public TaskItem getNewTaskWithParams() {
 		TaskItem newTask = null;
-		if (deadline != null && startTime == null && endTime == null) {
+		if(description == null){
+			newTask = null;
+		} else if (deadline != null && startTime == null && endTime == null) {
+		
 			if (deadline.after(currentTime)) {
 				newTask = new DeadlinedTask(description, deadline, priority);
 			} else {

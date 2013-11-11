@@ -238,3 +238,25 @@ INFO AWT-EventQueue-0 com.tobedone.logic.ToDoListImp - Update a task.
 INFO AWT-EventQueue-0 com.tobedone.logic.ToDoListImp - Delete a task.
 INFO AWT-EventQueue-0 com.tobedone.logic.ToDoListImp - Create a new task.
 INFO AWT-EventQueue-0 com.tobedone.command.utilities.CommandHistory - Push command into command stack.
+INFO AWT-EventQueue-0 com.tobedone.logic.ToDoList - Display task list sorted by priority, deadline/endtime, start time, alphebatically.
+INFO AWT-EventQueue-0 com.tobedone.logic.ToDoList - Display task list sorted by priority, deadline/endtime, start time, alphebatically.
+INFO AWT-EventQueue-0 com.tobedone.logic.ToDoList - Display task list sorted by priority, deadline/endtime, start time, alphebatically.
+INFO AWT-EventQueue-0 com.tobedone.logic.ToDoListImp - Update a task.
+INFO AWT-EventQueue-0 com.tobedone.logic.ToDoListImp - Delete a task.
+INFO AWT-EventQueue-0 com.tobedone.logic.ToDoListImp - Create a new task.
+INFO AWT-EventQueue-0 com.tobedone.command.utilities.CommandHistory - Push command into command stack.
+INFO AWT-EventQueue-0 com.tobedone.logic.ToDoList - Display task list sorted by priority, deadline/endtime, start time, alphebatically.
+INFO AWT-EventQueue-0 com.tobedone.logic.ToDoList - Display task list sorted by priority, deadline/endtime, start time, alphebatically.
+INFO AWT-EventQueue-0 com.tobedone.logic.ToDoListImp - Update a task.
+INFO AWT-EventQueue-0 com.tobedone.logic.ToDoListImp - Delete a task.
+INFO AWT-EventQueue-0 com.tobedone.logic.ToDoListImp - Create a new task.
+INFO AWT-EventQueue-0 com.tobedone.command.utilities.CommandHistory - Push command into command stack.
+INFO AWT-EventQueue-0 com.tobedone.command.Command - Remove a task.
+INFO AWT-EventQueue-0 com.tobedone.logic.ToDoListImp - Delete a task.
+INFO AWT-EventQueue-0 com.tobedone.command.utilities.CommandHistory - Push command into command stack.
+INFO AWT-EventQueue-0 com.tobedone.command.Command - Remove a task.
+INFO AWT-EventQueue-0 com.tobedone.logic.ToDoListImp - Delete a task.
+INFO AWT-EventQueue-0 com.tobedone.command.utilities.CommandHistory - Push command into command stack.
+INFO AWT-EventQueue-0 com.tobedone.command.Command - Remove a task.
+INFO AWT-EventQueue-0 com.tobedone.logic.ToDoListImp - Delete a task.
+INFO AWT-EventQueue-0 com.tobedone.command.utilities.CommandHistory - Push command into command stack.
