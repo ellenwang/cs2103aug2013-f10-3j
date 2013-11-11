@@ -1,3 +1,4 @@
+//@author A0105682H
 package com.tobedone.command;
 
 import java.io.BufferedReader;
@@ -8,25 +9,26 @@ import java.io.InputStreamReader;
 import com.tobedone.utils.Constants;
 import com.tobedone.utils.LogMessages;
 
-
 /**
  * @author A0105682H
  * @version 0.5
  * @since 6-11-2013
  * 
- *        This class handles help command and read from the text file.
+ *        This class handles help command and reads from the text file.
  * 
  */
 public class HelpCommand extends Command {
 
-	// @author A0105682H
+	// Constructors
 	public HelpCommand() {
 		super();
 		isUndoable = false;
 	}
 
-	// @author A0105682H
 	@Override
+	/**
+	 * Read from the help sheet and passes to UI.
+	 */
 	protected void executeCommand() {
 		logger.info(LogMessages.INFO_HELP);
 		String output = Constants.EMPTY_STRING;
