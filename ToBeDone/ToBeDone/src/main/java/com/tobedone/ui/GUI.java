@@ -278,7 +278,7 @@ public class GUI extends JFrame {
 			return Constants.TIP_SEARCH ;
 		} else if(input.startsWith("upl")){
 			return Constants.TIP_UPLOAD;
-		}else if(input.startsWith("d")){
+		}else if(input.startsWith("do")){
 			return Constants.TIP_DOWNLOAD;
 		}else if (input.startsWith("l")) {
 			return Constants.TIP_LIST;

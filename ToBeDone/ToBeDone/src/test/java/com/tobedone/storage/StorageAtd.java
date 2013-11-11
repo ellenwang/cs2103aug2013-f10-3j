@@ -1,7 +1,6 @@
 package com.tobedone.storage;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -45,8 +44,8 @@ public class StorageAtd {
 	@Test
 	public void storeNullList() {
 		Vector<TaskItem> tasks = null;
-		String feedback = storage.store(tasks);
-		assertTrue(feedback.equals(Constants.MESSAGE_TASK_LIST_NULL));
+		boolean result = storage.store(tasks);
+		assertFalse(result);
 	}
 
 	/**
@@ -59,8 +58,8 @@ public class StorageAtd {
 
 		// Store a list of empty task items
 		tasks.clear();
-		String feedback = storage.store(tasks);
-		assertTrue(feedback.equals(Constants.MESSAGE_STORE_SUCCESSFUL));
+		boolean result = storage.store(tasks);
+		assertTrue(result);
 
 		// Retrieve an empty list
 		receivedTasks = storage.retrieve();
@@ -90,8 +89,8 @@ public class StorageAtd {
 		TaskItem task1 = new TimedTask(description, startTime, endTime,
 				priority);
 		tasks.add(task1);
-		String feedback = storage.store(tasks);
-		assertTrue(feedback.equals(Constants.MESSAGE_STORE_SUCCESSFUL));
+		boolean result = storage.store(tasks);
+		assertTrue(result);
 
 		// Retrieve a single task
 		receivedTasks = storage.retrieve();
@@ -151,8 +150,8 @@ public class StorageAtd {
 				priority);
 		tasks.add(task3);
 
-		String feedback = storage.store(tasks);
-		assertTrue(feedback.equals(Constants.MESSAGE_STORE_SUCCESSFUL));
+		boolean result = storage.store(tasks);
+		assertTrue(result);
 
 		// retrieve a list of multiple tasks
 		receivedTasks = storage.retrieve();

@@ -47,10 +47,10 @@ import com.tobedone.utils.Constants;
 
 
 
-
 /**
- * @version v0.5
- * @Date 2013-11-10
+ * 
+ * @version v0.4
+ * @Date 2013-11-6
  */
 public class GoogleCalendar {
 	private static GoogleCalendar singleton = null;
@@ -69,8 +69,15 @@ public class GoogleCalendar {
 	}
 	
 	private static final String APPLICATION_NAME = "2BeDone";
+
+	/** Directory to store user credentials. */
 	private static final java.io.File DATA_STORE_DIR = new java.io.File(
-	 "./src/main/resources");
+	 "./config");
+	
+	/**
+	 * Global instance of the {@link DataStoreFactory}. The best practice is to
+	 * make it a single globally shared instance across your application.
+	 */
 	private static FileDataStoreFactory dataStoreFactory;
 	private static HttpTransport httpTransport;
 	private static final JsonFactory JSON_FACTORY = JacksonFactory
@@ -85,10 +92,10 @@ public class GoogleCalendar {
 		return isAuthorized;
 	}
 	
-	/**
+	/*
 	 * @Author A0118248
+	 * 
 	 * Authorizes the installed application to access user's protected data.
-	 * returns a credential to google calendar
 	 * */
 	private static Credential authorize() throws Exception {
 		// load client secrets
@@ -120,10 +127,6 @@ public class GoogleCalendar {
 		}
 		return res;		
 	}
-	/**
-	 * @Author A0118248
-	 * To initialize the authentication.
-	 * */
 	public void initAuthenication(){
 		try {
 			httpTransport = GoogleNetHttpTransport.newTrustedTransport();
@@ -144,12 +147,6 @@ public class GoogleCalendar {
 		CalendarListEntry calendar = displayAndSelectCalendar(calendarList);
 		return calendar.getId();
 	}
-	/**
-	 * @Author A0118248
-	 * @Date 2013-11310
-	 *  Get tasks from Google calendar and import them to local tasks.
-	 *  return the vector of newly added tasks.
-	 * */
 	public Vector<TaskItem> updateLocal(Vector<TaskItem> allTasks, String calendarId) throws ServiceNotAvailableException{
 		Vector<TaskItem> newTasks = new Vector<TaskItem>();
 		try {
@@ -165,15 +162,15 @@ public class GoogleCalendar {
 					for( TaskItem task : allTasks){
 						if(task.getDescription().equals(event.getSummary())){
 							if( task instanceof TimedTask){
-								((TimedTask) task).setStartTime(gParser.toDate(event.getStart(),false));
-								((TimedTask) task).setEndTime(gParser.toDate(event.getEnd(),true));
+								((TimedTask) task).setStartTime(gParser.toDate(event.getStart()));
+								((TimedTask) task).setEndTime(gParser.toDate(event.getEnd()));
 								if(((TimedTask) task).getEndTime().getTime() < new Date().getTime()){
 									((TimedTask) task).setStatus(Status.FINISHED);
 								}
 								isUpdated = true;
 								break;
 							}else if(task instanceof DeadlinedTask){
-								((DeadlinedTask) task).setEndTime(gParser.toDate(event.getEnd(),true));
+								((DeadlinedTask) task).setEndTime(gParser.toDate(event.getEnd()));
 								if(((DeadlinedTask) task).getEndTime().getTime() < new Date().getTime()){
 									((DeadlinedTask) task).setStatus(Status.FINISHED);
 								}
@@ -200,11 +197,7 @@ public class GoogleCalendar {
 		return newTasks;
 	}
 	
-	/**
-	 * @Author A0118248
-	 * 
-	 * Upload the local tasks to Google Calendar, creating new events or updating existed events in Google Calendar.
-	 * */
+	
 	public void updateGcal(String calendarId, Vector<TaskItem>allTasks) {
 		Vector<TaskItem>tasksFromGoogle = new Vector<TaskItem>();
 		try{
@@ -293,7 +286,7 @@ public class GoogleCalendar {
 		return event;
 	}
 
-	private static Event upload(String calendarId, Event event)
+	public static Event upload(String calendarId, Event event)
 			throws IOException {
 		Event result = client.events().insert(calendarId, event).execute();
 		return result;

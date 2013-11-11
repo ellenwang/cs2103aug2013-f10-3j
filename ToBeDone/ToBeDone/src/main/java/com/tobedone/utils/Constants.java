@@ -262,8 +262,9 @@ public class Constants {
 	public static final String NOTFOUND = " not found.";
 	
 	public static final String POP_OPERATION = "pop";
-	public static final String POP_UNDO_OPERATION = "popUndo";
+	public static final String POP_UNDONE_OPERATION = "popUndone";
 	public static final String PUSH_OPERATION = "push";
+	
 
 	public static final String ALL_SCOPE = "all";
 	public static final String FINISHED_SCOPE = "finished";
