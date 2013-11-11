@@ -6,7 +6,7 @@ package com.tobedone.taskitem;
  * @version 0.5
  * @date 04-11-2013
  * 
- *       This is a super class of task items.
+ *       This class inherits form TaskItem class and caters to floating tasks.
  * 
  */
 public class FloatingTask extends TaskItem {
