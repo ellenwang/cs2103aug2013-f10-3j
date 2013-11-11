@@ -230,6 +230,7 @@ public class Constants {
 
 	// others
 	public static final String EMPTY_STRING = "";
+	public static final String DEADLINE_TASK_FORMAT = "\n\tdeadline: ";
 	public static final int SERVICE_OPERATION_FAILED_ID = -1;
 	public static final int ZERO = 0;
 	public static final int ONE = 1;
