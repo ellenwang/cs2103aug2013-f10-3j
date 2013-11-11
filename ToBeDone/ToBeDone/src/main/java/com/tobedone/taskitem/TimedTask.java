@@ -1,3 +1,4 @@
+//@author A0105682H
 package com.tobedone.taskitem;
 
 import java.util.Date;
@@ -10,13 +11,14 @@ import com.tobedone.utils.Constants;
  * @version 0.5
  * @date 04-11-2013
  * 
- *       This is a super class of task items.
+ *       This class inherits form TaskItem class and caters to timed tasks.
  * 
  */
 public class TimedTask extends TaskItem {
 	private Date startTime;
 	private Date endTime;
 
+	// Constructor
 	public TimedTask(String description, Date startTime, Date endTime,
 			int priority) {
 		super(description, priority);
@@ -24,6 +26,7 @@ public class TimedTask extends TaskItem {
 		this.endTime = endTime;
 	}
 
+	// Getters and setters
 	public Date getStartTime() {
 		return startTime;
 	}
@@ -40,8 +43,11 @@ public class TimedTask extends TaskItem {
 		this.endTime = endTime;
 	}
 
+	/**
+	 * Converts the information of a timed task into String.
+	 */
 	public String toString() {
-		String result = "";
+		String result = Constants.EMPTY_STRING;
 		String formattedStartTime = formatDate(getStartTime());
 		String formattedEndTime = formatDate(getEndTime());
 		result = getDescription() + "\n\tfrom: " + formattedStartTime
@@ -49,6 +55,9 @@ public class TimedTask extends TaskItem {
 		return result;
 	}
 
+	/**
+	 * Compares two timed tasks.
+	 */
 	public boolean equals(Object obj) {
 		if (obj == this) {
 			return true;
@@ -56,7 +65,7 @@ public class TimedTask extends TaskItem {
 		if (!(obj instanceof TimedTask)) {
 			return false;
 		}
-		
+
 		TimedTask task = (TimedTask) obj;
 
 		boolean equalDescription = this.description.equals(task.description);
@@ -83,7 +92,6 @@ public class TimedTask extends TaskItem {
 	/**
 	 * Comparator for Start Date of two tasks object
 	 */
-	// @author A0105682H
 	public static Comparator<TimedTask> TaskDateComparator = new Comparator<TimedTask>() {
 		public int compare(TimedTask thisTask, TimedTask otherTask) {
 			Date thisTaskDate = thisTask.getStartTime();
