@@ -1,3 +1,4 @@
+//@author A0105682H
 package com.tobedone.command;
 
 import java.io.IOException;
@@ -8,7 +9,7 @@ import com.tobedone.utils.LogMessages;
 
 
 public class ExitCommand extends Command {
-	// @author A0105682H
+	
 	public ExitCommand() {
 		super();
 		isUndoable = false;

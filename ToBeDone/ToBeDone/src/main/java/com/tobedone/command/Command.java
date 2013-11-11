@@ -1,4 +1,5 @@
 //@author A0105682H
+//@author A0105682H
 package com.tobedone.command;
 
 import java.io.IOException;
@@ -18,42 +19,43 @@ import com.tobedone.logic.ToDoList;
 /**
  * @author A0105682H
  * @version 0.5
- * @since 01-10-2013
+ * @since 10-10-2013
  * 
  *        This class is the super class of commands that handles the execute
  *        result from each command and push the undoable command into
  *        CommandHistory stack.
  * 
  */
+
 public abstract class Command {
+
 	protected static Logger logger = Logger.getLogger(Command.class);
 
 	protected String feedback;
 	protected Vector<TaskItem> aimTasks;
 	protected CommandExecuteResult result;
-	protected boolean isUndoable = false;
-	protected boolean exitSystemStatus = false;
 	protected static ToDoList toDoService = new ToDoListImp();
 	protected boolean executionSuccessful = false;
 	protected boolean hasBeenUndone = false;
 	protected boolean hasBeenRedone = false;
+	protected boolean isUndoable = false;
+	protected boolean exitSystemStatus = false;
 
-	// @author A0105682H
+	// Constructor
 	public Command() {
 		aimTasks = new Vector<TaskItem>();
 		result = new CommandExecuteResult(aimTasks, feedback);
 	}
 
-	// @author A0105682H
-	public boolean getExitSystemStatus() {
-		return exitSystemStatus;
-	}
-
-	// @author A0105682H
-	protected abstract void executeCommand() throws IOException,
-			TaskNotExistException;
-
-	// @author A0105682H
+	/**
+	 * Executes the specific command input by the users.
+	 * 
+	 * @return The CommandExecuteResult instance with the feedback and aimTasks
+	 *         from executing the command.
+	 * @throws IOException
+	 * @throws TaskNotExistException
+	 *             The specified task it not found in the task list.
+	 */
 	public CommandExecuteResult execute() throws IOException,
 			TaskNotExistException {
 		this.executeCommand();
@@ -68,27 +70,38 @@ public abstract class Command {
 		return result;
 	}
 
-	// @author A0105682H
+	/**
+	 * Abstract method will be overridden by each specific command type and
+	 * execute the command.
+	 * 
+	 * @throws IOException
+	 * @throws TaskNotExistException
+	 *             The specified task it not found in the task list.
+	 */
+	protected abstract void executeCommand() throws IOException,
+			TaskNotExistException;
+
+	/**
+	 * General method to undo the command. Will be overridden.
+	 * 
+	 * @throws TaskNotExistException
+	 *             The specified task it not found in the task list.
+	 * @throws IOException
+	 */
 	public void undo() throws TaskNotExistException, IOException {
 		this.feedback = Constants.EMPTY_STRING;
 	}
 
-	// @author A0105682H
-	public String getFeedback() {
-		return this.feedback;
-	}
-
-	// @author A0105682H
-	public Vector<TaskItem> getAimTasks() {
-		return this.aimTasks;
+	// Getter
+	public boolean getExitSystemStatus() {
+		return exitSystemStatus;
 	}
 
 	/**
 	 * Put this command object into the CommandHistory stack.
 	 * 
-	 * @return true if command is undo-able
+	 * @return true if command is successfully pushed into the stack.
 	 */
-	// @author A0105682H
 	public boolean addHistory() {
 		CommandHistory list = CommandHistory.getInstance();
 		if (this.isUndoable) {
@@ -98,11 +111,18 @@ public abstract class Command {
 		return false;
 	}
 
-	//@author A0105682H
+	/**
+	 * Converts the information of a list of tasks into String.
+	 * 
+	 * @param list
+	 *            The list of tasks to be converted.
+	 * @return The String of all the information.
+	 */
 	public String vectorToString(Vector<TaskItem> list) {
-		String result = "";
+		String result = Constants.EMPTY_STRING;
 		for (int i = 0; i < list.size(); i++) {
-			result += (i + 1) + ". " + list.get(i) + Constants.NEWLINE;
+			result += (i + 1) + Constants.DOT_FORMAT + list.get(i)
+					+ Constants.NEWLINE;
 		}
 		if (!result.equals(Constants.EMPTY_STRING)) {
 			result = result.substring(0, result.length() - 1);
