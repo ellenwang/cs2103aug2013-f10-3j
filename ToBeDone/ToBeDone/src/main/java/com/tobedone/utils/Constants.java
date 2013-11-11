@@ -197,49 +197,44 @@ public class Constants {
 	public static final Pattern SHORT_DAY_PATTERN = Pattern.compile(
 			DAY_OF_A_WEEK, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
 
+	// @author A0105682H
 	// Feedback
 	public static final String MSG_ADD_FAILED = "Add operation failed!";
 	public static final String MSG_ADD_SUCCESSFUL = "Added task: %1$s";
+	public static final String MSG_ALLTASK_LIST = "All tasks are listed as below: ";
+	public static final String MSG_CHECK_SEARCH_SYNTAX = "Please check search syntax.";
+	public static final String MSG_DELETE_FAILED = "Failed to remove the task.";
+	public static final String MSG_DELETE_SUCCESSFUL = "Deleted task: %1$s";
 	public static final String MSG_EXIT = "Thank you for using ToBeDone.";
+	public static final String MSG_FINISH_SUCCESSFUL = "Finished task: %1$s";
+	public static final String MSG_INDEX_OUT_OF_BOUNDS = "There is no task with that index.";
 	public static final String MSG_INVALID_DEADLINE = "Invalid time. The deadline of the new task has already passed.";
 	public static final String MSG_INVALID_TIMEPERIOD = "Invalid time period. The start time of the timed task is after its end task.";
 	public static final String MSG_INVALID_INDEX = "The index is invalid.";
+	public static final String MSG_MATCHINGTASK_LIST = "Matching tasks are listed as below: ";
+	public static final String MSG_NO_MATCHING_TASK = "No matching task to show.";
+	public static final String MSG_NO_UNDO = "Unable to undo command.";
+	public static final String MSG_REDO_TWICE_FAILED = "Can not redo more than one time.";
+	public static final String MSG_REMOVE_UNDO = "Restored task: %1$s";
 	public static final String MSG_SEARCH_SUCCESSFUL = "Searching for tasks which contains: %1%s";
 	public static final String MSG_TASK_ALREADY_EXISTS = "Task already exists.";
-	public static final String MSG_UNDO_CLEAR_FAILED = "Failed to undo the clear command.";
 	public static final String MSG_UNDO_ADD_FAILED = "Failed to undo the add command.";
-	
-	public static final String MSG_NO_UNDO = "Unable to undo command.";
-	public static final String MSG_CHECK_SEARCH_SYNTAX = "Please check search syntax.";
-	public static final String MSG_FINISH_SUCCESSFUL = "Finished task: %1$s";
-	public static final String MSG_NO_MATCHING_TASK = "No matching task to show.";
-	public static final String MSG_DELETE_SUCCESSFUL = "Deleted task: %1$s";
-	public static final String MSG_UPDATE_SUCCESSFUL = "Task has been successfully updated.";
-	public static final String MSG_DELETE_FAILED = "Failed to remove the task.";
+	public static final String MSG_UNDO_CLEAR_FAILED = "Failed to undo the clear command.";
+	public static final String MSG_UNDO_FAILED = "Undo failed! ";
 	public static final String MSG_UNDO_SUCCESSFUL = "Successfully undid the command.";
 	public static final String MSG_UNDO_TWICE_FAILED = "Can not undo more than one time.";
-	public static final String MSG_REDO_TWICE_FAILED = "Can not redo more than one time.";	
-	public static final String MSG_UNDO_FAILED = "Undo failed! ";
-	public static final String MSG_REMOVE_UNDO = "Restored task: %1$s";
-	public static final String MSG_INDEX_OUT_OF_BOUNDS = "There is no task with that index.";
 	public static final String MSG_UNDO_UPDATE_FAILED = "Failed to undo update.";
-	public static final String MSG_ALLTASK_LIST = "All tasks are listed as below: ";
-	public static final String MSG_MATCHINGTASK_LIST = "Matching tasks are listed as below: ";
+	public static final String MSG_UPDATE_SUCCESSFUL = "Task has been successfully updated.";
 
-	// List tasks switch options
-	public static final int LIST_TASK_DATE_SORTED = 1;
 	// Resource Path
 	public static final String HELP_PATH = "/help";
 
 	// others
-	
 	public static final String DEADLINE_TASK_FORMAT = "\n\tdeadline: ";
 	public static final String DOT_FORMAT = ". ";
 	public static final String EMPTY_STRING = "";
 	public static final String TIMED_TASK_FORMAT_FROM = "\n\tfrom: ";
-	public static final String TIMED_TASK_FORMAT_TO = "\n\tto:   "
-			
-			;
+	public static final String TIMED_TASK_FORMAT_TO = "\n\tto:   ";
 	public static final int SERVICE_OPERATION_FAILED_ID = -1;
 	public static final int ZERO = 0;
 	public static final int ONE = 1;
@@ -256,7 +251,6 @@ public class Constants {
 	public static final String PACK_EXCEPTION = "com.tobedone.exception.";
 
 	// Error Message
-
 	public static final String MSG_ERROR_INPUT_A_FUTURE_DATE_AND_TIME = "Please input a future date and time.";
 	public static final String MSG_ERROR_MISSING_QUOTES = "Please check content syntax.";
 	public static final String MSG_ERROR_NO_TASK_CONTENT = "There is no task content.";
@@ -270,11 +264,10 @@ public class Constants {
 	public static final String TIME_ZONE = "UTC";
 	public static final String TIME_ZONE_GMT = "Etc/GMT";
 	public static final String NOTFOUND = " not found.";
-	
+
 	public static final String POP_OPERATION = "pop";
 	public static final String POP_UNDONE_OPERATION = "popUndone";
 	public static final String PUSH_OPERATION = "push";
-	
 
 	public static final String ALL_SCOPE = "all";
 	public static final String FINISHED_SCOPE = "finished";

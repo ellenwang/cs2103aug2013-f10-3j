@@ -2,6 +2,7 @@
 package com.tobedone.utils;
 
 public class LogMessages {
+	//@author A0105682H
 	// ERROR
 	public static final String ERROR_ADD_UNDO_FAILED = "Failed to undo create.";
 	public static final String ERROR_FILE = "File IOException.";
@@ -9,6 +10,7 @@ public class LogMessages {
 	public static final String ERROR_TASK_NOTFOUND = "Task not found.";
 	public static final String ERROR_UPDATE_UNDO_FAILED = "Failed to undo update.";
 
+	//@author A0105682H
 	// INFO FROM LOGIC
 	public static final String INFO_ADD = "Add a new task.";
 	public static final String INFO_ADD_UNDO = "Undo the create command.";
@@ -31,6 +33,7 @@ public class LogMessages {
 	public static final String INFO_UNDO_ACTION = "Undo previous action";
 	public static final String INFO_UPDATE_TASK = "Update a task.";
 
+	//@author A0105682H
 	// DEBUG
 	public static final String DEBUG_NO_CONTENT = "Empty task content.";
 	public static final String DEBUG_UNDO_NOTHING = "No available actions to undo";
