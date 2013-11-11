@@ -1,3 +1,4 @@
+//@author A0105682H
 package com.tobedone.command;
 
 import java.io.IOException;
@@ -10,12 +11,21 @@ import com.tobedone.taskitem.TaskItem;
 import com.tobedone.utils.Constants;
 import com.tobedone.utils.LogMessages;
 
+/**
+ * @author A0105682H
+ * @version 0.5
+ * @since 10-10-2013
+ * 
+ *        This class inherits from the Command class and caters for the clear
+ *        command.
+ * 
+ */
 
 public class ClearCommand extends Command {
 
 	private Vector<TaskItem> originalList;
-	
-	// @author A0105682H
+
+	// Constructors
 	public ClearCommand() {
 		super();
 		originalList = new Vector<TaskItem>();
@@ -23,11 +33,14 @@ public class ClearCommand extends Command {
 		executionSuccessful = false;
 	}
 
-	// @author A0105682H
 	@Override
+	/**
+	 * Removes all the tasks in the list of all tasks.
+	 */
 	public void executeCommand() {
 		try {
 			logger.info(LogMessages.INFO_CLEAR);
+
 			originalList.clear();
 			for (TaskItem task : toDoService.getAllTasks()) {
 				originalList.add(task);
@@ -38,12 +51,15 @@ public class ClearCommand extends Command {
 			aimTasks = new Vector<TaskItem>();
 		} catch (IOException e) {
 			logger.error(LogMessages.ERROR_PARSE);
+
 			feedback = Constants.MSG_CLEAR_FAILED;
 		}
 	}
 
-	// @author A0105682H
 	@Override
+	/**
+	 * Undo the clear command by adding back the original list of tasks.
+	 */
 	public void undo() {
 		try {
 			for (TaskItem task : originalList) {
@@ -53,7 +69,8 @@ public class ClearCommand extends Command {
 			}
 		} catch (IOException e) {
 			logger.error(LogMessages.ERROR_FILE);
-			feedback = "";
+
+			feedback = Constants.MSG_UNDO_CLEAR_FAILED;
 		}
 	}
 }

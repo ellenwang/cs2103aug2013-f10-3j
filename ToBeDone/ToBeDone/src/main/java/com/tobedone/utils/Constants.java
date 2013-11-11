@@ -198,27 +198,27 @@ public class Constants {
 			DAY_OF_A_WEEK, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
 
 	// Feedback
+	public static final String MSG_ADD_FAILED = "Add operation failed!";
+	public static final String MSG_ADD_SUCCESSFUL = "Added task: %1$s";
 	public static final String MSG_EXIT = "Thank you for using ToBeDone.";
-	
+	public static final String MSG_INVALID_DEADLINE = "Invalid time. The deadline of the new task has already passed.";
+	public static final String MSG_INVALID_TIMEPERIOD = "Invalid time period. The start time of the timed task is after its end task.";
+	public static final String MSG_INVALID_INDEX = "The index is invalid.";
+	public static final String MSG_SEARCH_SUCCESSFUL = "Searching for tasks which contains: %1%s";
+	public static final String MSG_TASK_ALREADY_EXISTS = "Task already exists.";
+	public static final String MSG_UNDO_CLEAR_FAILED = "Failed to undo the clear command.";
+	public static final String MSG_UNDO_ADD_FAILED = "Failed to undo the add command.";
 	
 	public static final String MSG_NO_UNDO = "Unable to undo command.";
 	public static final String MSG_CHECK_SEARCH_SYNTAX = "Please check search syntax.";
-
 	public static final String MSG_FINISH_SUCCESSFUL = "Finished task: %1$s";
 	public static final String MSG_NO_MATCHING_TASK = "No matching task to show.";
-	public static final String MSG_ADD_SUCCESSFUL = "Added task: %1$s";
-	public static final String MSG_TASK_ALREADY_EXISTS = "Task already exists.";
 	public static final String MSG_DELETE_SUCCESSFUL = "Deleted task: %1$s";
-	public static final String MSG_SEARCH_SUCCESSFUL = "Searching for tasks which contains: %1%s";
 	public static final String MSG_UPDATE_SUCCESSFUL = "Task has been successfully updated.";
 	public static final String MSG_DELETE_FAILED = "Failed to remove the task.";
 	public static final String MSG_UNDO_SUCCESSFUL = "Successfully undid the command.";
 	public static final String MSG_UNDO_TWICE_FAILED = "Can not undo more than one time.";
-	public static final String MSG_REDO_TWICE_FAILED = "Can not redo more than one time.";
-	public static final String MSG_INVALID_DEADLINE = "Invalid time. The deadline of the new task has already passed.";
-	public static final String MSG_INVALID_TIMEPERIOD = "Invalid time period. The start time of the timed task is after its end task.";
-
-	public static final String MSG_ADDED_FAILED = "Add operation failed!";
+	public static final String MSG_REDO_TWICE_FAILED = "Can not redo more than one time.";	
 	public static final String MSG_UNDO_FAILED = "Undo failed! ";
 	public static final String MSG_REMOVE_UNDO = "Restored task: %1$s";
 	public static final String MSG_INDEX_OUT_OF_BOUNDS = "There is no task with that index.";

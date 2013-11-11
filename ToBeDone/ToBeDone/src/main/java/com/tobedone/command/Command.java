@@ -92,13 +92,29 @@ public abstract class Command {
 		this.feedback = Constants.EMPTY_STRING;
 	}
 
-	// Getter
+	// Getters and Setters
 	public boolean getExitSystemStatus() {
 		return exitSystemStatus;
 	}
 
+	public String getFeedback() {
+		return feedback;
+	}
+
+	public void setFeedback(String feedback) {
+		this.feedback = feedback;
+	}
+
+	public Vector<TaskItem> getAimTasks() {
+		return aimTasks;
+	}
+
+	public void setAimTasks(Vector<TaskItem> aimTasks) {
+		this.aimTasks = aimTasks;
+	}
+	
 	/**
-	 * Put this command object into the CommandHistory stack.
+	 * Puts this command object into the CommandHistory stack.
 	 * 
 	 * @return true if command is successfully pushed into the stack.
 	 */

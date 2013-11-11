@@ -1,3 +1,4 @@
+//@author A0105682H
 package com.tobedone.command;
 
 import java.io.IOException;
@@ -13,9 +14,10 @@ import com.tobedone.utils.LogMessages;
 /**
  * @author A0105682H
  * @version 0.5
- * @since 6-11-2013
+ * @since 10-10-2013
  * 
- *        This class handles remove command and undo service for this command.
+ *        This class extends Command class and handles the execute and undo
+ *        operation of remove command.
  * 
  */
 public class RemoveCommand extends Command {
@@ -23,7 +25,7 @@ public class RemoveCommand extends Command {
 	private Vector<TaskItem> matchingTasks;
 	private TaskItem taskToDelete;
 
-	// @author A0105682H
+	//Constructors
 	public RemoveCommand(int index) {
 		super();
 		this.index = index;
@@ -32,8 +34,11 @@ public class RemoveCommand extends Command {
 		executionSuccessful = false;
 	}
 
-	// @author A0105682H
+
 	@Override
+	/**
+	 * Removes the specified task from the task list and modifies feedback.
+	 */
 	protected void executeCommand() throws TaskNotExistException, IOException {
 		logger.info(LogMessages.INFO_REMOVE);
 		aimTasks.clear();
@@ -41,7 +46,7 @@ public class RemoveCommand extends Command {
 			aimTasks.add(task);
 		}
 		if (index < 0 || index > matchingTasks.size()) {
-			feedback = Constants.MSG_INDEX_OUT_OF_BOUNDS;
+			feedback = Constants.MSG_INVALID_INDEX;
 		} else {
 			taskToDelete = matchingTasks.get(index);
 			boolean deleteSuccessful = toDoService.deleteTask(taskToDelete);
@@ -55,8 +60,11 @@ public class RemoveCommand extends Command {
 		}
 	}
 
-	// @author A0105682H
+
 	@Override
+	/**
+	 * Undo the last remove task and add back the removed task item.
+	 */
 	public void undo() {
 		logger.info(LogMessages.INFO_UNDO_ACTION);
 		try {
