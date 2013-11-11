@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration>
+
+
+	<appender name="DebugAppender" class="org.apache.log4j.RollingFileAppender">
+		<param name="file" value="log/debug.log" />
+		<param name="MaxFileSize" value="100KB" />
+		<!-- Keep one backup file -->
+		<param name="MaxBackupIndex" value="1" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%p %t %c - %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelMatchFilter">
+			<param name="LevelToMatch" value="debug" />
+			<param name="AcceptOnMatch" value="true" />
+		</filter>
+		<filter class="org.apache.log4j.varia.DenyAllFilter" />
+	</appender>
+
+	<appender name="ErrorAppender" class="org.apache.log4j.RollingFileAppender">
+		<param name="file" value="log/error.log" />
+		<param name="MaxFileSize" value="100KB" />
+		<!-- Keep one backup file -->
+		<param name="MaxBackupIndex" value="1" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%p %t %c - %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelMatchFilter">
+			<param name="LevelToMatch" value="error" />
+			<param name="AcceptOnMatch" value="true" />
+		</filter>
+		<filter class="org.apache.log4j.varia.DenyAllFilter" />
+	</appender>
+
+	<appender name="InfoAppender" class="org.apache.log4j.RollingFileAppender">
+		<param name="file" value="log/info.log" />
+		<param name="MaxFileSize" value="100KB" />
+		<!-- Keep one backup file -->
+		<param name="MaxBackupIndex" value="1" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%p %t %c - %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelMatchFilter">
+			<param name="LevelToMatch" value="info" />
+			<param name="AcceptOnMatch" value="true" />
+		</filter>
+		<filter class="org.apache.log4j.varia.DenyAllFilter" />
+	</appender>
+
+	<root>
+		<priority value="debug" />
+		<appender-ref ref="DebugAppender" />
+		<appender-ref ref="ErrorAppender" />
+		<appender-ref ref="InfoAppender" />
+	</root>
+</log4j:configuration>
