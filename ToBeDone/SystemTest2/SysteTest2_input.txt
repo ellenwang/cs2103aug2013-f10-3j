@@ -1,0 +1,10 @@
+clear
+test
++ attend tutorial from 9am this fri to 10am this fri 
++ by today
+list
+++
++ attend tutorial from 9am this fri to 10am this fri 
+finish 0
+undo
+lsa

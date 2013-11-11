@@ -1,0 +1,8 @@
+Tasks cleared.
+Added task: hello world   deadline: 23:59,11/11
+Added task: hey guy   from: 09:00,11/12 to:   19:00,12/12
+Added task: good morning
+Task has been successfully updated.
+Deleted task: hey guy   from: 09:00,11/12 to:   19:00,12/12
+Searching for tasks which contains: hello
+All tasks are listed as below:
