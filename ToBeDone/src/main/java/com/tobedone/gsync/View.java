@@ -25,11 +25,13 @@ import com.google.api.services.calendar.model.Events;
  * @Date 2013-11-10
  */
 public class View {
+	//@author A0118248A
 	static void header(String name) {
 		System.out.println();
 		System.out.println("============== " + name + " ==============");
 		System.out.println();
 	}
+	//@author A0118248A
 	static void display(CalendarList feed) {
 		int calendar = 1;
 		if (feed.getItems() != null) {
@@ -40,6 +42,7 @@ public class View {
 			}
 		}
 	}
+	//@author A0118248A
 	static void display(Events feed) {
 		if (feed.getItems() != null) {
 			for (Event entry : feed.getItems()) {
@@ -50,15 +53,15 @@ public class View {
 			}
 		}
 	}
-
+	//@author A0118248A
 	static void display(CalendarListEntry entry) {
 		System.out.println(entry.getSummary());
 	}
-
+	//@author A0118248A
 	static void display(Calendar entry) {
 		System.out.println(entry.getSummary());
 	}
-
+	//@author A0118248A
 	static void display(Event event) {
 		if (event.getStart() != null) {
 			System.out.println("Start Time: " + event.getStart());

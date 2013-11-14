@@ -315,15 +315,20 @@ public class Constants {
 			"HH:mm,dd-MM-yyyy");
 
 	public static final String MESSAGE_TASK_ILLEGAL_INSTANCE_OF = "Task not instance of any of the instantiable subclasses of TaskItem";
-
+	
 	// GoogleSync
+	//@author A0118248A
 	public static final String MESSAGE_DOWNLOAD_SUCCESS = "The following tasks have been added to local calendar.";
 	public static final String MESSAGE_NO_UPDATE_TO_LOCAL = "No new task found.";
 	public static final String MESSAGE_UPLOAD_SUCCESS = "The following tasks have been uploaded to Google Calendar.";
 	public static final String SERVER_UNAVAILABLE = "Cannot connect to Google server now.";
 	public static final String MSG_GCAL_NOT_AUTHORIZED = "Authentication erroe.";
 	public static final int NEWLY_ADD_CALENDAR_ID = 1;
+	public static final String ENTER = "Enter";
 	public static final String DEFAULT_CALENDAR = "primary";
+	public static final String PATH_CLIENT_SECRETS = "/client_secrets.json";
+	public static final String CLIENT_SECRETS_NOT_EXISTS = "Enter Client ID and Secret from https://code.google.com/apis/console/?api=calendar "
+			+ "into calendar-cmdline-sample/src/main/resources/client_secrets.json";
 	// Storage
 	public static final String MESSAGE_FAILED_TO_WRITE_TO_FILE = "Failed to write to file.";
 	public static final String MESSAGE_FAILED_TO_READ_FROM_FILE = "Failed to read from file.";

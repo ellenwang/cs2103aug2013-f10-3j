@@ -41,21 +41,21 @@ public class GoogleCalendar {
 	GoogleParser gParser = null;
 	private boolean isAuthorized;
 
-	// @Author A0118248A
+	//@author A0118248A
 	GoogleCalendar() {
 		gParser = new GoogleParser();
 		isAuthorized = false;
 	}
 
-	// @Author A0118248A
+	//@author A0118248A
 	public static GoogleCalendar getInstance() {
 		if (singleton == null) {
 			singleton = new GoogleCalendar();
 		}
 		return singleton;
 	}
-
-	private static final String APPLICATION_NAME = "2BeDone";
+	
+	private static final String APPLICATION_NAME = Constants.TOBEDONE;
 	private static final java.io.File DATA_STORE_DIR = new java.io.File(
 			System.getProperty("user.home"), ".store");
 	private static FileDataStoreFactory dataStoreFactory;
@@ -68,15 +68,16 @@ public class GoogleCalendar {
 	static final java.util.List<Calendar> addedCalendarsUsingBatch = Lists
 			.newArrayList();
 
-	// @Author A0118248A
+	//@author A0118248A
 	public boolean isAuthorized() {
 		return isAuthorized;
 	}
 
 	/**
-	 * @Author A0118248A Authorizes the installed application to access user's
-	 *         protected data. returns a credential to google calendar
+	 * 		Authorizes the installed application to access user's
+	 *     protected data. returns a credential to google calendar
 	 * */
+	//@author A0118248A
 	private static Credential authorize() throws Exception {
 		// load client secrets
 		httpTransport = GoogleNetHttpTransport.newTrustedTransport();
@@ -85,13 +86,12 @@ public class GoogleCalendar {
 				.load(JSON_FACTORY,
 						new InputStreamReader(
 								GoogleCalendar.class
-										.getResourceAsStream("/client_secrets.json")));
-		if (clientSecrets.getDetails().getClientId().startsWith("Enter")
+										.getResourceAsStream(Constants.PATH_CLIENT_SECRETS)));
+		if (clientSecrets.getDetails().getClientId().startsWith(Constants.ENTER)
 				|| clientSecrets.getDetails().getClientSecret()
-						.startsWith("Enter ")) {
+						.startsWith(Constants.ENTER)) {
 			System.out
-					.println("Enter Client ID and Secret from https://code.google.com/apis/console/?api=calendar "
-							+ "into calendar-cmdline-sample/src/main/resources/client_secrets.json");
+					.println(Constants.CLIENT_SECRETS_NOT_EXISTS);
 			System.exit(1);
 		}
 		// set up authorization code flow
@@ -109,8 +109,9 @@ public class GoogleCalendar {
 	}
 
 	/**
-	 * @Author A0118248A To initialize the authentication.
+ 	 *	To initialize the authentication.
 	 * */
+	//@author A0118248A
 	public void initAuthenication() {
 		try {
 			httpTransport = GoogleNetHttpTransport.newTrustedTransport();
@@ -123,7 +124,7 @@ public class GoogleCalendar {
 			this.isAuthorized = false;
 		}
 	}
-
+	//@author A0118248A
 	public String chooseCalendar() throws IOException {
 		// CalendarList
 		CalendarList calendarList = client.calendarList().list().execute();
@@ -134,10 +135,10 @@ public class GoogleCalendar {
 	}
 
 	/**
-	 * @Author A0118248A
-	 * @Date 2013-11310 Get tasks from Google calendar and import them to local
+	 * Get tasks from Google calendar and import them to local
 	 *       tasks. return the vector of newly added tasks.
 	 */
+	//@author A0118248A
 	public Vector<TaskItem> updateLocal(Vector<TaskItem> allTasks,
 			String calendarId) throws ServiceNotAvailableException {
 		Vector<TaskItem> newTasks = new Vector<TaskItem>();
@@ -197,9 +198,10 @@ public class GoogleCalendar {
 	}
 
 	/**
-	 * @Author A0118248A Upload the local tasks to Google Calendar, creating new
-	 *         events or updating existed events in Google Calendar.
+	 *  Upload the local tasks to Google Calendar, creating new
+	 *  events or updating existed events in Google Calendar.
 	 * */
+	//@author A0118248A
 	public void updateGcal(String calendarId, Vector<TaskItem> allTasks) {
 		Vector<TaskItem> tasksFromGoogle = new Vector<TaskItem>();
 		try {
@@ -248,8 +250,9 @@ public class GoogleCalendar {
 	}
 
 	/**
-	 * @Author A0118248A Clear the primary google calendar.
+	 * Clear the primary google calendar.
 	 * */
+	//@author A0118248A
 	public String clearGoogle(Vector<TaskItem> tasks) {
 		String feedback = "";
 		try {
@@ -274,19 +277,19 @@ public class GoogleCalendar {
 		}
 		return feedback;
 	}
-
+	//@author A0118248A
 	public static CalendarListEntry displayAndSelectCalendar(
 			CalendarList calendarList) throws IOException {
 		showCalendars(calendarList);
 		return pickCalendar(calendarList);
 	}
-
+	//@author A0118248A
 	private static Event upload(String calendarId, Event event)
 			throws IOException {
 		Event result = client.events().insert(calendarId, event).execute();
 		return result;
 	}
-
+	//@author A0118248A
 	private static CalendarListEntry pickCalendar(CalendarList calendarList)
 			throws IOException {
 		Scanner sc = new Scanner(System.in);
@@ -309,12 +312,12 @@ public class GoogleCalendar {
 			return calendarList.getItems().get(calendarIndex - 1);
 		}
 	}
-
+	//@author A0118248A
 	private static void showCalendars(CalendarList calendarList) {
 		System.out.println("Please select a calender to synchronize with");
 		View.display(calendarList);
 	}
-
+	//@author A0118248A
 	private static String addCalendar() throws IOException {
 		Calendar entry = new Calendar();
 		System.out.println("Please input the name of the new calendar:");

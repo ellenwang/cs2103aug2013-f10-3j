@@ -15,14 +15,14 @@ import com.tobedone.utils.Constants;
  */
 public class SyncDownCommand extends Command {
 	private GoogleCalendar googleCal = null;
-
+	//@author A0118248A
 	public SyncDownCommand() {
 		super();
 		isUndoable = false;
 	}
 
 	Vector<TaskItem> allTasks = toDoService.getAllTasks();
-	//@Author: A0118248A
+	//@author A0118248A
 	protected void executeCommand() throws IOException {
 		try {
 			googleCal = GoogleCalendar.getInstance();

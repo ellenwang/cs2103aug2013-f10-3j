@@ -20,7 +20,7 @@ import com.tobedone.utils.Constants;
  */
 
 public class GoogleParser {
-	
+	//@author A0118248A
 	private static SimpleDateFormat simpleDateAndTimeFormatOfGoogle = new SimpleDateFormat(
 			"yyyy-MM-dd'T'HH:mm:ss");
 	private static SimpleDateFormat simpleDateFormatOfGoogle = new SimpleDateFormat(
@@ -30,6 +30,7 @@ public class GoogleParser {
 	 * @param TaskItem
 	 * @return Event Convert a local task to google calendar task.
 	 */
+	//@author A0118248A
 	public Event taskToEvent(TaskItem task) {
 		Event event = new Event();
 		event.setSummary(task.getDescription());
@@ -59,10 +60,10 @@ public class GoogleParser {
 	}
 
 	/**
-	 * @author A0118248A
 	 * @param Event
 	 * @return TaskItem Convert a google calendar task to a local task.
 	 */
+	//@author A0118248A
 	public TaskItem eventToTask(Event event) throws ParseException {
 		Date startTime = new Date(toDate(event.getStart(),false).getTime());
 		Date endTime = new Date(toDate(event.getEnd(),true).getTime());
@@ -80,10 +81,10 @@ public class GoogleParser {
 	}
 
 	/**
-	 * @author A0118248A
 	 * @param Event
 	 * @return int Get the priority from the color of google calendar task.
 	 */
+	//@author A0118248A
 	private static int getPriority(Event e) {
 		if(e.getColorId() == null){
 			return Constants.INT_PRI_LOW;
@@ -98,10 +99,10 @@ public class GoogleParser {
 	}
 
 	/**
-	 * @author A0118248A
 	 * @param TaskItem
 	 * @return String Get the color from the priority of local task.
 	 */
+	//@author A0118248A
 	private static String getColor(TaskItem e) {
 		if (e.getPriority() == Constants.INT_PRI_LOW) {
 			return Constants.STRING_PRI_LOW;
@@ -114,11 +115,11 @@ public class GoogleParser {
 	}
 
 	/**
-	 * @author A0118248A
 	 * @param EventDateTime
 	 * @return Date Convert the date and time of a google calendar task to the
 	 *         date and time of a local task.
 	 */
+	//@author A0118248A
 	public static Date toDate(EventDateTime e, boolean st) throws ParseException {
 		long calendarTimeZoneOffset;
 		long thisTimeZoneOffset = TimeZone.getDefault().getRawOffset();
@@ -145,7 +146,7 @@ public class GoogleParser {
 		}
 		return res;
 	}
-	
+	//@author A0118248A
 	public EventDateTime toEventDateTime(Date e){
 		DateTime t = new DateTime(e, TimeZone.getDefault());
 		return new EventDateTime().setDateTime(t);
