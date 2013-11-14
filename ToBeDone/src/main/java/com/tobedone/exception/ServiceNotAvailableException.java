@@ -6,6 +6,7 @@ package com.tobedone.exception;
  *     This class contains the new exception when we cannot connect to Google
  * 
  */
+//@author A0118248A
 public class ServiceNotAvailableException extends Exception {
 	public ServiceNotAvailableException(String errorMessage) {
 		super(errorMessage);
